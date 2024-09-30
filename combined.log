@@ -1,0 +1,340 @@
+2024-09-28 14:10:07 [info]: Connected to Redis
+2024-09-28 14:10:07 [info]: Redis client connected and ready to use
+2024-09-28 14:10:10 [info]: Cached availability for 2024-09-28
+2024-09-28 14:23:34 [error]: Error fetching available start times: refreshAvailableStartTimesCache is not a function - TypeError: refreshAvailableStartTimesCache is not a function
+    at C:\vs_code\lengolf_booking\routes\api.js:26:42
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2024-09-28 14:27:23 [info]: Connected to Redis
+2024-09-28 14:27:23 [info]: Redis client connected and ready to use
+2024-09-28 14:27:26 [info]: Cached availability for 2024-09-28
+2024-09-28 14:30:52 [info]: Connected to Redis
+2024-09-28 14:30:52 [info]: Redis client connected and ready to use
+2024-09-28 14:30:55 [info]: Cached availability for 2024-09-28
+2024-09-28 14:33:54 [info]: Connected to Redis
+2024-09-28 14:33:54 [info]: Redis client connected and ready to use
+2024-09-28 14:33:57 [info]: Cached availability for 2024-09-28
+2024-09-28 14:34:35 [info]: Cached availability for 2024-09-29
+2024-09-28 14:36:54 [info]: Cached availability for 2024-09-30
+2024-09-28 14:39:55 [info]: Cached availability for 2024-10-03
+2024-09-28 14:42:16 [info]: Connected to Redis
+2024-09-28 14:42:16 [info]: Redis client connected and ready to use
+2024-09-28 14:42:18 [info]: Cached availability for 2024-09-28
+2024-09-28 14:48:13 [info]: Connected to Redis
+2024-09-28 14:48:13 [info]: Redis client connected and ready to use
+2024-09-28 14:48:16 [info]: Cached availability for 2024-09-28
+2024-09-28 14:50:43 [info]: Cached availability for 2024-09-28
+2024-09-28 14:52:11 [info]: Cached availability for 2024-09-29
+2024-09-28 14:56:01 [info]: Connected to Redis
+2024-09-28 14:56:01 [info]: Redis client connected and ready to use
+2024-09-28 14:56:03 [info]: Cached availability for 2024-09-28
+2024-09-28 15:00:11 [info]: Server is running on port 3000
+2024-09-28 15:00:11 [info]: Connected to Redis
+2024-09-28 15:00:11 [info]: Redis client connected and ready to use
+2024-09-28 15:00:13 [info]: Cached availability for 2024-09-28
+2024-09-28 15:00:13 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 15:00:33 [info]: Server is running on port 3000
+2024-09-28 15:00:34 [info]: Connected to Redis
+2024-09-28 15:00:34 [info]: Redis client connected and ready to use
+2024-09-28 15:00:36 [info]: Cached availability for 2024-09-28
+2024-09-28 15:00:36 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 15:05:34 [info]: Server is running on port 3000
+2024-09-28 15:05:36 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:05:38 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:05:40 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:05:42 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:05:44 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:05:47 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:05:49 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:05:51 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:05:54 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:05:56 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:05:59 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-09-28 15:06:00 [info]: Connected to Redis
+2024-09-28 15:06:00 [info]: Cached availability for 2024-09-28
+2024-09-28 15:06:00 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 15:06:00 [info]: Redis client connected and ready to use
+2024-09-28 15:41:20 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-09-28 15:41:21 [info]: Connected to Redis
+2024-09-28 15:43:13 [info]: Cached availability for 2024-10-17
+2024-09-28 15:50:24 [info]: Server is running on port 3000
+2024-09-28 15:50:24 [info]: Connected to Redis
+2024-09-28 15:50:24 [info]: Redis client connected and ready to use
+2024-09-28 15:50:27 [info]: Cached availability for 2024-09-28
+2024-09-28 15:50:27 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 15:50:34 [error]: Error verifying Google token: Wrong recipient, payload audience != requiredAudience - Error: Wrong recipient, payload audience != requiredAudience
+    at OAuth2Client.verifySignedJwtWithCertsAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:750:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async OAuth2Client.verifyIdTokenAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:508:23)
+    at async C:\vs_code\lengolf_booking\routes\api.js:23:24
+2024-09-28 15:50:53 [error]: Error verifying Google token: Wrong recipient, payload audience != requiredAudience - Error: Wrong recipient, payload audience != requiredAudience
+    at OAuth2Client.verifySignedJwtWithCertsAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:750:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async OAuth2Client.verifyIdTokenAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:508:23)
+    at async C:\vs_code\lengolf_booking\routes\api.js:23:24
+2024-09-28 15:51:21 [error]: Error verifying Google token: Wrong recipient, payload audience != requiredAudience - Error: Wrong recipient, payload audience != requiredAudience
+    at OAuth2Client.verifySignedJwtWithCertsAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:750:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async OAuth2Client.verifyIdTokenAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:508:23)
+    at async C:\vs_code\lengolf_booking\routes\api.js:23:24
+2024-09-28 15:51:39 [error]: Error verifying Google token: Wrong recipient, payload audience != requiredAudience - Error: Wrong recipient, payload audience != requiredAudience
+    at OAuth2Client.verifySignedJwtWithCertsAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:750:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async OAuth2Client.verifyIdTokenAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:508:23)
+    at async C:\vs_code\lengolf_booking\routes\api.js:23:24
+2024-09-28 15:54:03 [error]: Error verifying Google token: Wrong recipient, payload audience != requiredAudience - Error: Wrong recipient, payload audience != requiredAudience
+    at OAuth2Client.verifySignedJwtWithCertsAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:750:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async OAuth2Client.verifyIdTokenAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:508:23)
+    at async C:\vs_code\lengolf_booking\routes\api.js:23:24
+2024-09-28 15:54:47 [info]: Server is running on port 3000
+2024-09-28 15:54:47 [info]: Connected to Redis
+2024-09-28 15:54:47 [info]: Redis client connected and ready to use
+2024-09-28 15:54:50 [info]: Cached availability for 2024-09-28
+2024-09-28 15:54:50 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:00:49 [info]: Server is running on port 3000
+2024-09-28 16:00:49 [info]: Connected to Redis
+2024-09-28 16:00:49 [info]: Redis client connected and ready to use
+2024-09-28 16:00:52 [info]: Cached availability for 2024-09-28
+2024-09-28 16:00:52 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:03:48 [info]: Server is running on port 3000
+2024-09-28 16:03:48 [info]: Connected to Redis
+2024-09-28 16:03:48 [info]: Redis client connected and ready to use
+2024-09-28 16:03:51 [info]: Cached availability for 2024-09-28
+2024-09-28 16:03:51 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:09:20 [info]: Server is running on port 3000
+2024-09-28 16:09:20 [info]: Connected to Redis
+2024-09-28 16:09:20 [info]: Redis client connected and ready to use
+2024-09-28 16:09:23 [info]: Cached availability for 2024-09-28
+2024-09-28 16:09:23 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:24:18 [info]: Server is running on port 3000
+2024-09-28 16:24:18 [info]: Connected to Redis
+2024-09-28 16:24:18 [info]: Redis client connected and ready to use
+2024-09-28 16:24:22 [info]: Cached availability for 2024-09-28
+2024-09-28 16:24:22 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:34:47 [info]: Server is running on port 3000
+2024-09-28 16:34:47 [info]: Connected to Redis
+2024-09-28 16:34:47 [info]: Redis client connected and ready to use
+2024-09-28 16:34:50 [info]: Cached availability for 2024-09-28
+2024-09-28 16:34:50 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:35:34 [info]: Server is running on port 3000
+2024-09-28 16:35:35 [info]: Connected to Redis
+2024-09-28 16:35:35 [info]: Redis client connected and ready to use
+2024-09-28 16:35:37 [info]: Cached availability for 2024-09-28
+2024-09-28 16:35:37 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:40:41 [info]: Server is running on port 3000
+2024-09-28 16:40:41 [info]: Connected to Redis
+2024-09-28 16:40:41 [info]: Redis client connected and ready to use
+2024-09-28 16:40:43 [info]: Cached availability for 2024-09-28
+2024-09-28 16:40:43 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:47:25 [info]: Server is running on port 3000
+2024-09-28 16:47:25 [info]: Connected to Redis
+2024-09-28 16:47:25 [info]: Redis client connected and ready to use
+2024-09-28 16:47:27 [info]: Cached availability for 2024-09-28
+2024-09-28 16:47:27 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:49:28 [info]: Server is running on port 3000
+2024-09-28 16:49:28 [info]: Connected to Redis
+2024-09-28 16:49:28 [info]: Redis client connected and ready to use
+2024-09-28 16:49:31 [info]: Cached availability for 2024-09-28
+2024-09-28 16:49:31 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:53:54 [info]: Server is running on port 3000
+2024-09-28 16:53:54 [info]: Connected to Redis
+2024-09-28 16:53:54 [info]: Redis client connected and ready to use
+2024-09-28 16:53:57 [info]: Cached availability for 2024-09-28
+2024-09-28 16:53:57 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 16:59:40 [info]: Server is running on port 3000
+2024-09-28 16:59:40 [info]: Connected to Redis
+2024-09-28 16:59:40 [info]: Redis client connected and ready to use
+2024-09-28 16:59:42 [info]: Cached availability for 2024-09-28
+2024-09-28 16:59:42 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 17:00:15 [info]: Cached availability for 2024-09-29
+2024-09-28 17:00:52 [info]: Cached availability for 2024-10-03
+2024-09-28 17:43:05 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-09-28 17:43:05 [info]: Connected to Redis
+2024-09-28 17:43:46 [info]: Cached availability for 2024-09-29
+2024-09-28 17:47:36 [info]: Server is running on port 3000
+2024-09-28 17:47:36 [info]: Connected to Redis
+2024-09-28 17:47:36 [info]: Redis client connected and ready to use
+2024-09-28 17:47:38 [info]: Cached availability for 2024-09-28
+2024-09-28 17:47:38 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 17:48:03 [info]: Cached availability for 2024-09-29
+2024-09-28 17:49:43 [info]: Server is running on port 3000
+2024-09-28 17:49:43 [info]: Connected to Redis
+2024-09-28 17:49:43 [info]: Redis client connected and ready to use
+2024-09-28 17:49:45 [info]: Cached availability for 2024-09-28
+2024-09-28 17:49:45 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 17:54:31 [info]: Server is running on port 3000
+2024-09-28 17:54:31 [info]: Connected to Redis
+2024-09-28 17:54:31 [info]: Redis client connected and ready to use
+2024-09-28 17:54:33 [info]: Cached availability for 2024-09-28
+2024-09-28 17:54:33 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 18:03:08 [info]: Server is running on port 3000
+2024-09-28 18:03:08 [info]: Connected to Redis
+2024-09-28 18:03:08 [info]: Redis client connected and ready to use
+2024-09-28 18:03:10 [info]: Cached availability for 2024-09-28
+2024-09-28 18:03:10 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 18:06:50 [info]: Server is running on port 3000
+2024-09-28 18:06:50 [info]: Connected to Redis
+2024-09-28 18:06:50 [info]: Redis client connected and ready to use
+2024-09-28 18:06:52 [info]: Cached availability for 2024-09-28
+2024-09-28 18:06:52 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 18:11:43 [info]: Server is running on port 3000
+2024-09-28 18:11:43 [info]: Connected to Redis
+2024-09-28 18:11:43 [info]: Redis client connected and ready to use
+2024-09-28 18:11:46 [info]: Cached availability for 2024-09-28
+2024-09-28 18:11:46 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 18:11:51 [info]: Server is running on port 3000
+2024-09-28 18:11:51 [info]: Connected to Redis
+2024-09-28 18:11:51 [info]: Redis client connected and ready to use
+2024-09-28 18:11:53 [info]: Cached availability for 2024-09-28
+2024-09-28 18:11:53 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 18:23:17 [info]: Cached availability for 2024-09-28
+2024-09-28 18:25:59 [info]: Cached availability for 2024-10-23
+2024-09-28 18:31:24 [info]: Server is running on port 3000
+2024-09-28 18:31:24 [info]: Connected to Redis
+2024-09-28 18:31:24 [info]: Redis client connected and ready to use
+2024-09-28 18:31:26 [info]: Cached availability for 2024-09-28
+2024-09-28 18:31:26 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 18:41:39 [info]: Server is running on port 3000
+2024-09-28 18:41:39 [info]: Connected to Redis
+2024-09-28 18:41:39 [info]: Redis client connected and ready to use
+2024-09-28 18:41:41 [info]: Cached availability for 2024-09-28
+2024-09-28 18:41:41 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 18:42:37 [error]: Error fetching customer data from Google Sheets: Unable to parse range: Customers!A2:C - Error: Unable to parse range: Customers!A2:C
+    at Gaxios._request (C:\vs_code\lengolf_booking\node_modules\gaxios\build\src\gaxios.js:140:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async JWT.requestAsync (C:\vs_code\lengolf_booking\node_modules\googleapis-common\node_modules\google-auth-library\build\src\auth\oauth2client.js:382:18)
+    at async getCustomerData (C:\vs_code\lengolf_booking\utils\helpers.js:267:26)
+    at async exports.getCustomerDataById (C:\vs_code\lengolf_booking\controllers\customerController.js:11:26)
+    at async C:\vs_code\lengolf_booking\routes\api.js:34:30
+2024-09-28 18:42:37 [error]: Error verifying Google token: Customer data not found. - Error: Customer data not found.
+    at exports.getCustomerDataById (C:\vs_code\lengolf_booking\controllers\customerController.js:13:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\vs_code\lengolf_booking\routes\api.js:34:30
+2024-09-28 18:44:35 [info]: Server is running on port 3000
+2024-09-28 18:44:35 [info]: Connected to Redis
+2024-09-28 18:44:35 [info]: Redis client connected and ready to use
+2024-09-28 18:44:37 [info]: Cached availability for 2024-09-28
+2024-09-28 18:44:37 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 18:44:45 [error]: Error fetching customer data from Google Sheets: Unable to parse range: Customers!A2:C - Error: Unable to parse range: Customers!A2:C
+    at Gaxios._request (C:\vs_code\lengolf_booking\node_modules\gaxios\build\src\gaxios.js:140:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async JWT.requestAsync (C:\vs_code\lengolf_booking\node_modules\googleapis-common\node_modules\google-auth-library\build\src\auth\oauth2client.js:382:18)
+    at async getCustomerData (C:\vs_code\lengolf_booking\utils\helpers.js:267:26)
+    at async exports.getCustomerDataById (C:\vs_code\lengolf_booking\controllers\customerController.js:11:26)
+    at async C:\vs_code\lengolf_booking\routes\api.js:34:30
+2024-09-28 18:44:45 [error]: Error verifying Google token: Customer data not found. - Error: Customer data not found.
+    at exports.getCustomerDataById (C:\vs_code\lengolf_booking\controllers\customerController.js:13:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\vs_code\lengolf_booking\routes\api.js:34:30
+2024-09-28 18:46:05 [error]: Error fetching customer data from Google Sheets: Unable to parse range: Customers!A2:C - Error: Unable to parse range: Customers!A2:C
+    at Gaxios._request (C:\vs_code\lengolf_booking\node_modules\gaxios\build\src\gaxios.js:140:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async JWT.requestAsync (C:\vs_code\lengolf_booking\node_modules\googleapis-common\node_modules\google-auth-library\build\src\auth\oauth2client.js:382:18)
+    at async getCustomerData (C:\vs_code\lengolf_booking\utils\helpers.js:267:26)
+    at async exports.getCustomerDataById (C:\vs_code\lengolf_booking\controllers\customerController.js:11:26)
+    at async C:\vs_code\lengolf_booking\routes\api.js:34:30
+2024-09-28 18:46:05 [error]: Error verifying Google token: Customer data not found. - Error: Customer data not found.
+    at exports.getCustomerDataById (C:\vs_code\lengolf_booking\controllers\customerController.js:13:15)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async C:\vs_code\lengolf_booking\routes\api.js:34:30
+2024-09-28 18:53:05 [info]: Server is running on port 3000
+2024-09-28 18:53:05 [info]: Connected to Redis
+2024-09-28 18:53:05 [info]: Redis client connected and ready to use
+2024-09-28 18:53:08 [info]: Cached availability for 2024-09-28
+2024-09-28 18:53:08 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 18:53:13 [warn]: No customer data found for userId: 100855399028765525123
+2024-09-28 18:53:48 [info]: Cached availability for 2024-10-24
+2024-09-28 18:54:01 [info]: Cached availability for 2024-09-24
+2024-09-28 23:12:38 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-09-28 23:12:38 [info]: Connected to Redis
+2024-09-28 23:28:16 [info]: Server is running on port 3000
+2024-09-28 23:28:16 [info]: Connected to Redis
+2024-09-28 23:28:16 [info]: Redis client connected and ready to use
+2024-09-28 23:28:18 [info]: Cached availability for 2024-09-28
+2024-09-28 23:28:18 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 23:28:35 [warn]: No customer data found for userId: 100855399028765525123
+2024-09-28 23:28:41 [info]: Cached availability for 2024-09-29
+2024-09-28 23:29:08 [info]: Cached availability for 2024-10-24
+2024-09-28 23:41:10 [info]: Server is running on port 3000
+2024-09-28 23:41:10 [info]: Connected to Redis
+2024-09-28 23:41:10 [info]: Redis client connected and ready to use
+2024-09-28 23:41:12 [info]: Cached availability for 2024-09-28
+2024-09-28 23:41:12 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 23:41:22 [warn]: No customer data found for userId: 100855399028765525123
+2024-09-28 23:41:27 [info]: Cached availability for 2024-09-29
+2024-09-28 23:41:38 [info]: Cached availability for 2024-10-24
+2024-09-28 23:41:51 [info]: Added new customer data for userId: 100855399028765525123
+2024-09-28 23:45:08 [info]: Server is running on port 3000
+2024-09-28 23:45:08 [info]: Connected to Redis
+2024-09-28 23:45:08 [info]: Redis client connected and ready to use
+2024-09-28 23:45:10 [info]: Cached availability for 2024-09-28
+2024-09-28 23:45:10 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 23:45:50 [info]: Updated customer data for userId: 100855399028765525123
+2024-09-28 23:47:35 [info]: Updated customer data for userId: 100855399028765525123
+2024-09-28 23:50:17 [info]: Server is running on port 3000
+2024-09-28 23:50:17 [info]: Connected to Redis
+2024-09-28 23:50:17 [info]: Redis client connected and ready to use
+2024-09-28 23:50:19 [info]: Cached availability for 2024-09-28
+2024-09-28 23:50:19 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-28 23:50:31 [warn]: No data found in Google Sheets.
+2024-09-28 23:52:21 [info]: Cached availability for 2024-10-24
+2024-09-28 23:53:32 [info]: Updated customer data for userId: 100855399028765525123
+2024-09-28 23:55:04 [info]: Server is running on port 3000
+2024-09-28 23:55:04 [info]: Connected to Redis
+2024-09-28 23:55:04 [info]: Redis client connected and ready to use
+2024-09-28 23:55:06 [info]: Cached availability for 2024-09-28
+2024-09-28 23:55:06 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-29 00:00:10 [info]: Server is running on port 3000
+2024-09-29 00:00:10 [info]: Connected to Redis
+2024-09-29 00:00:10 [info]: Redis client connected and ready to use
+2024-09-29 00:00:13 [info]: Cached availability for 2024-09-28
+2024-09-29 00:00:13 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-29 00:00:29 [info]: Cached availability for 2024-09-29
+2024-09-29 00:03:32 [info]: Updated customer data for userId: 100855399028765525123
+2024-09-29 00:06:06 [info]: Server is running on port 3000
+2024-09-29 00:06:06 [info]: Connected to Redis
+2024-09-29 00:06:06 [info]: Redis client connected and ready to use
+2024-09-29 00:06:08 [info]: Cached availability for 2024-09-28
+2024-09-29 00:06:08 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-29 00:09:27 [info]: Server is running on port 3000
+2024-09-29 00:09:27 [info]: Connected to Redis
+2024-09-29 00:09:27 [info]: Redis client connected and ready to use
+2024-09-29 00:09:30 [info]: Cached availability for 2024-09-28
+2024-09-29 00:09:30 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-29 00:09:51 [info]: Cached availability for 2024-10-24
+2024-09-29 00:16:33 [info]: Server is running on port 3000
+2024-09-29 00:16:33 [info]: Connected to Redis
+2024-09-29 00:16:33 [info]: Redis client connected and ready to use
+2024-09-29 00:16:36 [info]: Cached availability for 2024-09-28
+2024-09-29 00:16:36 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-29 00:16:53 [info]: Cached availability for 2024-09-29
+2024-09-29 00:21:55 [info]: Server is running on port 3000
+2024-09-29 00:21:55 [info]: Connected to Redis
+2024-09-29 00:21:55 [info]: Redis client connected and ready to use
+2024-09-29 00:21:57 [info]: Cached availability for 2024-09-28
+2024-09-29 00:21:57 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-29 00:22:16 [info]: Cached availability for 2024-10-24
+2024-09-29 00:24:32 [info]: Updated customer data for userId: 100855399028765525123
+2024-09-29 00:35:00 [info]: Server is running on port 3000
+2024-09-29 00:35:00 [info]: Connected to Redis
+2024-09-29 00:35:00 [info]: Redis client connected and ready to use
+2024-09-29 00:35:02 [info]: Cached availability for 2024-09-28
+2024-09-29 00:35:02 [info]: Initial cache refresh for 2024-09-28 completed.
+2024-09-29 00:35:39 [info]: Cached availability for 2024-09-29
+2024-09-29 00:35:51 [info]: Cached availability for 2024-10-16
+2024-09-29 00:35:55 [info]: Cached availability for 2024-10-24
+2024-09-29 00:36:31 [info]: Updated customer data for userId: 100855399028765525123

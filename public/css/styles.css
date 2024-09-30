@@ -1,0 +1,637 @@
+/* public/css/styles.css */
+
+/* Define CSS Variables for Colors */
+:root {
+    --primary-color: #005a32; /* Dark Green */
+    --neutral-color: #000000; /* Black */
+    --accent-color: #ffffff; /* White */
+    --background-color: #f0f0f0; /* Light Gray */
+    --footer-bg-color: #f5fef9; /* Footer Background Color */
+    --footer-heading-color: #2b6f36; /* Footer Heading Color */
+    --footer-text-color: #9fa4a5; /* Footer Text Color */
+    --hover-animation: scale(1.05); /* Animation for hover */
+    --header-font: 'Poppins', sans-serif;
+}
+
+/* General Styles */
+body {
+    background-color: var(--background-color);
+    font-family: var(--header-font);
+    font-size: 1rem;
+    color: var(--neutral-color);
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+/* Navbar Customization */
+.navbar {
+    background-color: var(--primary-color) !important;
+    padding: 15px 10px;
+}
+
+/* Adjust Navbar for Flexbox */
+.navbar {
+    flex-shrink: 0;
+}
+
+.navbar-brand {
+    color: var(--accent-color) !important;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Main Content Adjustments */
+main {
+    flex-grow: 1;
+}
+
+/* Header Styles */
+h2 {
+    font-family: var(--header-font);
+    font-size: 2rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+h3 {
+    font-family: var(--header-font);
+    font-size: 1.75rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+h5.card-title {
+    font-family: var(--header-font);
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--accent-color);
+    transition: transform 0.3s, background-color 0.3s, border-color 0.3s;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    transform: var(--hover-animation);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--accent-color);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: var(--accent-color);
+    transition: transform 0.3s, background-color 0.3s, border-color 0.3s;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    transform: var(--hover-animation);
+    background-color: #5a6268;
+    border-color: #545b62;
+    color: var(--accent-color);
+}
+
+.btn-neutral {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: var(--accent-color);
+    transition: transform 0.3s, background-color 0.3s, border-color 0.3s;
+}
+
+.btn-neutral:hover,
+.btn-neutral:focus {
+    transform: var(--hover-animation);
+    background-color: #5a6268;
+    border-color: #545b62;
+    color: var(--accent-color);
+}
+
+/* Facebook Blue Color */
+.facebook-button {
+    background-color: #1877F2; /* Facebook blue */
+    border-color: #1877F2;
+    color: white;
+}
+
+.facebook-button:hover,
+.facebook-button:focus {
+    background-color: #166FE5; /* Slightly darker blue on hover */
+    border-color: #166FE5;
+    color: white;
+}
+
+/* Hidden Class */
+.hidden {
+    display: none !important;
+}
+
+/* Booking Steps */
+.booking-step.hidden {
+    display: none;
+}
+
+.booking-step:not(.hidden) {
+    display: block;
+}
+
+.booking-step {
+    margin-top: 1rem;
+    margin-bottom: 60px; /* Added margin to create space between content and footer */
+}
+
+/* Date Option Cards */
+.date-option {
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 2px solid transparent;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.date-option.selected {
+    border-color: var(--primary-color);
+    background-color: rgba(0, 90, 50, 0.1); /* Light green background */
+    box-shadow: 0 0 10px rgba(0, 90, 50, 0.3);
+}
+
+.date-option.selected::after {
+    content: '\f00c'; /* Font Awesome checkmark */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+/* Ensure date-option has relative positioning */
+.date-option {
+    position: relative;
+}
+
+
+.date-option:hover {
+    transform: var(--hover-animation);
+}
+
+
+/* Custom Date Picker Specific Styles */
+.custom-date-picker .form-control {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+}
+
+.custom-date-picker .form-control:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: var(--primary-color);
+}
+
+.custom-date-picker .form-control.mt-2 {
+    margin-top: 10px;
+}
+
+.custom-date-picker.selected {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 90, 50, 0.3);
+}
+
+.custom-date-picker:hover {
+    transform: var(--hover-animation);
+}
+
+/* Selected Info Cards */
+.selected-info-card {
+    border: 2px solid var(--primary-color);
+    background-color: var(--accent-color);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: default;
+}
+
+.selected-info-card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.selected-info-card .card-title {
+    color: var(--primary-color);
+}
+
+.selected-info-card .card-text {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* Visual Divider */
+.divider {
+    border-top: 1px solid #ccc;
+    margin: 30px 0;
+}
+
+/* Slot Card Styling */
+.slot-card {
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    border-radius: 0.5rem;
+    margin-bottom: 20px;
+    background-color: var(--accent-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    height: 100%;
+    color: var(--neutral-color);
+}
+
+.slot-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.slot-card .book-now-button {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    border: none;
+    width: 100%;
+    transition: transform 0.3s, background-color 0.3s, border-color 0.3s;
+}
+
+.slot-card .book-now-button:hover,
+.slot-card .book-now-button:focus {
+    transform: var(--hover-animation);
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+}
+
+/* Number of People Buttons */
+.num-people-button {
+    min-width: 40px;
+    margin-right: 5px;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.num-people-button.active {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    border-color: var(--primary-color);
+}
+
+.num-people-button.red-border {
+    border-color: #dc3545;
+}
+
+.num-people-button.green-border {
+    border-color: #198754;
+}
+
+/* Error Messages */
+.text-danger {
+    font-size: 0.875rem;
+}
+
+/* Input Validation Styles */
+input:invalid,
+select:invalid {
+    border-color: #dc3545;
+}
+
+input:valid,
+select:valid {
+    border-color: #198754;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    .date-option .card-body {
+        padding: 10px;
+    }
+
+    .date-option .card-title {
+        font-size: 1rem;
+    }
+
+    .date-option .card-text {
+        font-size: 0.875rem;
+    }
+
+    /* Center footer content on mobile devices */
+    .footer .row > div {
+        text-align: center;
+    }
+    .footer .social-icons {
+        justify-content: center;
+    }
+    .footer .social-icons a {
+        margin-right: 15px;
+    }
+
+    /* Adjust progress bar font size */
+    .progress-bar {
+        font-size: 0.8rem;
+    }
+}
+
+/* Customize the progress bar */
+.progress {
+    background-color: transparent; /* Remove the background color */
+}
+
+
+/* Footer Styling */
+.footer {
+    background-color: var(--footer-bg-color);
+    color: var(--footer-text-color);
+    border-top: 1px solid var(--primary-color); /* Reduced thickness */
+    margin-top: 40px; /* Space above the footer */
+    padding-top: 20px; /* Padding inside the footer */
+    padding-bottom: 15px; /* Reduced padding */
+}
+
+.footer-heading {
+    font-size: 1rem; /* Reduced from 1.25rem */
+    margin-bottom: 1rem;
+    color: var(--footer-heading-color);
+    font-weight: 600;
+}
+
+.footer a {
+    color: var(--footer-text-color);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: var(--footer-heading-color);
+    text-decoration: none;
+}
+
+.footer p,
+.footer a {
+    font-size: 0.9rem; /* Reduced font size */
+}
+
+.footer img {
+    max-width: 80%; /* Reduced logo size */
+    height: auto;
+}
+
+.social-icons a {
+    margin-right: 15px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+}
+
+.social-icons a:last-child {
+    margin-right: 0;
+}
+
+.social-icons i,
+.social-icons svg {
+    font-size: 24px;
+    fill: var(--primary-color);
+}
+
+.line-icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--primary-color);
+}
+
+.social-icons {
+    display: flex;
+    align-items: center;
+}
+
+.footer p i {
+    color: var(--footer-heading-color);
+    margin-right: 5px;
+}
+
+.footer .row > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer .row > div p {
+    flex-grow: 1;
+}
+
+/* Adjust Footer for Flexbox */
+.footer {
+    flex-shrink: 0;
+}
+
+/* Remove top margin from footer */
+.footer.mt-auto {
+    margin-top: auto;
+}
+
+/* Confirm Booking Button Styles */
+.btn-confirm {
+    background-color: #6c757d; /* Gray when disabled */
+    border-color: #6c757d;
+    color: var(--accent-color);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-confirm.enabled {
+    background-color: #198754; /* Green when enabled */
+    border-color: #198754;
+    color: var(--accent-color);
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.btn-confirm.enabled:hover,
+.btn-confirm.enabled:focus {
+    background-color: #157347; /* Darker green on hover */
+    border-color: #146c43;
+    color: var(--accent-color);
+}
+
+/* Customize the progress bar */
+.progress {
+    margin-top: 0;
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hide progress bar on confirmation screen */
+#confirmation-section + .progress {
+    display: none;
+}
+
+/* Confirmation Section Spacing */
+#confirmation-section {
+    margin-bottom: 60px; /* Space between the confirmation content and footer */
+}
+
+/* Footer Logo */
+.footer img {
+    background-color: transparent;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    .progress-bar {
+        font-size: 0.7rem; /* Reduced font size */
+        padding: 0.375rem 0; /* Adjust padding if necessary */
+    }
+    
+    /* Reduce spacing above and below the progress bar */
+    .progress.mb-4 {
+        margin-bottom: 1rem; /* Adjust as needed */
+    }
+    
+    /* Adjust header sizes */
+    h2 {
+        font-size: 1.5rem; /* Reduce from 2rem */
+    }
+    
+    h3 {
+        font-size: 1.25rem; /* Reduce from 1.75rem */
+    }
+}
+
+
+/* Sticky Header */
+.sticky-top {
+    background-color: var(--background-color); /* Use the app's background color */
+    z-index: 1030; /* Ensure it stays on top */
+}
+
+/* Style the divider inside the sticky header */
+#sticky-divider {
+    border-top: 1px solid #ccc;
+    margin: 10px 0 0 0; /* Adjust margins as needed */
+}
+
+
+/* Adjust spacing and alignment */
+.sticky-top .d-flex.align-items-center {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+/* Adjust progress bar margin */
+.sticky-top .progress {
+    margin-bottom: 0; /* Remove margin below the progress bar */
+}
+
+
+/* Reduce spacing */
+.booking-step {
+    margin-top: 0.5rem; /* Reduced from 1rem */
+    margin-bottom: 40px; /* Adjust as needed */
+}
+
+/* Adjust progress bar margin */
+.progress.mb-4 {
+    margin-bottom: 1rem;
+}
+
+/* Custom Select Styles */
+.form-select {
+    background-color: var(--accent-color);
+    border-color: var(--primary-color);
+    color: var(--neutral-color);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.form-select:focus {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    border-color: var(--primary-color);
+    box-shadow: none;
+}
+
+.form-select option {
+    background-color: var(--accent-color);
+    color: var(--neutral-color);
+}
+
+.form-select option:checked,
+.form-select option:selected {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+}
+
+
+.container {
+    margin-top: 10px; /* Adjust the value as needed */
+    padding-top: 0; /* Remove padding if not needed */
+}
+
+/* Adjust header sizes */
+h2 {
+    margin-top: 1rem; /* Adjust as needed */
+}
+
+h3 {
+    margin-top: 0.5rem; /* Adjust as needed */
+}
+/* Adjust margins for elements within booking steps */
+.booking-step p.text-center {
+    margin-bottom: 1rem;
+}
+
+/* Adjust back button to align with progress bar */
+#back-button {
+    height: 30px; /* Match the progress bar height */
+    padding: 0 12px; /* Adjust padding as needed */
+}
+
+
+/* Available Slots Header within Sticky Header */
+#available-slots-header {
+    margin-top: 5px; /* Small space above */
+    font-size: 1rem; /* Smaller font size */
+    font-weight: bold; /* Make the text bold */
+    color: var(--primary-color);
+    white-space: nowrap; /* Prevent wrapping on larger screens */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#available-slots-header .fa-calendar-alt {
+    color: var(--primary-color);
+    font-size: 1rem; /* Match the text size */
+}
+
+/* Adjust the divider margin */
+#sticky-divider {
+    margin: 5px 0; /* Reduce margins */
+}
+
+/* Ensure text wraps on small screens */
+@media (max-width: 576px) {
+    #available-slots-header {
+        font-size: 0.9rem; /* Slightly smaller on mobile */
+        padding: 0 10px; /* Add horizontal padding */
+        white-space: normal; /* Allow text to wrap */
+    }
+}

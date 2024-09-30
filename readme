@@ -1,0 +1,51 @@
+# LENGOLF Booking System
+
+A comprehensive booking system for LENGOLF that leverages Google APIs, Redis caching, and LINE notifications to manage and confirm bookings efficiently.
+
+## Table of Contents
+
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Prerequisites](#prerequisites)
+- [Setup Instructions](#setup-instructions)
+- [Environment Variables](#environment-variables)
+- [Running the Application](#running-the-application)
+- [Project Structure](#project-structure)
+- [Logging](#logging)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+
+- **User Authentication:** Users can sign in using Google Sign-In.
+- **Booking Management:** View and book available slots based on real-time availability.
+- **Caching:** Utilizes Redis to cache available slots, enhancing performance.
+- **Notifications:** Sends booking confirmations via LINE Notify.
+- **Logging:** Implements structured logging using Winston for error tracking and monitoring.
+
+## Technologies Used
+
+- **Backend:** Node.js, Express.js
+- **Authentication:** Google OAuth 2.0
+- **Caching:** Redis
+- **APIs:** Google Calendar API, Google Sheets API
+- **Notifications:** LINE Notify API
+- **Logging:** Winston
+- **Scheduling:** node-cron
+- **Date Handling:** Luxon
+- **Frontend:** HTML, CSS (Bootstrap), JavaScript
+
+## Prerequisites
+
+- **Node.js:** Ensure you have Node.js (v14 or higher) installed. [Download Node.js](https://nodejs.org/)
+- **Redis:** A running Redis instance. [Install Redis](https://redis.io/download)
+- **Google Cloud Account:** For accessing Google APIs.
+- **LINE Notify Token:** For sending notifications.
+
+## Setup Instructions
+
+1. **Clone the Repository:**
+
+   ```bash
+   git clone https://github.com/yourusername/lengolf-booking-system.git
+   cd lengolf-booking-system

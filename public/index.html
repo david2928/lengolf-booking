@@ -1,0 +1,376 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LENGOLF Booking System</title>
+
+    <!-- Bootstrap CSS -->
+    <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        crossorigin="anonymous"
+    >
+
+    <!-- Font Awesome CSS for Icons -->
+    <link 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" 
+        crossorigin="anonymous"
+    />
+
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+
+    <!-- Google Sign-In JavaScript library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <!-- Facebook SDK -->
+    <script async defer crossorigin="anonymous" 
+        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId={{FACEBOOK_APP_ID}}&autoLogAppEvents=1">
+    </script>
+
+    <!-- Luxon JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
+</head>
+<body>
+    <!-- Wrapper for Flexbox -->
+    <div class="d-flex flex-column min-vh-100">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">LENGOLF Booking</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <button class="btn btn-secondary ms-auto" id="logout-button" style="display: none;">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="flex-grow-1">
+            <!-- Main Container -->
+            <div class="container mt-1 pt-1">
+                <!-- Login Section -->
+                <div id="login-section" class="text-center">
+                    <h2 class="mb-4">Welcome to LENGOLF!</h2>
+                    <p>Please choose a login method to start booking your slot.</p>
+
+                    <!-- Centered Google Sign-In Button -->
+                    <div class="d-flex justify-content-center">
+                        <div
+                            id="g_id_onload"
+                            data-client_id="{{GOOGLE_CLIENT_ID}}"
+                            data-callback="handleCredentialResponse"
+                            data-auto_prompt="false"
+                        ></div>
+
+                        <div
+                            class="g_id_signin mt-3"
+                            data-type="standard"
+                            data-size="large"
+                            data-theme="outline"
+                            data-text="sign_in_with"
+                            data-shape="rectangular"
+                            data-logo_alignment="left"
+                        ></div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Facebook Login Button -->
+                    <button id="facebook-login-button" class="btn facebook-button mb-3">
+                        <i class="fab fa-facebook-f me-2"></i>Login with Facebook
+                    </button>
+
+                    <br>
+
+                    <!-- Guest Login Button -->
+                    <button id="guest-login-button" class="btn btn-secondary">
+                        <i class="fas fa-user me-2"></i>Continue as Guest
+                    </button>
+                </div>
+
+                <!-- Additional Information Form (Hidden by Default) -->
+                <div id="additional-info-section" class="mt-5 hidden">
+                    <h3 class="text-center mb-4">Please Provide Your Details</h3>
+                    <form id="additional-info-form">
+                        <div class="mb-3">
+                            <label for="additional-name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="additional-name" placeholder="Enter your name" required>
+                            <div class="invalid-feedback">
+                                Please enter your name.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="additional-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="additional-email" placeholder="Enter your email" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid email address.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="additional-phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="additional-phone" placeholder="Enter your phone number" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid phone number.
+                            </div>
+                        </div>
+                        <button type="button" id="submit-additional-info" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+
+                <!-- Booking Section -->
+                <div id="booking-section" class="mt-5 hidden">
+                    <!-- Sticky Header -->
+                    <div class="sticky-top">
+                        <div>
+                            <div class="d-flex flex-column mb-2">
+                                <div class="d-flex align-items-center">
+                                    <!-- Back Button -->
+                                    <button class="btn btn-secondary btn-sm me-2" id="back-button" style="display: none;">
+                                        <i class="fas fa-arrow-left me-2"></i>Back
+                                    </button>
+                                    <!-- Progress Bar -->
+                                    <div class="progress flex-grow-1" style="height: 30px;">
+                                        <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 66%;" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100">
+                                            Step 2: Select Time Slot
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Available Slots Text (now within sticky header) -->
+                                <p class="text-center mb-0" id="available-slots-header" style="display: none;">
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    Available slots for <span id="selected-date-display-header"></span>
+                                </p>
+                                <!-- Divider -->
+                                <div class="divider" id="sticky-divider"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Select Date -->
+                    <div id="step-1" class="booking-step">
+                        <p class="text-center">Choose a date to see available time slots.</p>
+                        <div class="row justify-content-center mb-4">
+                            <!-- Today Card -->
+                            <div class="col-6 col-md-3 mb-3">
+                                <div class="card date-option h-100" data-offset="0">
+                                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                                        <i class="fas fa-calendar-day fa-2x mb-2"></i>
+                                        <h5 class="card-title">Today</h5>
+                                        <p class="card-text date-text"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Tomorrow Card -->
+                            <div class="col-6 col-md-3 mb-3">
+                                <div class="card date-option h-100" data-offset="1">
+                                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                                        <i class="fas fa-calendar-check fa-2x mb-2"></i>
+                                        <h5 class="card-title">Tomorrow</h5>
+                                        <p class="card-text date-text"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Day After Tomorrow Card -->
+                            <div class="col-6 col-md-3 mb-3">
+                                <div class="card date-option h-100" data-offset="2">
+                                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                                        <i class="fas fa-calendar-week fa-2x mb-2"></i>
+                                        <h5 class="card-title day-after-text"></h5>
+                                        <p class="card-text date-text"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Custom Date Picker Card -->
+                            <div class="col-6 col-md-3 mb-3">
+                                <div class="card date-option h-100 custom-date-picker" id="custom-date-picker">
+                                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                                        <i class="fas fa-calendar fa-2x mb-2"></i>
+                                        <h5 class="card-title">Select Date</h5>
+                                        <p class="card-text" id="custom-date-display">Tap to select</p>
+                                        <input type="text" id="custom-date" style="display: none;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Select Time Slot -->
+                    <div id="step-2" class="booking-step hidden">
+                        <div id="loading-spinner" class="text-center my-5" style="display: none;">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Fetching available slots...</p>
+                        </div>
+                        <div id="available-slots" class="row">
+                            <!-- Available slots will be displayed here -->
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Provide Details -->
+                    <div id="step-3" class="booking-step hidden">
+                        <!-- Visual Display of Selected Date and Time -->
+                        <div class="row mb-4">
+                            <div class="col-12 col-md-6 mb-3">
+                                <div class="card selected-info-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-calendar-alt fa-2x mb-2"></i>
+                                        <h5 class="card-title">Selected Date</h5>
+                                        <p class="card-text" id="final-date"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 mb-3">
+                                <div class="card selected-info-card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-clock fa-2x mb-2"></i>
+                                        <h5 class="card-title">Selected Time</h5>
+                                        <p class="card-text" id="final-time"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="divider"></div>
+
+                        <!-- Duration Selection -->
+                        <div class="mb-4">
+                            <label for="duration-select" class="form-label">Select Duration (hours):</label>
+                            <select id="duration-select" class="form-select" required>
+                                <!-- Options will be dynamically loaded here -->
+                            </select>
+                            <div id="duration-error" class="text-danger mt-2" style="display: none;">
+                                Please select a duration.
+                            </div>
+                        </div>
+                        <!-- Display End Time -->
+                        <div class="mb-4">
+                            <label class="form-label">End Time:</label>
+                            <p id="end-time-display" class="fs-5"><strong>--:--</strong></p>
+                        </div>
+
+                        <!-- Form for phone number and number of people -->
+                        <div class="mb-4">
+                            <label for="phone-number" class="form-label">Phone Number:</label>
+                            <input type="tel" id="phone-number" class="form-control" placeholder="Enter your phone number" required>
+                            <small id="phone-prefilled-indicator" class="form-text text-muted" style="display: none;">
+                                Prefilled from your account. You can change it if needed.
+                            </small>
+                            <div id="phone-error" class="text-danger mt-2" style="display: none;">
+                                Please enter your phone number.
+                            </div>
+                        </div>
+                        <!-- Number of People Selection -->
+                        <div class="mb-4">
+                            <label class="form-label d-block">Number of People:</label>
+                            <div id="number-of-people-buttons" class="btn-group" role="group" aria-label="Number of People">
+                                <button type="button" class="btn btn-outline-secondary num-people-button" data-value="1">1</button>
+                                <button type="button" class="btn btn-outline-secondary num-people-button" data-value="2">2</button>
+                                <button type="button" class="btn btn-outline-secondary num-people-button" data-value="3">3</button>
+                                <button type="button" class="btn btn-outline-secondary num-people-button" data-value="4">4</button>
+                                <button type="button" class="btn btn-outline-secondary num-people-button" data-value="5">5</button>
+                            </div>
+                            <input type="hidden" id="number-of-people" value="" required>
+                            <div id="people-error" class="text-danger mt-2" style="display: none;">
+                                Please select the number of people.
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-start mt-4">
+                            <button type="button" class="btn btn-confirm" id="confirm-booking-button" disabled>
+                                <i class="fas fa-check-circle me-2"></i>Confirm Booking
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Confirmation Section -->
+                    <div id="confirmation-section" class="mt-5 text-center hidden">
+                        <!-- Booking confirmation content will be injected here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer mt-auto">
+            <div class="container py-3">
+                <div class="row">
+                    <!-- Logo and Address -->
+                    <div class="col-md-3 mb-4">
+                        <a href="https://www.len.golf">
+                            <img src="/images/logo.png" alt="LENGOLF Logo" class="img-fluid mb-3">
+                        </a>
+                        <p>
+                            <a href="https://maps.app.goo.gl/M7ygv921XyzcQwBE8" target="_blank" class="text-decoration-none text-body">
+                                The Mercury Ville @ BTS Chidlom<br>
+                                Floor 4
+                            </a>
+                        </p>
+                    </div>
+                    <!-- Opening Hours -->
+                    <div class="col-md-3 mb-4">
+                        <h5 class="footer-heading">Opening Hours</h5>
+                        <p>
+                            10am – 10pm<br>
+                            Monday – Sunday
+                        </p>
+                    </div>
+                    <!-- Keep in Touch -->
+                    <div class="col-md-3 mb-4">
+                        <h5 class="footer-heading">Keep in Touch</h5>
+                        <p>
+                            <a href="https://www.len.golf" class="text-decoration-none text-body">www.len.golf</a><br>
+                            <i class="fas fa-phone-alt me-2"></i>096-668-2335<br>
+                            <i class="fas fa-envelope me-2"></i><a href="mailto:info@len.golf" class="text-decoration-none text-body">info@len.golf</a>
+                        </p>
+                    </div>
+                    <!-- Social Media -->
+                    <div class="col-md-3 mb-4">
+                        <h5 class="footer-heading">Follow Us</h5>
+                        <div class="social-icons">
+                            <a href="https://www.facebook.com/lengolf.bkk" target="_blank" aria-label="Facebook">
+                                <i class="fab fa-facebook-f fa-2x"></i>
+                            </a>
+                            <a href="https://lin.ee/uxQpIXn" target="_blank" aria-label="LINE">
+                                <!-- LINE SVG Icon -->
+                                <i class="fab fa-line fa-2x"></i>
+                            </a>
+                            <a href="https://www.instagram.com/lengolf.bkk/" target="_blank" aria-label="Instagram">
+                                <i class="fab fa-instagram fa-2x"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div> <!-- End of Wrapper -->
+
+    <!-- Bootstrap JS -->
+    <script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/js/bootstrap.bundle.min.js" 
+        crossorigin="anonymous">
+    </script>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="/js/main.js" defer></script>
+</body>
+</html>
