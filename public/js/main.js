@@ -267,9 +267,20 @@ function renderAvailableSlots(slots) {
     availableSlotsDiv.innerHTML = '';
 
     if (slots.length === 0) {
-        availableSlotsDiv.innerHTML = `<p class="text-warning">No available slots for the selected date.</p>`;
+        availableSlotsDiv.innerHTML = `
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="fas fa-calendar-times fa-2x me-3"></i>
+                <div>
+                    <p class="mb-2">Oops! Looks like we're fully booked on this date.</p>
+                    <button class="btn btn-primary btn-sm" onclick="showStep(1)">
+                        <i class="fas fa-arrow-left me-2"></i>Pick Another Date
+                    </button>
+                </div>
+            </div>
+        `;
         return;
     }
+    
 
     slots.forEach(slot => {
         const slotCol = document.createElement('div');
@@ -804,34 +815,70 @@ function handleGuestLogin() {
         return;
     }
 
-    // Simulate token and user ID generation
-    const fakeToken = 'guest-token-' + Date.now();
-    const fakeUserId = 'guest-' + Date.now();
+    // Disable the submit button and show a spinner
+    const submitButton = document.getElementById('submit-additional-info');
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
 
-    // Save user data and token in localStorage
-    localStorage.setItem('token', fakeToken);
-    localStorage.setItem('userId', fakeUserId);
-    localStorage.setItem('name', name);
-    localStorage.setItem('email', email);
-    localStorage.setItem('phoneNumber', phone);
-    localStorage.setItem('loginMethod', 'guest');
+    // Send guest details to the backend
+    fetch('/api/auth/login/guest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phoneNumber: phone }),
+    })
+    .then(async res => {
+        const contentType = res.headers.get('content-type');
+        if (!res.ok) {
+            if (contentType && contentType.includes('application/json')) {
+                const errorData = await res.json();
+                throw new Error(errorData.message || `Server responded with status ${res.status}`);
+            } else {
+                throw new Error(`Server responded with status ${res.status}`);
+            }
+        }
+        if (contentType && contentType.includes('application/json')) {
+            return res.json();
+        } else {
+            throw new Error('Received non-JSON response from server.');
+        }
+    })
+    .then(data => {
+        if (data.success) {
+            // Save user data and token in localStorage
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('name', data.name);
+            localStorage.setItem('email', data.email);
+            localStorage.setItem('phoneNumber', data.phoneNumber);
+            localStorage.setItem('loginMethod', data.loginSource);
 
-    // Proceed to booking
-    document.getElementById('additional-info-section').classList.add('hidden');
-    onLoginSuccess();
+            // Proceed to booking
+            document.getElementById('additional-info-section').classList.add('hidden');
+            onLoginSuccess();
+        } else {
+            alert(data.message || 'Guest login failed.');
+        }
+    })
+    .catch(err => {
+        console.error('Error during guest login:', err);
+        alert(`An error occurred during guest login: ${err.message}`);
+    })
+    .finally(() => {
+        // Re-enable the submit button and reset its text
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Submit';
+    });
 }
 
-// Initialize app
-document.addEventListener('DOMContentLoaded', () => {
-    // Check if user is already logged in
-    const token = localStorage.getItem('token');
-    if (token) {
-        // Assume the user is logged in
-        onLoginSuccess();
-    }
-});
-
 function fetchCustomerData() {
+    const loginMethod = localStorage.getItem('loginMethod');
+
+    // If the user is a guest, skip fetching customer data
+    if (loginMethod === 'guest') {
+        console.log('Guest user detected. Skipping fetchCustomerData.');
+        return Promise.resolve(); // Return a resolved promise to continue the flow
+    }
+
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
@@ -860,9 +907,12 @@ function fetchCustomerData() {
         if (data.success && data.customerData) {
             // Save phone number in localStorage
             localStorage.setItem('phoneNumber', data.customerData.phoneNumber);
+            localStorage.setItem('loginSource', data.customerData.loginSource);
         }
     })
     .catch(err => {
         console.error('Error fetching customer data:', err);
+        // Optionally, you can display a message or handle the error differently for non-guest users
     });
 }
+

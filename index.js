@@ -18,6 +18,13 @@ app.use(cors());
 // JSON parsing middleware
 app.use(express.json());
 
+// Serve static files from 'public' directory
+app.use(
+    express.static(path.join(__dirname, 'public'), {
+        index: false, // Disable serving index.html
+    })
+);
+
 // Serve index.html with environment variables replaced
 app.get('/', (req, res) => {
     const indexPath = path.join(__dirname, 'public', 'index.html');
@@ -35,19 +42,6 @@ app.get('/', (req, res) => {
 
         res.send(replacedData);
     });
-});
-
-// Serve static files from 'public' directory, except index.html
-app.use(
-    express.static(path.join(__dirname, 'public'), {
-        index: false, // Disable serving index.html
-    })
-);
-
-
-// Serve index.html with environment variables replaced
-app.get('/', (req, res) => {
-    // ... same as before ...
 });
 
 // Use the API router for all /api routes

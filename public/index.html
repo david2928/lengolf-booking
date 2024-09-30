@@ -99,7 +99,7 @@
                     <br>
 
                     <!-- Guest Login Button -->
-                    <button id="guest-login-button" class="btn btn-secondary">
+                    <button id="guest-login-button" class="btn btn-secondary mb-4">
                         <i class="fas fa-user me-2"></i>Continue as Guest
                     </button>
                 </div>
@@ -129,7 +129,8 @@
                                 Please enter a valid phone number.
                             </div>
                         </div>
-                        <button type="button" id="submit-additional-info" class="btn btn-primary">Submit</button>
+                        <!-- Added 'mb-4' class here -->
+                        <button type="button" id="submit-additional-info" class="btn btn-primary mb-4">Submit</button>
                     </form>
                 </div>
 
@@ -203,7 +204,8 @@
                                         <i class="fas fa-calendar fa-2x mb-2"></i>
                                         <h5 class="card-title">Select Date</h5>
                                         <p class="card-text" id="custom-date-display">Tap to select</p>
-                                        <input type="text" id="custom-date" style="display: none;" />
+                                        <!-- Removed inline style to allow CSS to handle visibility -->
+                                        <input type="text" id="custom-date" />
                                     </div>
                                 </div>
                             </div>
@@ -314,7 +316,7 @@
                     <!-- Logo and Address -->
                     <div class="col-md-3 mb-4">
                         <a href="https://www.len.golf">
-                            <img src="/images/logo.png" alt="LENGOLF Logo" class="img-fluid mb-3">
+                            <img src="/images/logo_v1.png" alt="LENGOLF Logo" class="img-fluid mb-3">
                         </a>
                         <p>
                             <a href="https://maps.app.goo.gl/M7ygv921XyzcQwBE8" target="_blank" class="text-decoration-none text-body">

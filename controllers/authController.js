@@ -5,7 +5,7 @@ const axios = require('axios');
 const customerService = require('../services/customerService');
 const logger = require('../utils/logger');
 const jwt = require('jsonwebtoken');
-const { GOOGLE_CLIENT_ID, JWT_SECRET, googleApiConfig } = require('../config');
+const { GOOGLE_CLIENT_ID, JWT_SECRET, googleApiConfig } = require('../config'); // Ensure JWT_SECRET is imported
 
 // Initialize Google OAuth2 Client
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
@@ -158,10 +158,10 @@ exports.loginAsGuest = async (req, res) => {
         // Save or update customer data
         await customerService.saveOrUpdateCustomerData({ userId, name, email, phoneNumber, loginSource });
 
-        // Generate JWT
+        // Generate JWT using imported JWT_SECRET
         const jwtToken = jwt.sign(
             { userId, email, name, loginSource },
-            process.env.JWT_SECRET,
+            JWT_SECRET, // Use imported JWT_SECRET
             { expiresIn: '1h' } // Token expires in 1 hour
         );
 

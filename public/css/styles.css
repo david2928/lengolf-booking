@@ -188,6 +188,21 @@ h5.card-title {
     transform: var(--hover-animation);
 }
 
+/* Custom Date Picker Input Styling */
+.custom-date-picker {
+    position: relative; /* Ensure the container is positioned relative for absolute positioning of the input */
+}
+
+.custom-date-picker input#custom-date {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; /* Make the input invisible */
+    cursor: pointer; /* Change cursor to pointer to indicate interactivity */
+    z-index: 2; /* Ensure the input is above other elements */
+}
 
 /* Custom Date Picker Specific Styles */
 .custom-date-picker .form-control {

@@ -30,10 +30,7 @@ router.post('/login/facebook', validateFacebookLogin, (req, res, next) => {
  * @route POST /api/auth/login/guest
  * @desc Authenticate guest user and provide JWT
  */
-router.post('/login/guest', validateGuestLogin, (req, res, next) => {
-    logger.info('Received POST /api/auth/login/guest request');
-    next();
-}, authController.loginAsGuest);
+router.post('/login/guest', validateGuestLogin, authController.loginAsGuest);
 
 /**
  * @route POST /api/auth/complete-facebook-login
