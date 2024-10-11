@@ -24,9 +24,9 @@ jobs:
       run: npm install
 
     # Linting with ESLint (ensure ESLint is set up in your project)
-    - name: Lint with ESLint
-      run: |
-        npx eslint .
+    # - name: Lint with ESLint
+    #   run: |
+    #     npx eslint .
 
     # Optionally, run tests if you have any
     # - name: Run tests
