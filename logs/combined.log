@@ -16818,3 +16818,23 @@
 2024-10-10 15:54:02 [info]: Refreshed available slots cache for 2024-10-11
 2024-10-10 15:54:02 [info]: Refreshed available slots cache for 2024-10-13
 2024-10-10 15:54:02 [info]: Availability data refreshed and cached successfully for the next 5 days.
+2024-10-11 21:46:52 [info]: Service Account Credentials Loaded Successfully.
+2024-10-11 21:46:52 [info]: Service Account Email: calendar-access@lengolf-booking-system-436804.iam.gserviceaccount.com
+2024-10-11 21:46:53 [info]: Server is running on port 3000
+2024-10-11 21:46:53 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:53 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:53 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:53 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:53 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:53 [info]: Connected to Redis
+2024-10-11 21:46:53 [info]: Redis client connected and ready to use
+2024-10-11 21:46:54 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:54 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:54 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:54 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:54 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:54 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:55 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:55 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:55 [info]: Authenticated Calendar client created successfully.
+2024-10-11 21:46:55 [info]: Authenticated Calendar client created successfully.
