@@ -61,7 +61,7 @@ jobs:
     # Push the Docker image to GCR
     - name: Push Docker image
       run: |
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/lengolf-booking:latest
+        docker push asia-southeast1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/lengolf-booking/lengolf-booking:latest
 
     # Deploy to Cloud Run without secrets
     - name: Deploy to Cloud Run
