@@ -10,6 +10,10 @@ require('dotenv').config();
 const requiredVars = [
     'GOOGLE_CLIENT_ID',
     'JWT_SECRET',
+    'LINE_CLIENT_ID',
+    'LINE_CLIENT_SECRET',
+    'LINE_REDIRECT_URI',
+    'FRONTEND_URL'
     // Add other required variables here
 ];
 
@@ -25,4 +29,8 @@ module.exports = {
     redisConfig,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     JWT_SECRET: process.env.JWT_SECRET,
+    LINE_CLIENT_ID: process.env.LINE_CLIENT_ID,
+    LINE_CLIENT_SECRET: process.env.LINE_CLIENT_SECRET,
+    LINE_REDIRECT_URI: process.env.LINE_REDIRECT_URI,
+    FRONTEND_URL: process.env.FRONTEND_URL
 };

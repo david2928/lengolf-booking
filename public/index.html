@@ -14,6 +14,8 @@
         crossorigin="anonymous"
     >
 
+    <link rel="icon" href="https://www.len.golf/wp-content/uploads/2024/07/favicon.png" sizes="32x32" />
+
     <!-- Font Awesome CSS for Icons -->
     <link 
         rel="stylesheet" 
@@ -38,6 +40,15 @@
         src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v16.0&appId={{FACEBOOK_APP_ID}}&autoLogAppEvents=1">
     </script>
 
+    <!-- LINE OAuth Credentials -->
+    <script>
+        window.LINE_CLIENT_ID = "{{LINE_CLIENT_ID}}";
+        window.LINE_REDIRECT_URI = "{{LINE_REDIRECT_URI}}";
+    </script>
+
+    <!-- html2canvas JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
     <!-- Luxon JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
 </head>
@@ -45,20 +56,32 @@
     <!-- Wrapper for Flexbox -->
     <div class="d-flex flex-column min-vh-100">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">LENGOLF Booking</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <button class="btn btn-secondary ms-auto" id="logout-button" style="display: none;">
-                        <i class="fas fa-sign-out-alt me-2"></i>Logout
-                    </button>
-                </div>
+              <a class="navbar-brand" href="#">LENGOLF Booking</a>
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="https://www.len.golf" target="_blank">Home Page</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" id="logout-button" style="display: none;">Logout</a>
+                  </li>
+                </ul>
+              </div>
             </div>
-        </nav>
+          </nav>
 
         <!-- Main Content -->
         <main class="flex-grow-1">
@@ -73,9 +96,10 @@
                     <div class="d-flex justify-content-center">
                         <div
                             id="g_id_onload"
-                            data-client_id="{{GOOGLE_CLIENT_ID}}"
+                            data-client_id="459419604461-40b814vc4m04mq4qp8a30luiocs8961d.apps.googleusercontent.com"
                             data-callback="handleCredentialResponse"
                             data-auto_prompt="false"
+                            data-auto_select="true"
                         ></div>
 
                         <div
@@ -89,11 +113,23 @@
                         ></div>
                     </div>
 
+                    <!-- Notification for LINE Browser Users -->
+                    <div id="line-browser-notification" class="alert alert-info alert-dismissible fade show mt-3 hidden" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Notice:</strong> To use Google or Facebook login methods, please open this page in your device's external browser.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
                     <hr class="my-4">
 
                     <!-- Facebook Login Button -->
                     <button id="facebook-login-button" class="btn facebook-button mb-3">
                         <i class="fab fa-facebook-f me-2"></i>Login with Facebook
+                    </button>
+
+                    <!-- LINE Login Button -->
+                    <button id="line-login-button" class="btn btn-success mb-3">
+                        <i class="fab fa-line me-2"></i>Login with LINE
                     </button>
 
                     <br>
@@ -209,6 +245,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="d-none d-md-block">
+                                <img src="/images/lengolf_bay_rate.jpg" alt="Bay Rates" class="img-fluid my-4">
+                            </div>
+                            <!-- Toggle Button for Mobile -->
+                            <!-- Toggle Button for Mobile -->
+                            <!-- Toggle Button for Mobile -->
+                            <div class="d-block d-md-none text-center mb-3">
+                                <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#bay-rates-mobile" aria-expanded="false" aria-controls="bay-rates-mobile">
+                                    Show Rates
+                                </button>
+                            </div>
+
+
+                            <!-- Bay Rates for Mobile (Initially Hidden) -->
+                            <div class="collapse text-center" id="bay-rates-mobile">
+                                <img src="/images/lengolf_bay_rate.jpg" alt="Bay Rates" class="img-fluid mb-1">
+                                <p class="text-muted small mt-1">Bay Rates are per hour</p>
+                            </div>              
                         </div>
                     </div>
 
@@ -350,7 +404,7 @@
                                 <i class="fab fa-facebook-f fa-2x"></i>
                             </a>
                             <a href="https://lin.ee/uxQpIXn" target="_blank" aria-label="LINE">
-                                <!-- LINE SVG Icon -->
+                                <!-- LINE SVG Icon or Font Awesome LINE Icon -->
                                 <i class="fab fa-line fa-2x"></i>
                             </a>
                             <a href="https://www.instagram.com/lengolf.bkk/" target="_blank" aria-label="Instagram">
@@ -372,7 +426,50 @@
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+    <!-- Add this before your custom JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3/build/jwt-decode.min.js"></script>
+
     <!-- Custom JavaScript -->
     <script src="/js/main.js" defer></script>
+    <script>
+        document.getElementById('line-login-button').addEventListener('click', () => {
+            const clientId = window.LINE_CLIENT_ID;
+            const redirectUri = window.LINE_REDIRECT_URI;
+            const state = generateRandomString(16); // Implement a function to generate a random state string
+            const scope = 'profile openid email'; // Adjust scopes as needed
+            const responseType = 'code';
+            const prompt = 'consent';
+    
+            // Save state in localStorage to verify later
+            localStorage.setItem('line_oauth_state', state);
+    
+            const authorizationURL = `https://access.line.me/oauth2/v2.1/authorize?` +
+                `response_type=${encodeURIComponent(responseType)}` +
+                `&client_id=${encodeURIComponent(clientId)}` +
+                `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+                `&state=${encodeURIComponent(state)}` +
+                `&scope=${encodeURIComponent(scope)}` 
+                // +
+                // `&prompt=${encodeURIComponent(prompt)}`
+                ;
+    
+            // Redirect to LINE's OAuth 2.0 server
+            window.location.href = authorizationURL;
+        });
+    
+        /**
+         * Generates a random string for state parameter
+         * @param {number} length - Desired length of the string
+         * @returns {string} - Random string
+         */
+        function generateRandomString(length) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+    </script>
 </body>
 </html>

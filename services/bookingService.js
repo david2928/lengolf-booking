@@ -1,8 +1,8 @@
 // services/bookingService.js
 
+const { admin, db } = require('./firebaseService'); // Import both admin and db
 const { CALENDARS } = require('../config/googleApiConfig');
 const calendarService = require('./google/calendarService');
-const sheetsService = require('./google/sheetsService');
 const cacheService = require('./cache/redisService');
 const lineNotifyService = require('./notifications/lineNotifyService');
 const logger = require('../utils/logger');
@@ -191,74 +191,123 @@ async function assignBay(dateStr, startTime, duration) {
 }
 
 /**
- * Create a booking by inserting an event into Google Calendar and sending a LINE notification.
- * @param {string} dateStr - Date in 'YYYY-MM-DD' format.
- * @param {string} startTime - Start time in 'HH:mm' format.
- * @param {number} duration - Duration in hours.
- * @param {string} userId - User ID.
- * @param {string} userName - User's name.
- * @param {string} phoneNumber - User's phone number.
- * @param {number} numberOfPeople - Number of people.
- * @param {string} email - User's email.
+ * Create a booking by inserting an event into Google Calendar and saving it to Firestore.
+ * @param {Object} bookingData - Booking details.
  * @returns {Object|null} - Booking details or null if failed.
  */
-async function createBooking(dateStr, startTime, duration, userId, userName, phoneNumber, numberOfPeople, email) {
-    const assignedBay = await assignBay(dateStr, startTime, duration);
-
+async function createBooking(bookingData) {
+    const { date, startTime, duration, userId, userName, phoneNumber, numberOfPeople, email, loginMethod } = bookingData;
+  
+    const assignedBay = await assignBay(date, startTime, duration);
+  
     if (!assignedBay) {
-        return null; // No available bay
+      return null; // No available bay
     }
-
+  
     const calendarId = CALENDARS[assignedBay.bay];
-    const bookingStart = DateTime.fromISO(`${dateStr}T${startTime}`, { zone: 'Asia/Bangkok' });
+    const bookingStart = DateTime.fromISO(`${date}T${startTime}`, { zone: 'Asia/Bangkok' });
     const bookingEnd = bookingStart.plus({ hours: duration });
-
+  
     const event = {
-        summary: `${userName} (${phoneNumber}) (${numberOfPeople}) - ${assignedBay.bay}`,
-        description: `Name: ${userName}\nEmail: ${email}\nPhone: ${phoneNumber}\nPeople: ${numberOfPeople}`,
-        start: {
-            dateTime: bookingStart.toUTC().toISO(),
-            timeZone: 'UTC',
-        },
-        end: {
-            dateTime: bookingEnd.toUTC().toISO(),
-            timeZone: 'UTC',
-        },
+      summary: `${userName} (${phoneNumber}) (${numberOfPeople}) - ${assignedBay.bay}`,
+      description: `Name: ${userName}\nEmail: ${email}\nPhone: ${phoneNumber}\nPeople: ${numberOfPeople}`,
+      start: {
+        dateTime: bookingStart.toUTC().toISO(),
+        timeZone: 'UTC',
+      },
+      end: {
+        dateTime: bookingEnd.toUTC().toISO(),
+        timeZone: 'UTC',
+      },
     };
-
+  
     try {
-        await calendarService.insertEvent(calendarId, event);
-
-        // Send LINE notification
-        const bookingDetails = {
-            customerName: userName,
-            email: email,
-            phoneNumber: phoneNumber,
-            bookingDate: dateStr,
-            bookingStartTime: bookingStart.toFormat('HH:mm'), // 11:00
-            bookingEndTime: bookingEnd.toFormat('HH:mm'),     // 12:00
-            bayNumber: assignedBay.bay,
-            duration: duration,                             // 1
-            numberOfPeople: numberOfPeople,                 // 3
-        };
-
-        await lineNotifyService.sendBookingNotification(bookingDetails);
-
-        logger.info(`Booking created successfully for userId: ${userId} at bay: ${assignedBay.bay}`);
-
-        return {
-            bay: assignedBay.bay,
-            startTime: bookingStart.toFormat('HH:mm'),
-            duration: duration,
-        };
+      await calendarService.insertEvent(calendarId, event);
+  
+      // Save booking details to Firestore
+      const bookingRef = db.collection('bookings').doc(); // Auto-generate ID
+      bookingData.bookingId = bookingRef.id; // Add booking ID to data
+      bookingData.bay = assignedBay.bay;
+      bookingData.createdAt = admin.firestore.FieldValue.serverTimestamp(); // Timestamp
+  
+      logger.info(`Saving booking to Firestore with bookingId: ${bookingData.bookingId}`);
+      await bookingRef.set(bookingData);
+  
+      // Send LINE notification
+      const bookingDetails = {
+        customerName: userName,
+        email: email,
+        phoneNumber: phoneNumber,
+        bookingDate: date,
+        bookingStartTime: bookingStart.toFormat('HH:mm'),
+        bookingEndTime: bookingEnd.toFormat('HH:mm'),
+        bayNumber: assignedBay.bay,
+        duration: duration,
+        numberOfPeople: numberOfPeople,
+      };
+  
+      await lineNotifyService.sendBookingNotification(bookingDetails);
+  
+      logger.info(`Booking created successfully for userId: ${userId} at bay: ${assignedBay.bay}`);
+  
+      return bookingData;
     } catch (error) {
-        logger.error('Error creating booking:', error);
-        return null;
+      logger.error('Error creating booking:', error);
+      throw error;
     }
-}
+  }
+
+/**
+ * Get bookings for a specific user.
+ * @param {string} userId - User ID.
+ * @returns {Array} - List of bookings.
+ */
+async function getBookingsByUserId(userId) {
+    try {
+      const bookingsRef = db.collection('bookings').where('userId', '==', userId);
+      const snapshot = await bookingsRef.get();
+  
+      if (snapshot.empty) {
+        logger.info(`No bookings found for userId: ${userId}`);
+        return [];
+      }
+  
+      const bookings = [];
+      snapshot.forEach(doc => {
+        bookings.push({ bookingId: doc.id, ...doc.data() });
+      });
+  
+      return bookings;
+    } catch (error) {
+      logger.error('Error fetching bookings:', error);
+      throw error;
+    }
+  }
+  
+/**
+ * Update a booking.
+ * @param {string} bookingId - Booking ID.
+ * @param {Object} updateData - Data to update.
+ * @returns {boolean} - Success status.
+ */
+async function updateBooking(bookingId, updateData) {
+    try {
+      const bookingRef = db.collection('bookings').doc(bookingId);
+      await bookingRef.update(updateData);
+      logger.info(`Booking ${bookingId} updated successfully`);
+      return true;
+    } catch (error) {
+      logger.error('Error updating booking:', error);
+      throw error;
+    }
+  }
 
 module.exports = {
     getAvailableSlots,
     getAvailableStartTimes,
     createBooking,
+    getBookingsByUserId,
+    updateBooking
 };
+
+

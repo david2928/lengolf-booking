@@ -1,0 +1,74 @@
+name: CD - Build and Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Node.js environment
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+        cache: 'npm'
+
+    # Cache npm dependencies
+    - name: Cache npm dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    # Install Node.js dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Authenticate to Google Cloud
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+
+    # Set up Google Cloud SDK
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: '${{ secrets.GCP_PROJECT_ID }}'
+        export_default_credentials: true
+
+    # Configure Docker to use gcloud as a credential helper
+    - name: Configure Docker authentication
+      run: |
+        gcloud auth configure-docker --quiet
+
+    # Build the Docker image
+    - name: Build Docker image
+      run: |
+        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/lengolf-booking .
+
+    # Push the Docker image to GCR
+    - name: Push Docker image
+      run: |
+        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/lengolf-booking
+
+    # Deploy to Cloud Run without secrets
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy lengolf-booking \
+          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/lengolf-booking \
+          --region asia-southeast1 \
+          --platform managed \
+          --allow-unauthenticated \
+          --service-account='your-service-account@your-project.iam.gserviceaccount.com' \
+          --quiet

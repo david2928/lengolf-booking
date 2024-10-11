@@ -17,4 +17,7 @@ router.get('/available-slots', authMiddleware, bookingController.getAvailableSlo
  */
 router.post('/book-slot', authMiddleware, bookingController.bookSlot);
 
+// Get bookings for the authenticated user
+router.get('/my-bookings', authMiddleware, bookingController.getUserBookings);
+
 module.exports = router;

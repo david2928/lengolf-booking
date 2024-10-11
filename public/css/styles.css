@@ -650,3 +650,54 @@ h3 {
         white-space: normal; /* Allow text to wrap */
     }
 }
+
+#bay-rates-mobile img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+#bay-rates-mobile.bay-rates-visible img {
+    transform: scale(1);
+}
+
+/* Ensure the toggle button is clickable */
+#toggle-bay-rates {
+    position: relative;
+    z-index: 10; /* Adjust as needed */
+}
+
+
+
+/* Center the image using margin on larger screens */
+@media (min-width: 768px) {
+    #step-1 .d-none.d-md-block img {
+        display: block;           /* Make the image a block element */
+        margin: 0 auto;           /* Center the image horizontally */
+        max-width: 50%;           /* Adjust the size as necessary */
+        height: auto;             /* Maintain aspect ratio */
+    }
+}
+
+/* Ensure dropdown menu has enough width and auto height to fit items */
+.dropdown-menu {
+    min-width: 160px; /* Adjust width if needed */
+}
+
+/* Style and fix position for the Logout button */
+.dropdown-item.logout-button {
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #dc3545;
+    text-align: center;
+    margin-top: 5px;
+}
+.dropdown-item.logout-button:hover {
+    background-color: #c82333;
+}
+
+/* Add to your styles.css */
+#confirmation-section .card {
+    padding: 20px;
+    background-color: #fff;
+}

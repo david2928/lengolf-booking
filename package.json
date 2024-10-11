@@ -8,12 +8,14 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
+    "@google-cloud/secret-manager": "^5.6.0",
     "axios": "^1.7.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "express-session": "^1.18.0",
     "express-validator": "^7.2.0",
+    "firebase-admin": "^12.6.0",
     "google-auth-library": "^9.14.1",
     "googleapis": "^105.0.0",
     "jsonwebtoken": "^9.0.2",
@@ -21,6 +23,7 @@
     "node-cron": "^3.0.3",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
+    "querystring": "^0.2.1",
     "redis": "^4.7.0",
     "winston": "^3.14.2"
   },

@@ -5,7 +5,8 @@ const axios = require('axios');
 const customerService = require('../services/customerService');
 const logger = require('../utils/logger');
 const jwt = require('jsonwebtoken');
-const { GOOGLE_CLIENT_ID, JWT_SECRET, googleApiConfig } = require('../config'); // Ensure JWT_SECRET is imported
+const { GOOGLE_CLIENT_ID, JWT_SECRET, googleApiConfig, FRONTEND_URL } = require('../config'); // Ensure JWT_SECRET is imported
+const lineService = require('../services/lineService'); // Import LINE service
 
 // Initialize Google OAuth2 Client
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
@@ -35,12 +36,11 @@ exports.loginWithGoogle = async (req, res) => {
         const email = payload['email'];
         const name = payload['name'];
 
-        // Fetch customer data from Google Sheets
+        // Fetch or create user in your database
         const customerData = await customerService.getCustomerData(userId);
         const phoneNumber = customerData ? customerData.phoneNumber : '';
         const loginSource = 'Google';
 
-        // Save or update customer data
         await customerService.saveOrUpdateCustomerData({
             userId,
             name,
@@ -49,7 +49,7 @@ exports.loginWithGoogle = async (req, res) => {
             loginSource,
         });
 
-        // Generate JWT
+        // Generate JWT for your application
         const jwtToken = jwt.sign({ userId, email, name, loginSource }, JWT_SECRET, {
             expiresIn: '1h',
         });
@@ -68,6 +68,7 @@ exports.loginWithGoogle = async (req, res) => {
         return res.status(401).json({ success: false, message: 'Invalid token.' });
     }
 };
+
 
 /**
  * Handle user login by verifying Facebook access token.
@@ -138,6 +139,61 @@ exports.loginWithFacebook = async (req, res) => {
     }
 };
 
+/**
+ * Handle user login by verifying LINE authorization code.
+ */
+exports.loginWithLine = async (req, res) => {
+    const { code } = req.body;
+
+    if (!code) {
+        return res.status(400).json({ success: false, message: 'Authorization code is required.' });
+    }
+
+    try {
+        // Exchange code for access token
+        const tokenData = await lineService.getAccessToken(code);
+        const accessToken = tokenData.access_token;
+
+        // Fetch user profile
+        const userProfile = await lineService.getUserProfile(accessToken);
+        const userId = userProfile.userId;
+        const displayName = userProfile.displayName;
+        const email = userProfile.email || ''; // Ensure email is at least an empty string
+        const pictureUrl = userProfile.pictureUrl || '';
+
+        // Fetch customer data from Google Sheets
+        const customerData = await customerService.getCustomerData(userId);
+        const phoneNumber = customerData ? customerData.phoneNumber : '';
+        const loginSource = 'LINE';
+
+        // Save or update customer data
+        await customerService.saveOrUpdateCustomerData({
+            userId,
+            name: displayName,
+            email,
+            phoneNumber,
+            loginSource,
+        });
+
+        // Generate JWT
+        const jwtToken = jwt.sign({ userId, email, name: displayName, loginSource }, JWT_SECRET, {
+            expiresIn: '1h',
+        });
+
+        return res.status(200).json({
+            success: true,
+            token: jwtToken,
+            userId,
+            email,
+            name: displayName,
+            phoneNumber,
+            loginSource,
+        });
+    } catch (error) {
+        logger.error('Error during LINE login:', error.response ? error.response.data : error.message);
+        return res.status(401).json({ success: false, message: 'Invalid authorization code.' });
+    }
+};
 /**
  * Handle guest login by accepting user details directly.
  */
@@ -252,5 +308,51 @@ exports.completeFacebookLogin = async (req, res) => {
     } catch (error) {
         logger.error('Error completing Facebook login:', error);
         return res.status(500).json({ success: false, message: 'Internal Server Error.' });
+    }
+};
+
+exports.lineCallback = async (req, res) => {
+    const { code, state } = req.query;
+
+    if (!code) {
+        return res.status(400).json({ success: false, message: 'Authorization code is missing.' });
+    }
+
+    try {
+        // Exchange code for access token
+        const tokenData = await lineService.getAccessToken(code);
+        const accessToken = tokenData.access_token;
+
+        // Fetch user profile
+        const userProfile = await lineService.getUserProfile(accessToken);
+        const userId = userProfile.userId;
+        const displayName = userProfile.displayName;
+        const email = userProfile.email || ''; // LINE may not provide email by default
+
+        // Fetch or create user in your database
+        const customerData = await customerService.getCustomerData(userId);
+        const phoneNumber = customerData ? customerData.phoneNumber : '';
+        const loginSource = 'LINE';
+
+        await customerService.saveOrUpdateCustomerData({
+            userId,
+            name: displayName,
+            email,
+            phoneNumber,
+            loginSource,
+        });
+
+        // Generate JWT
+        const jwtToken = jwt.sign(
+            { userId, email, name: displayName, loginSource },
+            JWT_SECRET,
+            { expiresIn: '1h' },
+        );
+
+        // Redirect to front-end with the token
+        res.redirect(`${FRONTEND_URL}?token=${encodeURIComponent(jwtToken)}`);
+    } catch (error) {
+        logger.error('Error during LINE callback:', error.response ? error.response.data : error.message);
+        return res.status(500).json({ success: false, message: 'An error occurred during LINE login.' });
     }
 };

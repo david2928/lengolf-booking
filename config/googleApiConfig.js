@@ -4,13 +4,16 @@ const { GoogleAuth } = require('google-auth-library');
 require('dotenv').config();
 const logger = require('../utils/logger');
 
-// Validate Required Environment Variables for Google APIs
+// Validate Required Environment Variables for Google APIs and LINE
 const requiredVars = [
     'SERVICE_ACCOUNT_KEY_BASE64',
     'SPREADSHEET_ID',
     'LINE_NOTIFY_TOKEN',
     'FACEBOOK_APP_ID',
     'FACEBOOK_APP_SECRET',
+    'LINE_CLIENT_ID',       // Added LINE Client ID
+    'LINE_CLIENT_SECRET',   // Added LINE Client Secret
+    'LINE_REDIRECT_URI',    // Added LINE Redirect URI
 ];
 
 const missingVars = requiredVars.filter(envVar => !process.env[envVar]);
@@ -60,4 +63,9 @@ module.exports = {
 
     FACEBOOK_APP_ID: process.env.FACEBOOK_APP_ID, // Export Facebook App ID
     FACEBOOK_APP_SECRET: process.env.FACEBOOK_APP_SECRET, // Export Facebook App Secret
+
+    // Export LINE OAuth credentials
+    LINE_CLIENT_ID: process.env.LINE_CLIENT_ID,
+    LINE_CLIENT_SECRET: process.env.LINE_CLIENT_SECRET,
+    LINE_REDIRECT_URI: process.env.LINE_REDIRECT_URI,
 };

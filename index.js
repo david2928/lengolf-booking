@@ -1,16 +1,20 @@
 // index.js
 
-require('dotenv').config();
+const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const apiRouter = require('./routes/index');
 const logger = require('./utils/logger');
-const { GOOGLE_CLIENT_ID } = require('./config');
-
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080; // Ensuring the app listens on the Cloud Run-assigned port
+
+// Load environment variables from .env file in development
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config();
+    console.log('Environment variables loaded from local .env file');
+}
 
 // CORS setup
 app.use(cors());
@@ -38,7 +42,9 @@ app.get('/', (req, res) => {
         // Replace placeholders with actual values
         const replacedData = data
             .replace('{{GOOGLE_CLIENT_ID}}', process.env.GOOGLE_CLIENT_ID)
-            .replace('{{FACEBOOK_APP_ID}}', process.env.FACEBOOK_APP_ID);
+            .replace('{{FACEBOOK_APP_ID}}', process.env.FACEBOOK_APP_ID)
+            .replace('{{LINE_CLIENT_ID}}', process.env.LINE_CLIENT_ID)
+            .replace('{{LINE_REDIRECT_URI}}', process.env.LINE_REDIRECT_URI);
 
         res.send(replacedData);
     });
@@ -55,6 +61,8 @@ app.use((err, req, res, next) => {
 
 // Initialize scheduled tasks
 require('./utils/scheduler');
+
+console.log(`Configured PORT: ${PORT}`);
 
 // Start the server
 app.listen(PORT, () => {

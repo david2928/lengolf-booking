@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'  # Adjust the Node.js version if needed
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+
+    # Linting with ESLint (ensure ESLint is set up in your project)
+    - name: Lint with ESLint
+      run: |
+        npx eslint .
+
+    # Optionally, run tests if you have any
+    # - name: Run tests
+    #   run: npm test
+
+    - name: Test Docker build
+      run: |
+        docker build -t lengolf-booking .
