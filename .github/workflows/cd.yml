@@ -33,7 +33,7 @@ jobs:
 
     # Install Node.js dependencies
     - name: Install dependencies
-      run: npm install
+      run: npm install 
 
     # Authenticate to Google Cloud
     - name: Authenticate to Google Cloud
