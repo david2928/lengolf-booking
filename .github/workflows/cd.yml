@@ -70,5 +70,4 @@ jobs:
           --region asia-southeast1 \
           --platform managed \
           --allow-unauthenticated \
-          --service-account='your-service-account@your-project.iam.gserviceaccount.com' \
           --quiet
