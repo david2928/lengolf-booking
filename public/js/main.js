@@ -820,6 +820,8 @@ function toggleLoginOptions() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    getVisitorId(); // Ensure visitorId is set
+    logPageVisit();
     resetInactivityTimer();
     toggleLoginOptions();
     initializeAppOnLoad();
@@ -844,6 +846,7 @@ function onLoginSuccess() {
     document.getElementById('additional-info-section').classList.add('hidden');
     document.getElementById('booking-section').classList.remove('hidden');
     document.getElementById('logout-button').style.display = 'block';
+    logLoginEvent();
     initializeBooking();
 }
 
@@ -942,4 +945,63 @@ function loadFormData() {
             button.classList.toggle('active', button.getAttribute('data-value') === numberOfPeople);
         });
     }
+}
+
+// Function to set a cookie
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date(Date.now() + days * 864e5); // 864e5 = 86400000 ms in a day
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + encodeURIComponent(value) + expires + "; path=/";
+}
+
+// Function to get a cookie
+function getCookie(name) {
+    const cookies = document.cookie.split(';').map(c => c.trim());
+    for (let cookie of cookies) {
+        if (cookie.startsWith(name + '=')) {
+            return decodeURIComponent(cookie.substring(name.length + 1));
+        }
+    }
+    return null;
+}
+
+// Function to get or create a unique visitor ID
+function getVisitorId() {
+    let visitorId = getCookie('visitorId');
+    if (!visitorId) {
+        visitorId = uuidv4(); // Generate a new UUID
+        setCookie('visitorId', visitorId, 365); // Expires in 1 year
+    }
+    return visitorId;
+}
+
+function logPageVisit() {
+    const visitorId = getVisitorId();
+    fetch('/api/events/visit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ visitorId }),
+    })
+    .catch(err => {
+        console.error('Error logging page visit:', err);
+    });
+}
+
+function logLoginEvent() {
+    const userId = localStorage.getItem('userId');
+    const visitorId = getVisitorId();
+    fetch('/api/events/login', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ userId, visitorId }),
+    })
+    .catch(err => {
+        console.error('Error logging login event:', err);
+    });
 }

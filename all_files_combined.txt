@@ -126,6 +126,10 @@ require('dotenv').config();
 const requiredVars = [
     'GOOGLE_CLIENT_ID',
     'JWT_SECRET',
+    'LINE_CLIENT_ID',
+    'LINE_CLIENT_SECRET',
+    'LINE_REDIRECT_URI',
+    'FRONTEND_URL'
     // Add other required variables here
 ];
 
@@ -141,6 +145,10 @@ module.exports = {
     redisConfig,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     JWT_SECRET: process.env.JWT_SECRET,
+    LINE_CLIENT_ID: process.env.LINE_CLIENT_ID,
+    LINE_CLIENT_SECRET: process.env.LINE_CLIENT_SECRET,
+    LINE_REDIRECT_URI: process.env.LINE_REDIRECT_URI,
+    FRONTEND_URL: process.env.FRONTEND_URL
 };
 
 
@@ -155,7 +163,7 @@ const axios = require('axios');
 const customerService = require('../services/customerService');
 const logger = require('../utils/logger');
 const jwt = require('jsonwebtoken');
-const { GOOGLE_CLIENT_ID, JWT_SECRET, googleApiConfig } = require('../config'); // Ensure JWT_SECRET is imported
+const { GOOGLE_CLIENT_ID, JWT_SECRET, googleApiConfig, FRONTEND_URL } = require('../config'); // Ensure JWT_SECRET is imported
 const lineService = require('../services/lineService'); // Import LINE service
 
 // Initialize Google OAuth2 Client
@@ -308,7 +316,7 @@ exports.loginWithLine = async (req, res) => {
         const userProfile = await lineService.getUserProfile(accessToken);
         const userId = userProfile.userId;
         const displayName = userProfile.displayName;
-        const email = userProfile.email || ''; // LINE may not provide email by default
+        const email = userProfile.email || ''; // Ensure email is at least an empty string
         const pictureUrl = userProfile.pictureUrl || '';
 
         // Fetch customer data from Google Sheets
@@ -461,6 +469,52 @@ exports.completeFacebookLogin = async (req, res) => {
     }
 };
 
+exports.lineCallback = async (req, res) => {
+    const { code, state } = req.query;
+
+    if (!code) {
+        return res.status(400).json({ success: false, message: 'Authorization code is missing.' });
+    }
+
+    try {
+        // Exchange code for access token
+        const tokenData = await lineService.getAccessToken(code);
+        const accessToken = tokenData.access_token;
+
+        // Fetch user profile
+        const userProfile = await lineService.getUserProfile(accessToken);
+        const userId = userProfile.userId;
+        const displayName = userProfile.displayName;
+        const email = userProfile.email || ''; // LINE may not provide email by default
+
+        // Fetch or create user in your database
+        const customerData = await customerService.getCustomerData(userId);
+        const phoneNumber = customerData ? customerData.phoneNumber : '';
+        const loginSource = 'LINE';
+
+        await customerService.saveOrUpdateCustomerData({
+            userId,
+            name: displayName,
+            email,
+            phoneNumber,
+            loginSource,
+        });
+
+        // Generate JWT
+        const jwtToken = jwt.sign(
+            { userId, email, name: displayName, loginSource },
+            JWT_SECRET,
+            { expiresIn: '1h' },
+        );
+
+        // Redirect to front-end with the token
+        res.redirect(`${FRONTEND_URL}?token=${encodeURIComponent(jwtToken)}`);
+    } catch (error) {
+        logger.error('Error during LINE callback:', error.response ? error.response.data : error.message);
+        return res.status(500).json({ success: false, message: 'An error occurred during LINE login.' });
+    }
+};
+
 
 
 
@@ -496,39 +550,84 @@ exports.getAvailableSlots = async (req, res) => {
  * Book a slot for a user.
  */
 exports.bookSlot = async (req, res) => {
-    const { userId, userName, email, phoneNumber, numberOfPeople, date, startTime, duration } = req.body;
+    const {
+      userId,
+      userName,
+      email,
+      phoneNumber,
+      numberOfPeople,
+      date,
+      startTime,
+      duration,
+      loginMethod,
+    } = req.body;
+  
+    // Adjusted validation
+    const requiredFields = [userId, userName, phoneNumber, numberOfPeople, date, startTime, duration, loginMethod];
 
-    // Basic validation
-    if (!userId || !userName || !email || !phoneNumber || !numberOfPeople || !date || !startTime || !duration) {
+    if (requiredFields.some(field => field == null || field === '')) {
         return res.status(400).json({ success: false, message: 'Missing required booking parameters.' });
     }
-
+  
     if (duration < 1 || duration > 5) {
-        return res.status(400).json({ success: false, message: 'Duration must be between 1 and 5 hours.' });
+      return res.status(400).json({ success: false, message: 'Duration must be between 1 and 5 hours.' });
     }
 
+   
+    console.log('Booking request received with body:', req.body);
+  
     try {
-        const booking = await bookingService.createBooking(date, startTime, duration, userId, userName, phoneNumber, numberOfPeople, email);
-
-        if (!booking) {
-            return res.status(409).json({ success: false, message: 'No available bays for the selected time and duration.' });
-        }
-
-        // Save or update customer data with latest phone number and email
-        await customerService.saveOrUpdateCustomerData({ userId, name: userName, email, phoneNumber });
-
-        return res.status(200).json({
-            success: true,
-            message: `Booking confirmed for ${booking.bay} from ${booking.startTime} for ${booking.duration} hour(s).`,
-            assignedBay: booking.bay,
-            startTime: booking.startTime,
-            duration: booking.duration,
-        });
+      const bookingData = {
+        userId,
+        userName,
+        email,
+        phoneNumber,
+        numberOfPeople,
+        date,
+        startTime,
+        duration,
+        loginMethod,
+      };
+  
+      const booking = await bookingService.createBooking(bookingData);
+  
+      if (!booking) {
+        return res.status(409).json({ success: false, message: 'No available bays for the selected time and duration.' });
+      }
+  
+      // Save or update customer data with the latest phone number and email
+      await customerService.saveOrUpdateCustomerData({
+        userId,
+        name: userName,
+        email,
+        phoneNumber,
+        loginSource: loginMethod,
+      });
+  
+      return res.status(200).json({
+        success: true,
+        message: `Booking confirmed for ${booking.bay} from ${booking.startTime} for ${booking.duration} hour(s).`,
+        bookingDetails: booking,
+      });
     } catch (error) {
-        logger.error('Error processing booking:', error);
-        return res.status(500).json({ success: false, message: 'Internal Server Error.' });
+      logger.error('Error processing booking:', error);
+      return res.status(500).json({ success: false, message: 'Internal Server Error.' });
     }
-};
+    
+  };
+
+exports.getUserBookings = async (req, res) => {
+    const userId = req.user.userId;
+  
+    try {
+      const bookings = await bookingService.getBookingsByUserId(userId);
+      return res.status(200).json({ success: true, bookings });
+    } catch (error) {
+      logger.error('Error fetching user bookings:', error);
+      return res.status(500).json({ success: false, message: 'Internal Server Error.' });
+    }
+  };
+  
 
 
 
@@ -575,9 +674,36 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../../controllers/authController');
 const { validateLogin, validateGuestLogin, validateFacebookLogin, validateLineLogin } = require('../../middlewares/validationMiddleware');
+const { JWT_SECRET } = require('../../config'); // Corrected path
+
+const jwt = require('jsonwebtoken');
 
 // Import the logger
 const logger = require('../../utils/logger');
+
+
+router.post('/verify-token', (req, res) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ valid: false, message: 'No token provided.' });
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ valid: false, message: 'Invalid token.' });
+        }
+
+        // Optionally, you can include additional checks here
+
+        return res.json({ valid: true });
+    });
+});
+
+
+module.exports = router;
+
 
 /**
  * @route POST /api/auth/login/google
@@ -621,6 +747,9 @@ router.post('/complete-facebook-login', validateGuestLogin, (req, res, next) => 
     authController.completeFacebookLogin(req, res, next);
 });
 
+// Add this route to handle LINE callback
+router.get('/line/callback', authController.lineCallback);
+
 module.exports = router;
 
 
@@ -646,6 +775,9 @@ router.get('/available-slots', authMiddleware, bookingController.getAvailableSlo
  * @desc Book a slot
  */
 router.post('/book-slot', authMiddleware, bookingController.bookSlot);
+
+// Get bookings for the authenticated user
+router.get('/my-bookings', authMiddleware, bookingController.getUserBookings);
 
 module.exports = router;
 
@@ -1020,9 +1152,9 @@ module.exports = {
 
 // services/bookingService.js
 
+const { admin, db } = require('./firebaseService'); // Import both admin and db
 const { CALENDARS } = require('../config/googleApiConfig');
 const calendarService = require('./google/calendarService');
-const sheetsService = require('./google/sheetsService');
 const cacheService = require('./cache/redisService');
 const lineNotifyService = require('./notifications/lineNotifyService');
 const logger = require('../utils/logger');
@@ -1211,77 +1343,126 @@ async function assignBay(dateStr, startTime, duration) {
 }
 
 /**
- * Create a booking by inserting an event into Google Calendar and sending a LINE notification.
- * @param {string} dateStr - Date in 'YYYY-MM-DD' format.
- * @param {string} startTime - Start time in 'HH:mm' format.
- * @param {number} duration - Duration in hours.
- * @param {string} userId - User ID.
- * @param {string} userName - User's name.
- * @param {string} phoneNumber - User's phone number.
- * @param {number} numberOfPeople - Number of people.
- * @param {string} email - User's email.
+ * Create a booking by inserting an event into Google Calendar and saving it to Firestore.
+ * @param {Object} bookingData - Booking details.
  * @returns {Object|null} - Booking details or null if failed.
  */
-async function createBooking(dateStr, startTime, duration, userId, userName, phoneNumber, numberOfPeople, email) {
-    const assignedBay = await assignBay(dateStr, startTime, duration);
-
+async function createBooking(bookingData) {
+    const { date, startTime, duration, userId, userName, phoneNumber, numberOfPeople, email, loginMethod } = bookingData;
+  
+    const assignedBay = await assignBay(date, startTime, duration);
+  
     if (!assignedBay) {
-        return null; // No available bay
+      return null; // No available bay
     }
-
+  
     const calendarId = CALENDARS[assignedBay.bay];
-    const bookingStart = DateTime.fromISO(`${dateStr}T${startTime}`, { zone: 'Asia/Bangkok' });
+    const bookingStart = DateTime.fromISO(`${date}T${startTime}`, { zone: 'Asia/Bangkok' });
     const bookingEnd = bookingStart.plus({ hours: duration });
-
+  
     const event = {
-        summary: `${userName} (${phoneNumber}) (${numberOfPeople}) - ${assignedBay.bay}`,
-        description: `Name: ${userName}\nEmail: ${email}\nPhone: ${phoneNumber}\nPeople: ${numberOfPeople}`,
-        start: {
-            dateTime: bookingStart.toUTC().toISO(),
-            timeZone: 'UTC',
-        },
-        end: {
-            dateTime: bookingEnd.toUTC().toISO(),
-            timeZone: 'UTC',
-        },
+      summary: `${userName} (${phoneNumber}) (${numberOfPeople}) - ${assignedBay.bay}`,
+      description: `Name: ${userName}\nEmail: ${email}\nPhone: ${phoneNumber}\nPeople: ${numberOfPeople}`,
+      start: {
+        dateTime: bookingStart.toUTC().toISO(),
+        timeZone: 'UTC',
+      },
+      end: {
+        dateTime: bookingEnd.toUTC().toISO(),
+        timeZone: 'UTC',
+      },
     };
-
+  
     try {
-        await calendarService.insertEvent(calendarId, event);
-
-        // Send LINE notification
-        const bookingDetails = {
-            customerName: userName,
-            email: email,
-            phoneNumber: phoneNumber,
-            bookingDate: dateStr,
-            bookingStartTime: bookingStart.toFormat('HH:mm'), // 11:00
-            bookingEndTime: bookingEnd.toFormat('HH:mm'),     // 12:00
-            bayNumber: assignedBay.bay,
-            duration: duration,                             // 1
-            numberOfPeople: numberOfPeople,                 // 3
-        };
-
-        await lineNotifyService.sendBookingNotification(bookingDetails);
-
-        logger.info(`Booking created successfully for userId: ${userId} at bay: ${assignedBay.bay}`);
-
-        return {
-            bay: assignedBay.bay,
-            startTime: bookingStart.toFormat('HH:mm'),
-            duration: duration,
-        };
+      await calendarService.insertEvent(calendarId, event);
+  
+      // Save booking details to Firestore
+      const bookingRef = db.collection('bookings').doc(); // Auto-generate ID
+      bookingData.bookingId = bookingRef.id; // Add booking ID to data
+      bookingData.bay = assignedBay.bay;
+      bookingData.createdAt = admin.firestore.FieldValue.serverTimestamp(); // Timestamp
+  
+      logger.info(`Saving booking to Firestore with bookingId: ${bookingData.bookingId}`);
+      await bookingRef.set(bookingData);
+  
+      // Send LINE notification
+      const bookingDetails = {
+        customerName: userName,
+        email: email,
+        phoneNumber: phoneNumber,
+        bookingDate: date,
+        bookingStartTime: bookingStart.toFormat('HH:mm'),
+        bookingEndTime: bookingEnd.toFormat('HH:mm'),
+        bayNumber: assignedBay.bay,
+        duration: duration,
+        numberOfPeople: numberOfPeople,
+      };
+  
+      await lineNotifyService.sendBookingNotification(bookingDetails);
+  
+      logger.info(`Booking created successfully for userId: ${userId} at bay: ${assignedBay.bay}`);
+  
+      return bookingData;
     } catch (error) {
-        logger.error('Error creating booking:', error);
-        return null;
+      logger.error('Error creating booking:', error);
+      throw error;
     }
-}
+  }
+
+/**
+ * Get bookings for a specific user.
+ * @param {string} userId - User ID.
+ * @returns {Array} - List of bookings.
+ */
+async function getBookingsByUserId(userId) {
+    try {
+      const bookingsRef = db.collection('bookings').where('userId', '==', userId);
+      const snapshot = await bookingsRef.get();
+  
+      if (snapshot.empty) {
+        logger.info(`No bookings found for userId: ${userId}`);
+        return [];
+      }
+  
+      const bookings = [];
+      snapshot.forEach(doc => {
+        bookings.push({ bookingId: doc.id, ...doc.data() });
+      });
+  
+      return bookings;
+    } catch (error) {
+      logger.error('Error fetching bookings:', error);
+      throw error;
+    }
+  }
+  
+/**
+ * Update a booking.
+ * @param {string} bookingId - Booking ID.
+ * @param {Object} updateData - Data to update.
+ * @returns {boolean} - Success status.
+ */
+async function updateBooking(bookingId, updateData) {
+    try {
+      const bookingRef = db.collection('bookings').doc(bookingId);
+      await bookingRef.update(updateData);
+      logger.info(`Booking ${bookingId} updated successfully`);
+      return true;
+    } catch (error) {
+      logger.error('Error updating booking:', error);
+      throw error;
+    }
+  }
 
 module.exports = {
     getAvailableSlots,
     getAvailableStartTimes,
     createBooking,
+    getBookingsByUserId,
+    updateBooking
 };
+
+
 
 
 
@@ -1291,63 +1472,35 @@ module.exports = {
 // services/lineService.js
 
 const axios = require('axios');
-const { LINE_CLIENT_ID, LINE_CLIENT_SECRET, LINE_REDIRECT_URI } = require('../config/googleApiConfig');
-const logger = require('../utils/logger');
+const querystring = require('querystring');
+const { LINE_CLIENT_ID, LINE_CLIENT_SECRET, LINE_REDIRECT_URI } = require('../config');
 
-/**
- * Exchange authorization code for access token.
- * @param {string} code - Authorization code from LINE.
- * @returns {Object} - Access token data.
- */
-async function getAccessToken(code) {
-    const tokenURL = 'https://api.line.me/oauth2/v2.1/token';
+exports.getAccessToken = async (code) => {
+    const tokenEndpoint = 'https://api.line.me/oauth2/v2.1/token';
 
-    const params = new URLSearchParams();
-    params.append('grant_type', 'authorization_code');
-    params.append('code', code);
-    params.append('redirect_uri', LINE_REDIRECT_URI);
-    params.append('client_id', LINE_CLIENT_ID);
-    params.append('client_secret', LINE_CLIENT_SECRET);
+    const params = {
+        grant_type: 'authorization_code',
+        code: code,
+        redirect_uri: LINE_REDIRECT_URI,
+        client_id: LINE_CLIENT_ID,
+        client_secret: LINE_CLIENT_SECRET,
+    };
 
-    try {
-        const response = await axios.post(tokenURL, params.toString(), {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        });
-        logger.info('Successfully exchanged LINE code for access token.');
-        return response.data;
-    } catch (error) {
-        logger.error('Error exchanging LINE code for access token:', error.response ? error.response.data : error.message);
-        throw error;
-    }
-}
+    const response = await axios.post(tokenEndpoint, querystring.stringify(params), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
 
-/**
- * Fetch user profile using access token.
- * @param {string} accessToken - Access token obtained from LINE.
- * @returns {Object} - User profile data.
- */
-async function getUserProfile(accessToken) {
-    const profileURL = 'https://api.line.me/v2/profile';
+    return response.data;
+};
 
-    try {
-        const response = await axios.get(profileURL, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-            },
-        });
-        logger.info('Successfully fetched LINE user profile.');
-        return response.data;
-    } catch (error) {
-        logger.error('Error fetching LINE user profile:', error.response ? error.response.data : error.message);
-        throw error;
-    }
-}
+exports.getUserProfile = async (accessToken) => {
+    const profileEndpoint = 'https://api.line.me/v2/profile';
 
-module.exports = {
-    getAccessToken,
-    getUserProfile,
+    const response = await axios.get(profileEndpoint, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    return response.data;
 };
 
 
@@ -2398,6 +2551,29 @@ h3 {
     }
 }
 
+/* Ensure dropdown menu has enough width and auto height to fit items */
+.dropdown-menu {
+    min-width: 160px; /* Adjust width if needed */
+}
+
+/* Style and fix position for the Logout button */
+.dropdown-item.logout-button {
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #dc3545;
+    text-align: center;
+    margin-top: 5px;
+}
+.dropdown-item.logout-button:hover {
+    background-color: #c82333;
+}
+
+/* Add to your styles.css */
+#confirmation-section .card {
+    padding: 20px;
+    background-color: #fff;
+}
+
 
 
 
@@ -2426,80 +2602,66 @@ function resetInactivityTimer() {
     inactivityTimer = setTimeout(logoutUser, INACTIVITY_TIMEOUT);
 }
 
-// Function to log out the user
-// function logoutUser() {
-//     alert('You have been logged out due to inactivity.');
-//     // Clear user data
-//     localStorage.clear();
-//     // Redirect to login section
-//     document.getElementById('booking-section').classList.add('hidden');
-//     document.getElementById('confirmation-section').classList.add('hidden');
-//     document.getElementById('login-section').classList.remove('hidden');
-//     // Hide logout button
-//     document.getElementById('logout-button').style.display = 'none';
-// }
-
 // Reset the timer on various user interactions
 ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
     document.addEventListener(event, resetInactivityTimer);
 });
 
 // Start the inactivity timer when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    resetInactivityTimer();
-});
+document.addEventListener('DOMContentLoaded', resetInactivityTimer);
 
 // Initialize booking flow after successful login
 function initializeBooking() {
-    // Hide login section, show booking section
     document.getElementById('login-section').classList.add('hidden');
     document.getElementById('booking-section').classList.remove('hidden');
 
-    // Start with Step 1
-    showStep(1);
+    selectedDate = localStorage.getItem('selectedDate') || '';
+    selectedTimeSlot = localStorage.getItem('selectedTimeSlot') || '';
+    maxDuration = parseInt(localStorage.getItem('maxDuration')) || 1;
 
-    // Initialize date options
+    let stepToShow = 1;
+    if (selectedDate && selectedTimeSlot) {
+        stepToShow = 3;
+    } else if (selectedDate) {
+        stepToShow = 2;
+    }
+
+    updateStepHeaders(stepToShow);
+    showStep(stepToShow);
     initializeDateOptions();
 
-    // Update step headers
-    updateStepHeaders(1);
+    if (stepToShow >= 2 && selectedDate) {
+        fetchAvailableSlots(selectedDate);
+    }
+
+    if (stepToShow === 3) {
+        proceedToDetailsForm();
+    }
 }
 
 // Function to show a specific step
 function showStep(stepNumber) {
     currentStepNumber = stepNumber;
-    localStorage.setItem('currentStepNumber', stepNumber); // Store in localStorage
+    localStorage.setItem('currentStepNumber', stepNumber);
 
-    // Hide all steps
-    const steps = document.querySelectorAll('.booking-step');
-    steps.forEach(step => step.classList.add('hidden'));
-
-    // Show the requested step
+    document.querySelectorAll('.booking-step').forEach(step => step.classList.add('hidden'));
     const step = document.getElementById(`step-${stepNumber}`);
-    if (step) {
-        step.classList.remove('hidden');
-    }
+    if (step) step.classList.remove('hidden');
 
-    // Update step headers
     updateStepHeaders(stepNumber);
 
-    // Show or hide the back button
     const backButton = document.getElementById('back-button');
     if (stepNumber > 1) {
         backButton.style.display = 'block';
-        backButton.onclick = () => {
-            showStep(stepNumber - 1);
-        };
+        backButton.onclick = () => showStep(stepNumber - 1);
     } else {
         backButton.style.display = 'none';
     }
 
-    // Show or hide the "Available slots for" text
     const availableSlotsHeader = document.getElementById('available-slots-header');
     if (availableSlotsHeader) {
         if (stepNumber === 2) {
             availableSlotsHeader.style.display = 'block';
-            // Update the date in the header
             document.getElementById('selected-date-display-header').textContent = DateTime.fromISO(selectedDate, { zone: 'Asia/Bangkok' }).toFormat('dd/MM/yyyy');
         } else {
             availableSlotsHeader.style.display = 'none';
@@ -2526,9 +2688,6 @@ function updateStepHeaders(currentStep) {
             progressPercentage = 100;
             stepText = 'Step 3: Provide Details';
             break;
-        default:
-            progressPercentage = 0;
-            stepText = '';
     }
 
     progressBar.style.width = `${progressPercentage}%`;
@@ -2541,10 +2700,7 @@ function initializeDateOptions() {
     const today = DateTime.now().setZone('Asia/Bangkok');
     const dateOptions = document.querySelectorAll('.date-option');
 
-    // Exclude the custom date picker from the predefined date options
-    const predefinedDateOptions = Array.from(dateOptions).filter(
-        card => !card.classList.contains('custom-date-picker')
-    );
+    const predefinedDateOptions = Array.from(dateOptions).filter(card => !card.classList.contains('custom-date-picker'));
 
     predefinedDateOptions.forEach(card => {
         const offset = parseInt(card.getAttribute('data-offset'));
@@ -2559,53 +2715,36 @@ function initializeDateOptions() {
             card.querySelector('.day-after-text').textContent = date.toFormat('cccc');
         }
 
-        // Add event listener
         card.addEventListener('click', () => {
-            // Remove 'selected' class from all cards
             dateOptions.forEach(c => c.classList.remove('selected'));
-
-            // Add 'selected' class to clicked card
             card.classList.add('selected');
-
             selectedDate = date.toISODate();
             proceedToTimeSelection();
         });
     });
 
-    // Handle custom date picker
     const customDateInput = document.getElementById('custom-date');
     const customDateDisplay = document.getElementById('custom-date-display');
     const customDatePickerCard = document.getElementById('custom-date-picker');
 
-    // Initialize Flatpickr
-    let customFlatpickrInstance = flatpickr(customDateInput, {
+    const customFlatpickrInstance = flatpickr(customDateInput, {
         dateFormat: "yyyy-MM-dd",
         minDate: "today",
-        onChange: function(selectedDates, dateStr) {
+        onChange: function (selectedDates, dateStr) {
             if (dateStr) {
-                // Remove 'selected' class from all cards
                 dateOptions.forEach(c => c.classList.remove('selected'));
                 customDatePickerCard.classList.add('selected');
-
-                // Ensure the date is in ISO format
                 selectedDate = DateTime.fromJSDate(selectedDates[0]).toISODate();
-
-                // Update the display with the selected date
                 customDateDisplay.textContent = DateTime.fromISO(selectedDate).toFormat('dd/MM/yyyy');
-
                 proceedToTimeSelection();
             }
         }
     });
 
-    // Open Flatpickr when card is clicked
-    customDatePickerCard.addEventListener('click', function(event) {
-        customFlatpickrInstance.open();
-    });
+    customDatePickerCard.addEventListener('click', () => customFlatpickrInstance.open());
 }
 
 function proceedToTimeSelection() {
-    // Update selected date display
     const selectedDateDisplay = DateTime.fromISO(selectedDate, { zone: 'Asia/Bangkok' });
     if (!selectedDateDisplay.isValid) {
         console.error('Invalid selectedDate:', selectedDate);
@@ -2613,59 +2752,49 @@ function proceedToTimeSelection() {
         showStep(1);
         return;
     }
-
-    // Show Step 2
     showStep(2);
-
-    // Fetch available slots
     fetchAvailableSlots(selectedDate);
 }
 
+// Helper function for fetch responses
+async function handleFetchResponse(res) {
+    const contentType = res.headers.get('content-type');
+    if (!res.ok) {
+        const errorMessage = contentType && contentType.includes('application/json') ? (await res.json()).message : `Server responded with status ${res.status}`;
+        throw new Error(errorMessage);
+    }
+    if (contentType && contentType.includes('application/json')) {
+        return res.json();
+    } else {
+        throw new Error('Received non-JSON response from server.');
+    }
+}
+
 // Fetch available slots from backend
-function fetchAvailableSlots(date) {
+async function fetchAvailableSlots(date) {
     const availableSlotsDiv = document.getElementById('available-slots');
     const loadingSpinner = document.getElementById('loading-spinner');
-
-    // Show loading spinner
     loadingSpinner.style.display = 'block';
     availableSlotsDiv.innerHTML = '';
 
-    const token = localStorage.getItem('token'); // Retrieve JWT
+    const token = localStorage.getItem('token');
 
-    fetch(`/api/bookings/available-slots?date=${date}`, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(async res => {
-        const contentType = res.headers.get('content-type');
-        if (!res.ok) {
-            if (contentType && contentType.includes('application/json')) {
-                const errorData = await res.json();
-                throw new Error(errorData.message || `Server responded with status ${res.status}`);
-            } else {
-                throw new Error(`Server responded with status ${res.status}`);
-            }
-        }
-        if (contentType && contentType.includes('application/json')) {
-            return res.json();
-        } else {
-            throw new Error('Received non-JSON response from server.');
-        }
-    })
-    .then(data => {
+    try {
+        const res = await fetch(`/api/bookings/available-slots?date=${date}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await handleFetchResponse(res);
         loadingSpinner.style.display = 'none';
         if (data.success) {
             renderAvailableSlots(data.availableSlots);
         } else {
             availableSlotsDiv.innerHTML = `<p class="text-danger">${data.message}</p>`;
         }
-    })
-    .catch(err => {
+    } catch (err) {
         loadingSpinner.style.display = 'none';
         availableSlotsDiv.innerHTML = `<p class="text-danger">Failed to load available slots: ${err.message}</p>`;
         console.error('Error fetching available slots:', err);
-    });
+    }
 }
 
 // Render available slots on the page
@@ -2709,8 +2838,7 @@ function renderAvailableSlots(slots) {
             </div>
         `;
 
-        const bookNowButton = slotCard.querySelector('.book-now-button');
-        bookNowButton.addEventListener('click', () => {
+        slotCard.querySelector('.book-now-button').addEventListener('click', () => {
             selectedTimeSlot = slot.startTime;
             maxDuration = slot.maxDuration;
             proceedToDetailsForm();
@@ -2722,35 +2850,26 @@ function renderAvailableSlots(slots) {
 }
 
 // Proceed to Step 3: Provide Details
-// main.js
-
 function proceedToDetailsForm() {
-    // Show Step 3
     showStep(3);
 
-    // Reset confirm button
     const confirmButton = document.getElementById('confirm-booking-button');
     confirmButton.disabled = true;
     confirmButton.innerHTML = '<i class="fas fa-check-circle me-2"></i>Confirm Booking';
     confirmButton.classList.remove('enabled');
 
-    // Update final date and time display
     document.getElementById('final-date').textContent = DateTime.fromISO(selectedDate).toFormat('dd/MM/yyyy');
     document.getElementById('final-time').textContent = selectedTimeSlot;
 
-    // Initialize duration options
     initializeDurationOptions();
-
-    // Prefill phone number if available
     prefillPhoneNumber();
-
-    // Load saved form data
     loadFormData();
+    resetNumberOfPeopleSelection();
+    validateForm();
+    calculateEndTime();
 
-    // Attach event listeners
     confirmButton.addEventListener('click', submitBooking);
 
-    // Validate form on input changes
     document.getElementById('phone-number').addEventListener('input', () => {
         saveFormData();
         validateForm();
@@ -2766,15 +2885,7 @@ function proceedToDetailsForm() {
             validateForm();
         });
     });
-
-    // Reset form fields
-    resetNumberOfPeopleSelection();
-    validateForm();
-
-    // Calculate initial end time
-    calculateEndTime();
 }
-
 
 // Initialize duration options based on maxDuration
 function initializeDurationOptions() {
@@ -2830,7 +2941,6 @@ function validateForm() {
 
     let isValid = true;
 
-    // Validate Duration
     if (duration === '') {
         document.getElementById('duration-error').style.display = 'block';
         isValid = false;
@@ -2838,8 +2948,7 @@ function validateForm() {
         document.getElementById('duration-error').style.display = 'none';
     }
 
-    // Validate Phone Number
-    const phoneRegex = /^\+?[0-9\s\-()]{7,15}$/; // Allows +, numbers, spaces, dashes, parentheses
+    const phoneRegex = /^\+?[0-9\s\-()]{7,15}$/;
     if (phoneNumber === '') {
         document.getElementById('phone-error').textContent = 'Please enter your phone number.';
         document.getElementById('phone-error').style.display = 'block';
@@ -2852,7 +2961,6 @@ function validateForm() {
         document.getElementById('phone-error').style.display = 'none';
     }
 
-    // Validate Number of People
     if (numberOfPeople === '') {
         document.getElementById('people-error').style.display = 'block';
         isValid = false;
@@ -2873,16 +2981,10 @@ function validateForm() {
 // Handle Number of People Button Clicks
 document.querySelectorAll('.num-people-button').forEach(button => {
     button.addEventListener('click', () => {
-        // Remove active class from all buttons
         document.querySelectorAll('.num-people-button').forEach(btn => btn.classList.remove('active'));
-        // Add active class to the clicked button
         button.classList.add('active');
-        // Set the hidden input value
         document.getElementById('number-of-people').value = button.getAttribute('data-value');
-
-        // Update border colors based on selection
         updateNumberOfPeopleBorders();
-
         validateForm();
     });
 });
@@ -2892,38 +2994,21 @@ function updateNumberOfPeopleBorders() {
     const selectedValue = document.getElementById('number-of-people').value;
     const buttons = document.querySelectorAll('.num-people-button');
 
-    if (selectedValue) {
-        // If a number is selected, add green border and remove red
-        buttons.forEach(btn => {
-            btn.classList.remove('red-border');
-            btn.classList.add('green-border');
-        });
-        // Hide error message
-        document.getElementById('people-error').style.display = 'none';
-    } else {
-        // If no selection, add red border and remove green
-        buttons.forEach(btn => {
-            btn.classList.remove('green-border');
-            btn.classList.add('red-border');
-        });
-        // Show error message
-        document.getElementById('people-error').style.display = 'block';
-    }
+    buttons.forEach(btn => {
+        btn.classList.remove('red-border', 'green-border');
+        btn.classList.add(selectedValue ? 'green-border' : 'red-border');
+    });
+    document.getElementById('people-error').style.display = selectedValue ? 'none' : 'block';
 }
 
 // Reset number of people selection
 function resetNumberOfPeopleSelection() {
-    const buttons = document.querySelectorAll('.num-people-button');
-    buttons.forEach(button => button.classList.remove('active'));
+    document.querySelectorAll('.num-people-button').forEach(button => button.classList.remove('active', 'red-border', 'green-border'));
     document.getElementById('number-of-people').value = '';
-    // Remove any border classes
-    buttons.forEach(button => {
-        button.classList.remove('red-border', 'green-border');
-    });
 }
 
 // Submit Booking
-function submitBooking() {
+async function submitBooking() {
     const token = localStorage.getItem('token');
     if (!token) {
         alert('You are not authenticated. Please log in again.');
@@ -2936,9 +3021,9 @@ function submitBooking() {
         return;
     }
 
-    const userName = localStorage.getItem('name'); // Fetching the user's name
-    const email = localStorage.getItem('email'); // Fetching the user's email
-    const loginMethod = localStorage.getItem('loginMethod'); // Fetching login method
+    const userName = localStorage.getItem('name');
+    const email = localStorage.getItem('email');
+    const loginMethod = localStorage.getItem('loginMethod');
     const phoneNumber = document.getElementById('phone-number').value.trim();
     const numberOfPeople = parseInt(document.getElementById('number-of-people').value);
     const date = selectedDate;
@@ -2952,86 +3037,52 @@ function submitBooking() {
         return;
     }
 
-    // Disable the confirm button and show a spinner
     confirmButton.disabled = true;
     confirmButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Confirming...`;
 
-    fetch('/api/bookings/book-slot', {
-        method: 'POST',
-        headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            userId,
-            userName, // Include the user's name in the booking data
-            email, // Include the user's email
-            phoneNumber,
-            numberOfPeople,
-            date,
-            startTime,
-            duration,
-            loginMethod // Include login method in booking data if needed
-        }),
-    })
-    .then(async res => {
-        const contentType = res.headers.get('content-type');
-        if (!res.ok) {
-            if (contentType && contentType.includes('application/json')) {
-                const errorData = await res.json();
-                throw new Error(errorData.message || `Server responded with status ${res.status}`);
-            } else {
-                throw new Error(`Server responded with status ${res.status}`);
-            }
-        }
-        if (contentType && contentType.includes('application/json')) {
-            return res.json();
-        } else {
-            throw new Error('Received non-JSON response from server.');
-        }
-    })
-    .then(data => {
-        if (data.success) {
-            // Update localStorage with the latest phone number
-            localStorage.setItem('phoneNumber', phoneNumber);
+    try {
+        const res = await fetch('/api/bookings/book-slot', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                userId,
+                userName,
+                email,
+                phoneNumber,
+                numberOfPeople,
+                date,
+                startTime,
+                duration,
+                loginMethod
+            }),
+        });
+        const data = await handleFetchResponse(res);
 
-            // Show confirmation
+        if (data.success) {
+            localStorage.setItem('phoneNumber', phoneNumber);
             showConfirmation(data.bookingDetails);
         } else {
-            // Re-enable confirm button
             confirmButton.disabled = false;
             confirmButton.innerHTML = originalButtonText;
-
             alert(data.message || 'Failed to book the slot.');
         }
-    })
-    .catch(err => {
-        // Re-enable confirm button
+    } catch (err) {
         confirmButton.disabled = false;
         confirmButton.innerHTML = originalButtonText;
-
         console.error('Error booking slot:', err);
         alert(`An error occurred while booking: ${err.message}`);
-    });
+    }
 }
 
 // Show Confirmation Step
 function showConfirmation(bookingData) {
-    // Hide all steps
-    const steps = document.querySelectorAll('.booking-step');
-    steps.forEach(step => step.classList.add('hidden'));
-
-    // Hide progress bar
+    document.querySelectorAll('.booking-step').forEach(step => step.classList.add('hidden'));
     const progressBarContainer = document.querySelector('.progress');
-    if (progressBarContainer) {
-        progressBarContainer.style.display = 'none';
-    }
-
-    // Hide back button
-    const backButton = document.getElementById('back-button');
-    backButton.style.display = 'none';
-
-    // Show confirmation section
+    if (progressBarContainer) progressBarContainer.style.display = 'none';
+    document.getElementById('back-button').style.display = 'none';
     const confirmationSection = document.getElementById('confirmation-section');
     confirmationSection.classList.remove('hidden');
 
@@ -3042,77 +3093,108 @@ function showConfirmation(bookingData) {
     const numberOfPeople = parseInt(document.getElementById('number-of-people').value);
     const endTime = DateTime.fromFormat(startTime, 'HH:mm', { zone: 'Asia/Bangkok' }).plus({ hours: duration }).toFormat('HH:mm');
 
-    // Display booking details
     confirmationSection.innerHTML = `
-        <h3 class="mb-4">Booking Confirmed!</h3>
-        <p>Thank you, <strong>${userName}</strong>, for your booking.</p>
-        <p>Booking Details:</p>
-        <ul class="list-unstyled">
-            <li>Date: ${date}</li>
-            <li>Start Time: ${startTime}</li>
-            <li>End Time: ${endTime}</li>
-            <li>Duration: ${duration} hour(s)</li>
-            <li>Number of People: ${numberOfPeople}</li>
-        </ul>
-        <button class="btn btn-primary mt-3" onclick="promptAnotherBooking()">
-            <i class="fas fa-calendar-check me-2"></i>Book Another Slot
-        </button>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">
+                    <i class="fas fa-check-circle text-success me-2"></i>Booking Confirmed!
+                </h3>
+                <p class="text-center">Thank you, <strong>${userName}</strong>, for your booking.</p>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th scope="row" class="bg-light">Date</th>
+                                <td>${date}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="bg-light">Start Time</th>
+                                <td>${startTime}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="bg-light">End Time</th>
+                                <td>${endTime}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="bg-light">Duration</th>
+                                <td>${duration} hour(s)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="bg-light">Number of People</th>
+                                <td>${numberOfPeople}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary" onclick="promptAnotherBooking()">
+                        <i class="fas fa-calendar-check me-2"></i>Book Another Slot
+                    </button>
+                    <button id="save-image-button" class="btn btn-secondary ms-2">
+                        <i class="fas fa-save me-2"></i>Save Confirmation as Image
+                    </button>
+                </div>
+            </div>
+        </div>
     `;
 
-    // Store confirmation data
+    document.getElementById('save-image-button').addEventListener('click', saveConfirmationAsImage);
+
     localStorage.setItem('bookingConfirmation', JSON.stringify(bookingData));
+    localStorage.removeItem('selectedDate');
+    localStorage.removeItem('selectedTimeSlot');
+    localStorage.removeItem('maxDuration');
+    localStorage.removeItem('currentStepNumber');
 }
 
 // Prompt user to make another booking
 function promptAnotherBooking() {
-    // Reset booking data
     selectedDate = '';
     selectedTimeSlot = '';
     maxDuration = 1;
 
-    // Reset confirm button
     const confirmButton = document.getElementById('confirm-booking-button');
     confirmButton.disabled = true;
     confirmButton.innerHTML = '<i class="fas fa-check-circle me-2"></i>Confirm Booking';
     confirmButton.classList.remove('enabled');
 
-    // Show progress bar
     const progressBarContainer = document.querySelector('.progress');
-    if (progressBarContainer) {
-        progressBarContainer.style.display = 'block';
-    }
+    if (progressBarContainer) progressBarContainer.style.display = 'block';
 
-    // Hide confirmation section
     document.getElementById('confirmation-section').classList.add('hidden');
 
-    // Start over from Step 1
     initializeBooking();
+    localStorage.removeItem('selectedDate');
+    localStorage.removeItem('selectedTimeSlot');
+    localStorage.removeItem('maxDuration');
+    localStorage.removeItem('currentStepNumber');
 }
 
-// Initialize the app after successful login
-// function onLoginSuccess() {
-//     // Show logout button
-//     document.getElementById('logout-button').style.display = 'block';
-
-//     // Fetch customer data and then initialize booking
-//     fetchCustomerData().then(() => {
-//         initializeBooking();
-//     }).catch(() => {
-//         // Proceed with booking initialization even if customer data fetch fails
-//         initializeBooking();
-//     });
-// }
-
 // Attach logout functionality
-document.getElementById('logout-button').addEventListener('click', () => {
+document.getElementById('logout-button').addEventListener('click', (event) => {
+    event.preventDefault();
     localStorage.clear();
-    // Redirect to login section
     document.getElementById('booking-section').classList.add('hidden');
     document.getElementById('confirmation-section').classList.add('hidden');
     document.getElementById('login-section').classList.remove('hidden');
-    // Hide logout button
     document.getElementById('logout-button').style.display = 'none';
 });
+
+function saveConfirmationAsImage() {
+    const confirmationCard = document.querySelector('#confirmation-section .card');
+    html2canvas(confirmationCard, { scale: 2 }).then(canvas => {
+        const imageData = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = imageData;
+        link.download = 'booking_confirmation.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }).catch(err => {
+        console.error('Error capturing confirmation as image:', err);
+        alert('An error occurred while saving the image. Please try again.');
+    });
+}
 
 // Handle login with Google
 function handleCredentialResponse(response) {
@@ -3122,20 +3204,20 @@ function handleCredentialResponse(response) {
         return;
     }
 
-    // Send the ID token to the server
     fetch('/api/auth/login/google', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: idToken }),
     })
     .then(res => res.json())
     .then(data => {
         if (data.success) {
-            // Store JWT received from server
             localStorage.setItem('token', data.token);
-            // Proceed to booking flow
+            localStorage.setItem('userId', data.userId);
+            localStorage.setItem('name', data.name);
+            localStorage.setItem('email', data.email);
+            localStorage.setItem('loginMethod', 'google');
+            localStorage.setItem('phoneNumber', data.phoneNumber);
             onLoginSuccess();
         } else {
             alert(data.message || 'Login failed.');
@@ -3148,20 +3230,25 @@ function handleCredentialResponse(response) {
 }
 
 window.onload = function () {
+    const token = localStorage.getItem('token');
+    const loginMethod = localStorage.getItem('loginMethod');
+
+    if (token && loginMethod && loginMethod !== 'google') {
+        console.log('User is already logged in via', loginMethod);
+        return;
+    }
+
     const gIdOnload = document.getElementById('g_id_onload');
     const clientId = gIdOnload.getAttribute('data-client_id');
 
-    console.log(clientId)
-    
     google.accounts.id.initialize({
         client_id: clientId,
         callback: handleCredentialResponse,
         auto_select: true,
         cancel_on_tap_outside: false,
-        prompt_parent_id: 'g_id_onload', // Example, refer to FedCM docs
+        prompt_parent_id: 'g_id_onload',
     });
 
-    // Attempt to prompt silently
     google.accounts.id.prompt(notification => {
         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
             console.log('Silent sign-in not possible. User needs to sign in manually.');
@@ -3173,8 +3260,6 @@ window.onload = function () {
     });
 };
 
-
-// Make handleCredentialResponse globally accessible for Google Sign-In
 window.handleCredentialResponse = handleCredentialResponse;
 
 // Handle login with Facebook
@@ -3183,42 +3268,24 @@ function handleFacebookLogin() {
         if (response.authResponse) {
             const accessToken = response.authResponse.accessToken;
 
-            // Send the access token to your backend to verify and get user info
             fetch('/api/auth/login/facebook', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ accessToken: accessToken }), // Ensure the key is 'accessToken' as expected by the server
+                body: JSON.stringify({ accessToken }),
             })
-            .then(async res => {
-                const contentType = res.headers.get('content-type');
-                if (!res.ok) {
-                    if (contentType && contentType.includes('application/json')) {
-                        const errorData = await res.json();
-                        throw new Error(errorData.message || `Server responded with status ${res.status}`);
-                    } else {
-                        throw new Error(`Server responded with status ${res.status}`);
-                    }
-                }
-                if (contentType && contentType.includes('application/json')) {
-                    return res.json();
-                } else {
-                    throw new Error('Received non-JSON response from server.');
-                }
-            })
+            .then(handleFetchResponse)
             .then(data => {
                 if (data.success) {
-                    // Save user data and token in localStorage
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('userId', data.userId);
                     localStorage.setItem('name', data.name);
                     localStorage.setItem('email', data.email);
                     localStorage.setItem('loginMethod', 'facebook');
-
                     onLoginSuccess();
                 } else {
                     alert(data.message || 'Login failed.');
                 }
-            })            
+            })
             .catch(err => {
                 console.error('Error during Facebook login:', err);
                 alert(`An error occurred during login: ${err.message}`);
@@ -3229,20 +3296,17 @@ function handleFacebookLogin() {
     }, { scope: 'public_profile,email' });
 }
 
-// Event listener for Facebook login button
 document.getElementById('facebook-login-button').addEventListener('click', handleFacebookLogin);
 
 // Handle guest login
 document.getElementById('guest-login-button').addEventListener('click', () => {
-    // Show additional info form
     document.getElementById('login-section').classList.add('hidden');
     document.getElementById('additional-info-section').classList.remove('hidden');
 });
 
-// Handle submission of additional info
 document.getElementById('submit-additional-info').addEventListener('click', handleGuestLogin);
 
-function handleGuestLogin() {
+async function handleGuestLogin() {
     const name = document.getElementById('additional-name').value.trim();
     const email = document.getElementById('additional-email').value.trim();
     const phone = document.getElementById('additional-phone').value.trim();
@@ -3252,36 +3316,18 @@ function handleGuestLogin() {
         return;
     }
 
-    // Disable the submit button and show a spinner
     const submitButton = document.getElementById('submit-additional-info');
     submitButton.disabled = true;
     submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
 
-    // Send guest details to the backend
-    fetch('/api/auth/login/guest', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, phoneNumber: phone }),
-    })
-    .then(async res => {
-        const contentType = res.headers.get('content-type');
-        if (!res.ok) {
-            if (contentType && contentType.includes('application/json')) {
-                const errorData = await res.json();
-                throw new Error(errorData.message || `Server responded with status ${res.status}`);
-            } else {
-                throw new Error(`Server responded with status ${res.status}`);
-            }
-        }
-        if (contentType && contentType.includes('application/json')) {
-            return res.json();
-        } else {
-            throw new Error('Received non-JSON response from server.');
-        }
-    })
-    .then(data => {
+    try {
+        const res = await fetch('/api/auth/login/guest', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, phoneNumber: phone }),
+        });
+        const data = await handleFetchResponse(res);
         if (data.success) {
-            // Save user data and token in localStorage
             localStorage.setItem('token', data.token);
             localStorage.setItem('userId', data.userId);
             localStorage.setItem('name', data.name);
@@ -3289,215 +3335,143 @@ function handleGuestLogin() {
             localStorage.setItem('phoneNumber', data.phoneNumber);
             localStorage.setItem('loginMethod', data.loginSource);
 
-            // Proceed to booking
             document.getElementById('additional-info-section').classList.add('hidden');
             onLoginSuccess();
         } else {
             alert(data.message || 'Guest login failed.');
         }
-    })
-    .catch(err => {
+    } catch (err) {
         console.error('Error during guest login:', err);
         alert(`An error occurred during guest login: ${err.message}`);
-    })
-    .finally(() => {
-        // Re-enable the submit button and reset its text
+    } finally {
         submitButton.disabled = false;
         submitButton.innerHTML = 'Submit';
-    });
+    }
 }
 
 function fetchCustomerData() {
     const loginMethod = localStorage.getItem('loginMethod');
-
-    // If the user is a guest, skip fetching customer data
     if (loginMethod === 'guest') {
         console.log('Guest user detected. Skipping fetchCustomerData.');
-        return Promise.resolve(); // Return a resolved promise to continue the flow
+        return Promise.resolve();
     }
 
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
     return fetch(`/api/customers?userId=${userId}`, {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
     })
-    .then(async res => {
-        const contentType = res.headers.get('content-type');
-        if (!res.ok) {
-            if (contentType && contentType.includes('application/json')) {
-                const errorData = await res.json();
-                throw new Error(errorData.message || `Server responded with status ${res.status}`);
-            } else {
-                throw new Error(`Server responded with status ${res.status}`);
-            }
-        }
-        if (contentType && contentType.includes('application/json')) {
-            return res.json();
-        } else {
-            throw new Error('Received non-JSON response from server.');
-        }
-    })
+    .then(handleFetchResponse)
     .then(data => {
         if (data.success && data.customerData) {
-            // Save phone number in localStorage
             localStorage.setItem('phoneNumber', data.customerData.phoneNumber);
             localStorage.setItem('loginSource', data.customerData.loginSource);
         }
     })
     .catch(err => {
         console.error('Error fetching customer data:', err);
-        // Optionally, you can display a message or handle the error differently for non-guest users
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize inactivity timer
-    resetInactivityTimer();
-    // Call toggleLoginOptions on page load
-    toggleLoginOptions();
+function isLineBrowser() {
+    return /Line/i.test(navigator.userAgent);
+}
 
-    // Initialize the app (check for token and authenticate if valid)
+function toggleLoginOptions() {
+    const googleSignIn = document.querySelector('.g_id_signin');
+    const facebookLoginButton = document.getElementById('facebook-login-button');
+    const lineLoginButton = document.getElementById('line-login-button');
+    const guestLoginButton = document.getElementById('guest-login-button');
+    const lineBrowserNotification = document.getElementById('line-browser-notification');
+
+    if (isLineBrowser()) {
+        if (googleSignIn) googleSignIn.style.display = 'none';
+        if (facebookLoginButton) facebookLoginButton.style.display = 'none';
+        if (lineLoginButton) lineLoginButton.style.display = 'inline-block';
+        if (guestLoginButton) guestLoginButton.style.display = 'inline-block';
+        if (lineBrowserNotification) lineBrowserNotification.classList.remove('hidden');
+    } else {
+        if (googleSignIn) googleSignIn.style.display = 'inline-block';
+        if (facebookLoginButton) facebookLoginButton.style.display = 'inline-block';
+        if (lineLoginButton) lineLoginButton.style.display = 'inline-block';
+        if (guestLoginButton) guestLoginButton.style.display = 'inline-block';
+        if (lineBrowserNotification) lineBrowserNotification.classList.add('hidden');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    resetInactivityTimer();
+    toggleLoginOptions();
     initializeAppOnLoad();
 
-    // ======= Added Code Below =======
     const toggleButton = document.querySelector('[data-bs-toggle="collapse"][data-bs-target="#bay-rates-mobile"]');
     const bayRatesMobile = document.getElementById('bay-rates-mobile');
 
     if (toggleButton && bayRatesMobile) {
         bayRatesMobile.addEventListener('show.bs.collapse', () => {
             toggleButton.textContent = 'Hide Rates';
-            console.log('Collapse is being shown');
         });
-
         bayRatesMobile.addEventListener('hide.bs.collapse', () => {
             toggleButton.textContent = 'Show Rates';
-            console.log('Collapse is being hidden');
         });
     } else {
         console.error('Toggle button or collapse target not found.');
     }
-
-    // Function to detect if the user is using LINE browser
-    function isLineBrowser() {
-        return /Line/i.test(navigator.userAgent);
-    }
-
-    // Function to toggle visibility of login options based on browser
-    function toggleLoginOptions() {
-        const googleSignIn = document.querySelector('.g_id_signin');
-        const facebookLoginButton = document.getElementById('facebook-login-button');
-        const lineLoginButton = document.getElementById('line-login-button');
-        const guestLoginButton = document.getElementById('guest-login-button');
-        const lineBrowserNotification = document.getElementById('line-browser-notification'); // Select the notification element
-
-        if (isLineBrowser()) {
-            // If using LINE browser, hide Google and Facebook login options
-            if (googleSignIn) {
-                googleSignIn.style.display = 'none';
-            }
-            if (facebookLoginButton) {
-                facebookLoginButton.style.display = 'none';
-            }
-            // Ensure LINE and Guest login buttons are visible
-            if (lineLoginButton) {
-                lineLoginButton.style.display = 'inline-block';
-            }
-            if (guestLoginButton) {
-                guestLoginButton.style.display = 'inline-block';
-            }
-            // Show the notification
-            if (lineBrowserNotification) {
-                lineBrowserNotification.classList.remove('hidden'); // Remove the 'hidden' class to display the alert
-            }
-        } else {
-            // If not using LINE browser, show all login options
-            if (googleSignIn) {
-                googleSignIn.style.display = 'inline-block';
-            }
-            if (facebookLoginButton) {
-                facebookLoginButton.style.display = 'inline-block';
-            }
-            if (lineLoginButton) {
-                lineLoginButton.style.display = 'inline-block';
-            }
-            if (guestLoginButton) {
-                guestLoginButton.style.display = 'inline-block';
-            }
-            // Hide the notification
-            if (lineBrowserNotification) {
-                lineBrowserNotification.classList.add('hidden'); // Add the 'hidden' class to hide the alert
-            }
-        }
-    }
-
-
-
-
-
-    // ======= End of Added Code =======
 });
 
-// Initialize the app after successful login
 function onLoginSuccess() {
-    // Hide login section
     document.getElementById('login-section').classList.add('hidden');
     document.getElementById('additional-info-section').classList.add('hidden');
-
-    // Show booking section
     document.getElementById('booking-section').classList.remove('hidden');
-
-    // Show logout button
     document.getElementById('logout-button').style.display = 'block';
-
-    // Initialize booking flow
     initializeBooking();
 }
 
-// Modify logoutUser to clear localStorage and redirect to login
 function logoutUser() {
     alert('You have been logged out.');
-    // Clear user data
     localStorage.clear();
-    // Hide booking and confirmation sections
     document.getElementById('booking-section').classList.add('hidden');
     document.getElementById('confirmation-section').classList.add('hidden');
-    // Show login section
     document.getElementById('login-section').classList.remove('hidden');
-    // Hide logout button
     document.getElementById('logout-button').style.display = 'none';
 }
 
-// main.js
-
-// main.js
-
-// main.js
-
-// public/js/main.js
-
 // Function to initialize the app on page load
 async function initializeAppOnLoad() {
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    const loginMethod = localStorage.getItem('loginMethod');
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get('token');
 
-    if (token && userId) {
-        const isValid = await verifyToken(token);
-        if (isValid) {
-            console.log('Token is valid. Restoring session...');
-            onLoginSuccess();
-        } else {
-            console.log('Token is invalid or expired. Logging out...');
-            logoutUser();
-        }
+    if (tokenFromUrl) {
+        localStorage.setItem('token', tokenFromUrl);
+        window.history.replaceState({}, document.title, window.location.pathname);
+        const decodedToken = jwt_decode(tokenFromUrl);
+        const { userId, email, name, loginSource } = decodedToken;
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('email', email);
+        localStorage.setItem('name', name);
+        localStorage.setItem('loginMethod', loginSource);
+        await fetchCustomerData();
+        onLoginSuccess();
     } else {
-        console.log('No token found. Showing login screen.');
-        document.getElementById('login-section').classList.remove('hidden');
-        document.getElementById('booking-section').classList.add('hidden');
-        document.getElementById('confirmation-section').classList.add('hidden');
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+
+        if (token && userId) {
+            const isValid = await verifyToken(token);
+            if (isValid) {
+                console.log('Token is valid. Restoring session...');
+                onLoginSuccess();
+            } else {
+                console.log('Token is invalid or expired. Logging out...');
+                logoutUser();
+            }
+        } else {
+            console.log('No token found. Showing login screen.');
+            document.getElementById('login-section').classList.remove('hidden');
+            document.getElementById('booking-section').classList.add('hidden');
+            document.getElementById('confirmation-section').classList.add('hidden');
+        }
     }
 }
 
@@ -3510,8 +3484,12 @@ async function verifyToken(token) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({ token }),
         });
+
+        if (!response.ok) {
+            console.error('Token verification failed:', response.status, response.statusText);
+            return false;
+        }
 
         const data = await response.json();
         return data.valid;
@@ -3520,9 +3498,6 @@ async function verifyToken(token) {
         return false;
     }
 }
-
-
-
 
 function saveFormData() {
     const phoneNumber = document.getElementById('phone-number').value.trim();
@@ -3543,14 +3518,9 @@ function loadFormData() {
     document.getElementById('duration-select').value = duration;
     document.getElementById('number-of-people').value = numberOfPeople;
 
-    // Update UI based on loaded data
     if (numberOfPeople) {
         document.querySelectorAll('.num-people-button').forEach(button => {
-            if (button.getAttribute('data-value') === numberOfPeople) {
-                button.classList.add('active');
-            } else {
-                button.classList.remove('active');
-            }
+            button.classList.toggle('active', button.getAttribute('data-value') === numberOfPeople);
         });
     }
 }
@@ -3575,6 +3545,8 @@ function loadFormData() {
         rel="stylesheet" 
         crossorigin="anonymous"
     >
+
+    <link rel="icon" href="https://www.len.golf/wp-content/uploads/2024/07/favicon.png" sizes="32x32" />
 
     <!-- Font Awesome CSS for Icons -->
     <link 
@@ -3606,6 +3578,9 @@ function loadFormData() {
         window.LINE_REDIRECT_URI = "{{LINE_REDIRECT_URI}}";
     </script>
 
+    <!-- html2canvas JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
     <!-- Luxon JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
 </head>
@@ -3613,20 +3588,32 @@ function loadFormData() {
     <!-- Wrapper for Flexbox -->
     <div class="d-flex flex-column min-vh-100">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">LENGOLF Booking</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <button class="btn btn-secondary ms-auto" id="logout-button" style="display: none;">
-                        <i class="fas fa-sign-out-alt me-2"></i>Logout
-                    </button>
-                </div>
+              <a class="navbar-brand" href="#">LENGOLF Booking</a>
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="https://www.len.golf" target="_blank">Home Page</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" id="logout-button" style="display: none;">Logout</a>
+                  </li>
+                </ul>
+              </div>
             </div>
-        </nav>
+          </nav>
 
         <!-- Main Content -->
         <main class="flex-grow-1">
@@ -4026,31 +4013,21 @@ function loadFormData() {
 
 // index.js
 
-require('dotenv').config();
+const dotenv = require('dotenv');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const apiRouter = require('./routes/index');
 const logger = require('./utils/logger');
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, FACEBOOK_APP_ID, CURRENT_FRONTEND_URL } = require('./config');
-const axios = require('axios'); // Install axios if not already
-const querystring = require('querystring');
-const customerService = require('./services/customerService');
-const https = require('https');
-
-
-
 const app = express();
-const PORT = process.env.PORT || 3000;
-const FRONTEND_URL = process.env.FRONTEND_URL;
-// Path to the certificates
-const certPath = path.join(__dirname, 'certs'); // Adjust if your certs are in a different folder
-const options = {
-    key: fs.readFileSync(path.join(certPath, 'localhost-key.pem')),
-    cert: fs.readFileSync(path.join(certPath, 'localhost.pem')),
-};
+const PORT = process.env.PORT || 8080; // Ensuring the app listens on the Cloud Run-assigned port
 
+// Load environment variables from .env file in development
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config();
+    console.log('Environment variables loaded from local .env file');
+}
 
 // CORS setup
 app.use(cors());
@@ -4086,63 +4063,6 @@ app.get('/', (req, res) => {
     });
 });
 
-// OAuth Callback Route for Google
-app.get('/api/auth/google/callback', async (req, res) => {
-    const code = req.query.code;
-
-    if (!code) {
-        logger.error('No authorization code provided.');
-        return res.status(400).send('Authorization code missing.');
-    }
-
-    try {
-        // Exchange authorization code for access token
-        const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', querystring.stringify({
-            code: code,
-            client_id: GOOGLE_CLIENT_ID,
-            client_secret: GOOGLE_CLIENT_SECRET,
-            redirect_uri: `${CURRENT_FRONTEND_URL}/api/auth/google/callback`,
-            grant_type: 'authorization_code',
-        }), {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        });
-
-        const { access_token, id_token } = tokenResponse.data;
-
-        // Retrieve user information using access token
-        const userInfoResponse = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-            headers: {
-                'Authorization': `Bearer ${access_token}`,
-            },
-        });
-
-        const user = userInfoResponse.data;
-
-        // TODO: Implement user creation or retrieval in your database
-        // Example: Find or create the user in your database based on `user.sub` (Google user ID)
-        // For demonstration, we'll assume a function `findOrCreateUser` exists
-        const userId = await findOrCreateUser({
-            googleId: user.sub,
-            name: user.name,
-            email: user.email,
-            picture: user.picture,
-        });
-
-        // TODO: Generate JWT or establish a session
-        // For demonstration, we'll generate a simple JWT using a hypothetical `generateJWT` function
-        const token = generateJWT({ userId });
-
-        // Redirect back to the frontend with the token
-        // It's safer to use HTTP-only cookies for tokens, but for simplicity, we'll use a query parameter
-        res.redirect(`https://booking.len.golf?token=${token}`);
-    } catch (error) {
-        logger.error('Error during Google OAuth callback:', error.response ? error.response.data : error.message);
-        res.status(500).send('Authentication failed.');
-    }
-});
-
 // Use the API router for all /api routes
 app.use('/api', apiRouter);
 
@@ -4155,91 +4075,11 @@ app.use((err, req, res, next) => {
 // Initialize scheduled tasks
 require('./utils/scheduler');
 
-// Create HTTPS server
-https.createServer(options, app).listen(PORT, () => {
-    logger.info(`Secure server is running on https://localhost:${PORT}`);
+console.log(`Configured PORT: ${PORT}`);
+
+// Start the server
+app.listen(PORT, () => {
+    logger.info(`Server is running on port ${PORT}`);
 });
-
-/**
- * Placeholder Functions
- * 
- * Implement these functions according to your application's requirements.
- */
-
-// Mock function to find or create a user in the database
-async function findOrCreateUser({ googleId, name, email, picture }) {
-    // TODO: Implement database logic here
-    // Example:
-    // const existingUser = await User.findOne({ googleId });
-    // if (existingUser) return existingUser.id;
-    // const newUser = await User.create({ googleId, name, email, picture });
-    // return newUser.id;
-
-    // For demonstration, return a mock user ID
-    return 'mock-user-id';
-}
-
-// Mock function to generate a JWT
-function generateJWT(payload) {
-    const jwt = require('jsonwebtoken');
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-    return token;
-}
-
-const lineService = require('./services/lineService'); // Ensure this service is implemented
-const jwt = require('jsonwebtoken');
-const { JWT_SECRET } = require('./config'); // Import JWT_SECRET from your config
-
-// LINE OAuth Callback Route
-app.get('/api/auth/line/callback', async (req, res) => {
-    const code = req.query.code;
-    const state = req.query.state;
-
-    if (!code) {
-        logger.error('No authorization code provided by LINE.');
-        return res.status(400).send('Authorization code missing.');
-    }
-
-    try {
-        // Exchange authorization code for access token
-        const tokenData = await lineService.getAccessToken(code);
-        const accessToken = tokenData.access_token;
-        const idToken = tokenData.id_token; // If applicable
-
-        // Fetch user profile information
-        const userProfile = await lineService.getUserProfile(accessToken);
-
-        const { userId, displayName, email } = userProfile;
-
-        // Fetch customer data from Google Sheets or your database
-        const customerData = await customerService.getCustomerData(userId);
-        const phoneNumber = customerData ? customerData.phoneNumber : '';
-        const loginSource = 'LINE';
-
-        // Save or update customer data
-        await customerService.saveOrUpdateCustomerData({
-            userId,
-            name: displayName,
-            email,
-            phoneNumber,
-            loginSource,
-        });
-
-        // Generate JWT
-        const token = jwt.sign(
-            { userId, email, name: displayName, loginSource },
-            JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-
-        // Redirect to frontend with JWT token as a query parameter
-        res.redirect(`${FRONTEND_URL}?token=${token}`);
-    } catch (error) {
-        logger.error('Error during LINE OAuth callback:', error);
-        res.status(500).send('Authentication failed.');
-    }
-});
-
-
 
 

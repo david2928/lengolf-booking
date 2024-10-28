@@ -6,14 +6,13 @@ const router = express.Router();
 const authRoutes = require('./authRoutes');
 const bookingRoutes = require('./bookingRoutes');
 const customerRoutes = require('./customerRoutes');
+// Add eventRoutes
+const eventRoutes = require('./eventRoutes');
 
-// Mount the auth routes at /auth
 router.use('/auth', authRoutes);
-
-// Mount the booking routes at /bookings
 router.use('/bookings', bookingRoutes);
-
-// Mount the customer routes at /customers
 router.use('/customers', customerRoutes);
+// Use eventRoutes
+router.use('/events', eventRoutes);
 
 module.exports = router;
