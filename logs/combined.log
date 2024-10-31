@@ -18089,3 +18089,36 @@
 2024-10-28 22:54:02 [info]: Refreshed available slots cache for 2024-10-30
 2024-10-28 22:54:02 [info]: Refreshed available slots cache for 2024-11-01
 2024-10-28 22:54:02 [info]: Availability data refreshed and cached successfully for the next 5 days.
+2024-10-31 15:44:03 [info]: Service Account Credentials Loaded Successfully.
+2024-10-31 15:44:03 [info]: Service Account Email: calendar-access@lengolf-booking-system-436804.iam.gserviceaccount.com
+2024-10-31 15:44:03 [info]: Server is running on port 3000
+2024-10-31 15:44:03 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:03 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:03 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:03 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:03 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:04 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:04 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:04 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:04 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:04 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:05 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:05 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:05 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:05 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:05 [info]: Authenticated Calendar client created successfully.
+2024-10-31 15:44:08 [error]: Redis Client Error Connection timeout - Error: Connection timeout
+    at Socket.<anonymous> (C:\vs_code\lengolf_booking\node_modules\@redis\client\dist\lib\client\socket.js:177:124)
+    at Object.onceWrapper (node:events:633:28)
+    at Socket.emit (node:events:519:28)
+    at Socket._onTimeout (node:net:591:8)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+2024-10-31 15:44:08 [info]: Connected to Redis
+2024-10-31 15:44:08 [info]: Refreshed available slots cache for 2024-11-04
+2024-10-31 15:44:08 [info]: Refreshed available slots cache for 2024-10-31
+2024-10-31 15:44:08 [info]: Refreshed available slots cache for 2024-11-01
+2024-10-31 15:44:08 [info]: Refreshed available slots cache for 2024-11-03
+2024-10-31 15:44:08 [info]: Refreshed available slots cache for 2024-11-02
+2024-10-31 15:44:08 [info]: Availability data refreshed and cached successfully for the next 5 days.
+2024-10-31 15:44:08 [info]: Redis client connected and ready to use
