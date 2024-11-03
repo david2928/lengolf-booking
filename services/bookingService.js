@@ -35,7 +35,7 @@ async function fetchAllBaysBusyTimes(dateStr) {
  */
 async function getAvailableStartTimes(dateStr) {
     const openingHour = 10; // 10:00 AM
-    const closingHour = 22; // 10:00 PM
+    const closingHour = 23; // 11:00 PM
     const maxDuration = 5;  // Maximum 5 hours
 
     const busyTimes = await fetchAllBaysBusyTimes(dateStr);
