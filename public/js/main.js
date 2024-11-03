@@ -12,7 +12,7 @@ let maxDuration = 1;
 let currentStepNumber = 1;
 
 // Inactivity timeout (e.g., 15 minutes)
-const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
+const INACTIVITY_TIMEOUT = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
 let inactivityTimer;
 
 // Function to reset the inactivity timer
