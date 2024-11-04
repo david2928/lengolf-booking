@@ -42,7 +42,7 @@ async function sendBookingNotification(bookingDetails) {
 function createLineMessage(details) {
     const { customerName, email, phoneNumber, bookingDate, bookingStartTime, bookingEndTime, bayNumber } = details;
 
-    if (!customerName || !email || !phoneNumber || !bookingDate || !bookingStartTime || !bookingEndTime || !bayNumber) {
+    if (!customerName || !phoneNumber || !bookingDate || !bookingStartTime || !bookingEndTime || !bayNumber) {
         return null;
     }
 
