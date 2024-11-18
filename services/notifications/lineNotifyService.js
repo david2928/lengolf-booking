@@ -42,7 +42,7 @@ async function sendBookingNotification(bookingDetails) {
 function createLineMessage(details) {
     const { customerName, email, phoneNumber, bookingDate, bookingStartTime, bookingEndTime, bayNumber } = details;
 
-    if (!customerName || !email || !phoneNumber || !bookingDate || !bookingStartTime || !bookingEndTime || !bayNumber) {
+    if (!customerName || !phoneNumber || !bookingDate || !bookingStartTime || !bookingEndTime || !bayNumber) {
         return null;
     }
 
@@ -54,7 +54,7 @@ Date: ${bookingDate}
 Time: ${bookingStartTime} - ${bookingEndTime}
 Bay: ${bayNumber}
 
-Please prepare accordingly.`;
+This booking has been auto-confirmed. No need to re-confirm with the customer. Please double check bay selection.`;
 }
 
 module.exports = {
