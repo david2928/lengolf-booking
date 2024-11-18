@@ -7,6 +7,22 @@ const cacheService = require('./cache/redisService');
 const lineNotifyService = require('./notifications/lineNotifyService');
 const logger = require('../utils/logger');
 const { DateTime } = require('luxon');
+const { bookingConfirmationTemplate } = require('../utils/emailTemplates'); // Import the email template
+const nodemailer = require('nodemailer'); // Import Nodemailer
+
+// Configure Nodemailer transporter with your SMTP server
+const transporter = nodemailer.createTransport({
+    host: 'mail.len.golf',
+    port: 587,
+    secure: false, // Use false since port 587 doesn't use SSL
+    auth: {
+        user: process.env.EMAIL_USER,     // SMTP username from environment variables
+        pass: process.env.EMAIL_PASSWORD, // SMTP password from environment variables
+    },
+    tls: {
+        rejectUnauthorized: false, // Allow self-signed certificates if necessary
+    },
+});
 
 /**
  * Fetch busy times for all bays on a specific date.
@@ -67,7 +83,7 @@ async function getAvailableStartTimes(dateStr) {
     // Determine available start times with max durations
     const availableSlots = [];
 
-        // If the date is today, set the earliest available hour
+    // If the date is today, set the earliest available hour
     let earliestHour = openingHour;
     if (isToday) {
         earliestHour = now.hour + 1; // Start from the next hour
@@ -197,65 +213,106 @@ async function assignBay(dateStr, startTime, duration) {
  */
 async function createBooking(bookingData) {
     const { date, startTime, duration, userId, userName, phoneNumber, numberOfPeople, email, loginMethod } = bookingData;
-  
+
     const assignedBay = await assignBay(date, startTime, duration);
-  
+
     if (!assignedBay) {
-      return null; // No available bay
+        return null; // No available bay
     }
-  
+
     const calendarId = CALENDARS[assignedBay.bay];
     const bookingStart = DateTime.fromISO(`${date}T${startTime}`, { zone: 'Asia/Bangkok' });
     const bookingEnd = bookingStart.plus({ hours: duration });
-  
+
     const event = {
-      summary: `${userName} (${phoneNumber}) (${numberOfPeople}) - ${assignedBay.bay}`,
-      description: `Name: ${userName}\nEmail: ${email}\nPhone: ${phoneNumber}\nPeople: ${numberOfPeople}`,
-      start: {
-        dateTime: bookingStart.toUTC().toISO(),
-        timeZone: 'UTC',
-      },
-      end: {
-        dateTime: bookingEnd.toUTC().toISO(),
-        timeZone: 'UTC',
-      },
+        summary: `${userName} (${phoneNumber}) (${numberOfPeople}) - ${assignedBay.bay}`,
+        description: `Name: ${userName}\nEmail: ${email}\nPhone: ${phoneNumber}\nPeople: ${numberOfPeople}`,
+        start: {
+            dateTime: bookingStart.toUTC().toISO(),
+            timeZone: 'UTC',
+        },
+        end: {
+            dateTime: bookingEnd.toUTC().toISO(),
+            timeZone: 'UTC',
+        },
     };
-  
+
     try {
-      await calendarService.insertEvent(calendarId, event);
-  
-      // Save booking details to Firestore
-      const bookingRef = db.collection('bookings').doc(); // Auto-generate ID
-      bookingData.bookingId = bookingRef.id; // Add booking ID to data
-      bookingData.bay = assignedBay.bay;
-      bookingData.createdAt = admin.firestore.FieldValue.serverTimestamp(); // Timestamp
-  
-      logger.info(`Saving booking to Firestore with bookingId: ${bookingData.bookingId}`);
-      await bookingRef.set(bookingData);
-  
-      // Send LINE notification
-      const bookingDetails = {
-        customerName: userName,
-        email: email,
-        phoneNumber: phoneNumber,
-        bookingDate: date,
-        bookingStartTime: bookingStart.toFormat('HH:mm'),
-        bookingEndTime: bookingEnd.toFormat('HH:mm'),
-        bayNumber: assignedBay.bay,
-        duration: duration,
-        numberOfPeople: numberOfPeople,
-      };
-  
-      await lineNotifyService.sendBookingNotification(bookingDetails);
-  
-      logger.info(`Booking created successfully for userId: ${userId} at bay: ${assignedBay.bay}`);
-  
-      return bookingData;
+        await calendarService.insertEvent(calendarId, event);
+
+        // Save booking details to Firestore
+        const bookingRef = db.collection('bookings').doc(); // Auto-generate ID
+        bookingData.bookingId = bookingRef.id; // Add booking ID to data
+        bookingData.bay = assignedBay.bay;
+        bookingData.createdAt = admin.firestore.FieldValue.serverTimestamp(); // Timestamp
+
+        logger.info(`Saving booking to Firestore with bookingId: ${bookingData.bookingId}`);
+        await bookingRef.set(bookingData);
+
+        // Send LINE notification
+        const bookingDetailsForLine = {
+            customerName: userName,
+            email: email,
+            phoneNumber: phoneNumber,
+            bookingDate: date,
+            bookingStartTime: bookingStart.toFormat('HH:mm'),
+            bookingEndTime: bookingEnd.toFormat('HH:mm'),
+            bayNumber: assignedBay.bay,
+            duration: duration,
+            numberOfPeople: numberOfPeople,
+        };
+
+        await lineNotifyService.sendBookingNotification(bookingDetailsForLine);
+
+        // Prepare booking details for email
+        const bookingStartBangkok = bookingStart.setZone('Asia/Bangkok');
+        const bookingEndBangkok = bookingEnd.setZone('Asia/Bangkok');
+
+        const bookingDetailsForEmail = {
+            userName: userName,
+            email: email,
+            date: bookingStartBangkok.toFormat('dd/MM/yyyy'),
+            startTime: bookingStartBangkok.toFormat('HH:mm'),
+            endTime: bookingEndBangkok.toFormat('HH:mm'),
+            duration: duration,
+            numberOfPeople: numberOfPeople,
+        };
+
+        // Send confirmation email
+        await sendConfirmationEmail(bookingDetailsForEmail);
+
+        logger.info(`Booking created successfully for userId: ${userId} at bay: ${assignedBay.bay}`);
+
+        return bookingData;
     } catch (error) {
-      logger.error('Error creating booking:', error);
-      throw error;
+        logger.error('Error creating booking:', error);
+        throw error;
     }
-  }
+}
+
+/**
+ * Send a booking confirmation email to the customer.
+ * @param {Object} bookingDetails - Details for the booking.
+ */
+async function sendConfirmationEmail(bookingDetails) {
+    const { userName, email, date, startTime } = bookingDetails;
+
+    const mailOptions = {
+        from: '"LENGOLF" <notification@len.golf>', // Sender address
+        to: email,
+        subject: `Your Booking Confirmation for ${date} at ${startTime}`,
+        html: bookingConfirmationTemplate(bookingDetails),
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        logger.info(`Confirmation email sent to ${email}`);
+    } catch (error) {
+        logger.error('Error sending confirmation email:', error);
+        // Decide whether to throw the error or not
+        // throw error;
+    }
+}
 
 /**
  * Get bookings for a specific user.
@@ -264,26 +321,26 @@ async function createBooking(bookingData) {
  */
 async function getBookingsByUserId(userId) {
     try {
-      const bookingsRef = db.collection('bookings').where('userId', '==', userId);
-      const snapshot = await bookingsRef.get();
-  
-      if (snapshot.empty) {
-        logger.info(`No bookings found for userId: ${userId}`);
-        return [];
-      }
-  
-      const bookings = [];
-      snapshot.forEach(doc => {
-        bookings.push({ bookingId: doc.id, ...doc.data() });
-      });
-  
-      return bookings;
+        const bookingsRef = db.collection('bookings').where('userId', '==', userId);
+        const snapshot = await bookingsRef.get();
+
+        if (snapshot.empty) {
+            logger.info(`No bookings found for userId: ${userId}`);
+            return [];
+        }
+
+        const bookings = [];
+        snapshot.forEach(doc => {
+            bookings.push({ bookingId: doc.id, ...doc.data() });
+        });
+
+        return bookings;
     } catch (error) {
-      logger.error('Error fetching bookings:', error);
-      throw error;
+        logger.error('Error fetching bookings:', error);
+        throw error;
     }
-  }
-  
+}
+
 /**
  * Update a booking.
  * @param {string} bookingId - Booking ID.
@@ -292,15 +349,15 @@ async function getBookingsByUserId(userId) {
  */
 async function updateBooking(bookingId, updateData) {
     try {
-      const bookingRef = db.collection('bookings').doc(bookingId);
-      await bookingRef.update(updateData);
-      logger.info(`Booking ${bookingId} updated successfully`);
-      return true;
+        const bookingRef = db.collection('bookings').doc(bookingId);
+        await bookingRef.update(updateData);
+        logger.info(`Booking ${bookingId} updated successfully`);
+        return true;
     } catch (error) {
-      logger.error('Error updating booking:', error);
-      throw error;
+        logger.error('Error updating booking:', error);
+        throw error;
     }
-  }
+}
 
 module.exports = {
     getAvailableSlots,
@@ -309,5 +366,3 @@ module.exports = {
     getBookingsByUserId,
     updateBooking
 };
-
-

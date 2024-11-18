@@ -1997,3 +1997,97 @@
     at Socket._onTimeout (node:net:591:8)
     at listOnTimeout (node:internal/timers:581:17)
     at process.processTimers (node:internal/timers:519:7)
+2024-11-04 14:09:31 [error]: Redis Client Error Connection timeout - Error: Connection timeout
+    at Socket.<anonymous> (C:\vs_code\lengolf_booking\node_modules\@redis\client\dist\lib\client\socket.js:177:124)
+    at Object.onceWrapper (node:events:633:28)
+    at Socket.emit (node:events:519:28)
+    at Socket._onTimeout (node:net:591:8)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+2024-11-04 14:09:36 [error]: Redis Client Error Connection timeout - Error: Connection timeout
+    at Socket.<anonymous> (C:\vs_code\lengolf_booking\node_modules\@redis\client\dist\lib\client\socket.js:177:124)
+    at Object.onceWrapper (node:events:633:28)
+    at Socket.emit (node:events:519:28)
+    at Socket._onTimeout (node:net:591:8)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+2024-11-04 14:09:40 [error]: Redis Client Error connect ECONNREFUSED 172.18.56.192:6379 - Error: connect ECONNREFUSED 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-11-05 03:00:33 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-05 03:51:37 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-05 04:49:42 [error]: Error fetching free/busy for calendar 3a700346dd902abd4aa448ee63e184a62f05d38bb39cb19a8fc27116c6df3233@group.calendar.google.com: request to https://www.googleapis.com/calendar/v3/freeBusy failed, reason: read ECONNRESET - Error: request to https://www.googleapis.com/calendar/v3/freeBusy failed, reason: read ECONNRESET
+    at Gaxios._request (C:\vs_code\lengolf_booking\node_modules\google-auth-library\node_modules\gaxios\build\src\gaxios.js:149:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async JWT.requestAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:429:18)
+    at async Object.fetchBusyTimes (C:\vs_code\lengolf_booking\services\google\calendarService.js:43:26)
+    at async fetchAllBaysBusyTimes (C:\vs_code\lengolf_booking\services\bookingService.js:23:22)
+    at async Object.getAvailableStartTimes (C:\vs_code\lengolf_booking\services\bookingService.js:41:23)
+    at async Object.refreshAvailableStartTimesCache (C:\vs_code\lengolf_booking\services\cache\redisService.js:43:32)
+    at async Promise.all (index 1)
+    at async fetchAndCacheAvailability (C:\vs_code\lengolf_booking\utils\scheduler.js:23:9)
+2024-11-05 04:49:42 [error]: Error fetching free/busy for calendar 3a700346dd902abd4aa448ee63e184a62f05d38bb39cb19a8fc27116c6df3233@group.calendar.google.com: request to https://www.googleapis.com/calendar/v3/freeBusy failed, reason: read ECONNRESET - Error: request to https://www.googleapis.com/calendar/v3/freeBusy failed, reason: read ECONNRESET
+    at Gaxios._request (C:\vs_code\lengolf_booking\node_modules\google-auth-library\node_modules\gaxios\build\src\gaxios.js:149:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async JWT.requestAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:429:18)
+    at async Object.fetchBusyTimes (C:\vs_code\lengolf_booking\services\google\calendarService.js:43:26)
+    at async fetchAllBaysBusyTimes (C:\vs_code\lengolf_booking\services\bookingService.js:23:22)
+    at async Object.getAvailableStartTimes (C:\vs_code\lengolf_booking\services\bookingService.js:41:23)
+    at async Object.refreshAvailableStartTimesCache (C:\vs_code\lengolf_booking\services\cache\redisService.js:43:32)
+    at async Promise.all (index 3)
+    at async fetchAndCacheAvailability (C:\vs_code\lengolf_booking\utils\scheduler.js:23:9)
+2024-11-05 04:49:42 [error]: Error fetching free/busy for calendar 3a700346dd902abd4aa448ee63e184a62f05d38bb39cb19a8fc27116c6df3233@group.calendar.google.com: request to https://www.googleapis.com/calendar/v3/freeBusy failed, reason: read ECONNRESET - Error: request to https://www.googleapis.com/calendar/v3/freeBusy failed, reason: read ECONNRESET
+    at Gaxios._request (C:\vs_code\lengolf_booking\node_modules\google-auth-library\node_modules\gaxios\build\src\gaxios.js:149:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async JWT.requestAsync (C:\vs_code\lengolf_booking\node_modules\google-auth-library\build\src\auth\oauth2client.js:429:18)
+    at async Object.fetchBusyTimes (C:\vs_code\lengolf_booking\services\google\calendarService.js:43:26)
+    at async fetchAllBaysBusyTimes (C:\vs_code\lengolf_booking\services\bookingService.js:23:22)
+    at async Object.getAvailableStartTimes (C:\vs_code\lengolf_booking\services\bookingService.js:41:23)
+    at async Object.refreshAvailableStartTimesCache (C:\vs_code\lengolf_booking\services\cache\redisService.js:43:32)
+    at async Promise.all (index 4)
+    at async fetchAndCacheAvailability (C:\vs_code\lengolf_booking\utils\scheduler.js:23:9)
+2024-11-05 04:49:42 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-05 08:49:55 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-10 01:44:04 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-10 02:47:37 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-10 03:00:37 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-10 03:44:10 [error]: Redis Client Error connect ETIMEDOUT 172.18.56.192:6379 - Error: connect ETIMEDOUT 172.18.56.192:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1607:16)
+2024-11-10 03:44:15 [error]: Redis Client Error Connection timeout - Error: Connection timeout
+    at Socket.<anonymous> (C:\vs_code\lengolf_booking\node_modules\@redis\client\dist\lib\client\socket.js:177:124)
+    at Object.onceWrapper (node:events:633:28)
+    at Socket.emit (node:events:519:28)
+    at Socket._onTimeout (node:net:591:8)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+2024-11-10 15:55:03 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-10 18:01:38 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-18 09:22:27 [error]: Redis Client Error Connection timeout - Error: Connection timeout
+    at Socket.<anonymous> (C:\vs_code\lengolf_booking\node_modules\@redis\client\dist\lib\client\socket.js:177:124)
+    at Object.onceWrapper (node:events:633:28)
+    at Socket.emit (node:events:519:28)
+    at Socket._onTimeout (node:net:591:8)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+2024-11-18 09:22:32 [error]: Redis Client Error Connection timeout - Error: Connection timeout
+    at Socket.<anonymous> (C:\vs_code\lengolf_booking\node_modules\@redis\client\dist\lib\client\socket.js:177:124)
+    at Object.onceWrapper (node:events:633:28)
+    at Socket.emit (node:events:519:28)
+    at Socket._onTimeout (node:net:591:8)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+2024-11-18 09:22:37 [error]: Redis Client Error Connection timeout - Error: Connection timeout
+    at Socket.<anonymous> (C:\vs_code\lengolf_booking\node_modules\@redis\client\dist\lib\client\socket.js:177:124)
+    at Object.onceWrapper (node:events:633:28)
+    at Socket.emit (node:events:519:28)
+    at Socket._onTimeout (node:net:591:8)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)

@@ -282,6 +282,7 @@ function proceedToDetailsForm() {
 
     initializeDurationOptions();
     prefillPhoneNumber();
+    prefillEmail();
     loadFormData();
     resetNumberOfPeopleSelection();
     validateForm();
@@ -352,14 +353,33 @@ function prefillPhoneNumber() {
     validateForm();
 }
 
+// Prefill email from localStorage
+function prefillEmail() {
+    const emailInput = document.getElementById('email-address');
+    const prefilledIndicator = document.getElementById('email-prefilled-indicator');
+    const userEmail = localStorage.getItem('email');
+
+    if (userEmail) {
+        emailInput.value = userEmail;
+        prefilledIndicator.style.display = 'block';
+        emailInput.classList.add('prefilled');
+    } else {
+        prefilledIndicator.style.display = 'none';
+        emailInput.classList.remove('prefilled');
+    }
+    validateForm();
+}
+
 // Validate form fields to enable/disable Confirm Booking button
 function validateForm() {
     const phoneNumber = document.getElementById('phone-number').value.trim();
+    const emailAddress = document.getElementById('email-address').value.trim();
     const numberOfPeople = document.getElementById('number-of-people').value;
     const duration = document.getElementById('duration-select').value;
 
     let isValid = true;
 
+    // Validate Duration
     if (duration === '') {
         document.getElementById('duration-error').style.display = 'block';
         isValid = false;
@@ -367,6 +387,7 @@ function validateForm() {
         document.getElementById('duration-error').style.display = 'none';
     }
 
+    // Validate Phone Number
     const phoneRegex = /^\+?[0-9\s\-()]{7,15}$/;
     if (phoneNumber === '') {
         document.getElementById('phone-error').textContent = 'Please enter your phone number.';
@@ -380,6 +401,21 @@ function validateForm() {
         document.getElementById('phone-error').style.display = 'none';
     }
 
+    // Validate Email Address
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailAddress === '') {
+        document.getElementById('email-error').textContent = 'Please enter your email address.';
+        document.getElementById('email-error').style.display = 'block';
+        isValid = false;
+    } else if (!emailRegex.test(emailAddress)) {
+        document.getElementById('email-error').textContent = 'Please enter a valid email address.';
+        document.getElementById('email-error').style.display = 'block';
+        isValid = false;
+    } else {
+        document.getElementById('email-error').style.display = 'none';
+    }
+
+    // Validate Number of People
     if (numberOfPeople === '') {
         document.getElementById('people-error').style.display = 'block';
         isValid = false;
@@ -441,9 +477,9 @@ async function submitBooking() {
     }
 
     const userName = localStorage.getItem('name');
-    const email = localStorage.getItem('email');
     const loginMethod = localStorage.getItem('loginMethod');
     const phoneNumber = document.getElementById('phone-number').value.trim();
+    const emailAddress = document.getElementById('email-address').value.trim(); // Get email from form
     const numberOfPeople = parseInt(document.getElementById('number-of-people').value);
     const date = selectedDate;
     const startTime = selectedTimeSlot;
@@ -451,7 +487,7 @@ async function submitBooking() {
     const confirmButton = document.getElementById('confirm-booking-button');
     const originalButtonText = confirmButton.innerHTML;
 
-    if (!phoneNumber || isNaN(numberOfPeople) || numberOfPeople < 1) {
+    if (!phoneNumber || !emailAddress || isNaN(numberOfPeople) || numberOfPeople < 1) {
         alert('Please provide valid booking details.');
         return;
     }
@@ -469,7 +505,7 @@ async function submitBooking() {
             body: JSON.stringify({
                 userId,
                 userName,
-                email,
+                email: emailAddress, // Use updated email
                 phoneNumber,
                 numberOfPeople,
                 date,
@@ -482,6 +518,7 @@ async function submitBooking() {
 
         if (data.success) {
             localStorage.setItem('phoneNumber', phoneNumber);
+            localStorage.setItem('email', emailAddress); // Save updated email
             showConfirmation(data.bookingDetails);
         } else {
             confirmButton.disabled = false;
@@ -506,6 +543,7 @@ function showConfirmation(bookingData) {
     confirmationSection.classList.remove('hidden');
 
     const userName = localStorage.getItem('name');
+    const email = localStorage.getItem('email');
     const date = DateTime.fromISO(selectedDate).toFormat('dd/MM/yyyy');
     const startTime = selectedTimeSlot;
     const duration = parseInt(document.getElementById('duration-select').value);
@@ -519,6 +557,7 @@ function showConfirmation(bookingData) {
                     <i class="fas fa-check-circle text-success me-2"></i>Booking Confirmed!
                 </h3>
                 <p class="text-center">Thank you, <strong>${userName}</strong>, for your booking.</p>
+                <p class="text-center">An email confirmation has been sent to <strong>${email}</strong>.</p>
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <tbody>
@@ -923,20 +962,24 @@ async function verifyToken(token) {
 
 function saveFormData() {
     const phoneNumber = document.getElementById('phone-number').value.trim();
+    const emailAddress = document.getElementById('email-address').value.trim();
     const duration = document.getElementById('duration-select').value;
     const numberOfPeople = document.getElementById('number-of-people').value;
 
     localStorage.setItem('phoneNumber', phoneNumber);
+    localStorage.setItem('email', emailAddress); // Save updated email
     localStorage.setItem('duration', duration);
     localStorage.setItem('numberOfPeople', numberOfPeople);
 }
 
 function loadFormData() {
     const phoneNumber = localStorage.getItem('phoneNumber') || '';
+    const emailAddress = localStorage.getItem('email') || '';
     const duration = localStorage.getItem('duration') || '';
     const numberOfPeople = localStorage.getItem('numberOfPeople') || '';
 
     document.getElementById('phone-number').value = phoneNumber;
+    document.getElementById('email-address').value = emailAddress;
     document.getElementById('duration-select').value = duration;
     document.getElementById('number-of-people').value = numberOfPeople;
 
