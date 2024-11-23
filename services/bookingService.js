@@ -1,5 +1,3 @@
-// services/bookingService.js
-
 const { admin, db } = require('./firebaseService'); // Import both admin and db
 const { CALENDARS } = require('../config/googleApiConfig');
 const calendarService = require('./google/calendarService');
@@ -32,14 +30,16 @@ const transporter = nodemailer.createTransport({
 async function fetchAllBaysBusyTimes(dateStr) {
     const busyTimes = {};
 
-    for (const bayName in CALENDARS) {
-        const calendarId = CALENDARS[bayName];
+    for (const bay in CALENDARS) {
+        const calendarId = CALENDARS[bay];
         if (!calendarId) continue;
 
         const busy = await calendarService.fetchBusyTimes(calendarId, dateStr);
-        busyTimes[bayName] = busy;
+        busyTimes[bay] = busy.map(event => ({
+            start: DateTime.fromISO(event.start, { zone: 'Asia/Bangkok' }),
+            end: DateTime.fromISO(event.end, { zone: 'Asia/Bangkok' }),
+        }));
     }
-
     return busyTimes;
 }
 
@@ -50,98 +50,55 @@ async function fetchAllBaysBusyTimes(dateStr) {
  * @returns {Array} - List of available start times with max durations.
  */
 async function getAvailableStartTimes(dateStr) {
-    const openingHour = 10; // 10:00 AM
-    const closingHour = 23; // 11:00 PM
-    const maxDuration = 5;  // Maximum 5 hours
+    const openingTime = DateTime.fromISO(`${dateStr}T10:00`, { zone: 'Asia/Bangkok' });
+    const closingTime = DateTime.fromISO(`${dateStr}T23:00`, { zone: 'Asia/Bangkok' });
+    const maxDuration = 5; // Maximum 5 hours
 
     const busyTimes = await fetchAllBaysBusyTimes(dateStr);
-
-    // Initialize availability map for each bay
-    const availabilityMap = {};
-
-    for (const bayName in busyTimes) {
-        availabilityMap[bayName] = {};
-        for (let hour = openingHour; hour < closingHour; hour++) {
-            availabilityMap[bayName][hour] = true; // Assume available
-        }
-
-        busyTimes[bayName].forEach(event => {
-            const startHour = event.start.hour;
-            const endHour = event.end.hour;
-            for (let hour = startHour; hour < endHour; hour++) {
-                if (hour >= openingHour && hour < closingHour) {
-                    availabilityMap[bayName][hour] = false;
-                }
-            }
-        });
-    }
 
     // Determine if the selected date is today
     const now = DateTime.now().setZone('Asia/Bangkok');
     const isToday = now.toISODate() === dateStr;
 
-    // Determine available start times with max durations
     const availableSlots = [];
 
-    // If the date is today, set the earliest available hour
-    let earliestHour = openingHour;
-    if (isToday) {
-        earliestHour = now.hour + 1; // Start from the next hour
-        if (now.minute > 0) {
-            earliestHour += 1; // If current time is past the hour, skip to the next
-        }
-        if (earliestHour >= closingHour) {
-            // No slots available today
-            return [];
-        }
-    }
+    let currentTime = isToday ? now.plus({ minutes: 30 }).startOf('hour') : openingTime;
 
-    for (let startHour = earliestHour; startHour < closingHour; startHour++) {
-        // If the date is today, exclude slots that have already started
-        if (isToday && startHour < now.hour) {
-            continue;
-        }
-
-        let slotMaxDuration = 0;
+    while (currentTime < closingTime) {
+        let maxSlotDuration = 0;
 
         for (let duration = 1; duration <= maxDuration; duration++) {
-            const endHour = startHour + duration;
-            if (endHour > closingHour) break; // Exceeds closing time
+            const endTime = currentTime.plus({ hours: duration });
+            if (endTime > closingTime) break; // Exceeds closing time
 
-            let isAvailable = false;
+            // Check if any bay is available for the full duration
+            const isSlotAvailable = Object.keys(busyTimes).some(bay => {
+                return busyTimes[bay].every(event => {
+                    // Slot must not overlap with any busy time
+                    return !(currentTime < event.end && endTime > event.start);
+                });
+            });
 
-            // Check if any bay is available for the entire duration
-            for (const bayName in availabilityMap) {
-                let bayAvailable = true;
-                for (let hour = startHour; hour < endHour; hour++) {
-                    if (!availabilityMap[bayName][hour]) {
-                        bayAvailable = false;
-                        break;
-                    }
-                }
-                if (bayAvailable) {
-                    isAvailable = true;
-                    break;
-                }
-            }
-
-            if (isAvailable) {
-                slotMaxDuration = duration;
+            if (isSlotAvailable) {
+                maxSlotDuration = duration;
             } else {
                 break; // No longer durations available
             }
         }
 
-        if (slotMaxDuration > 0) {
+        if (maxSlotDuration > 0) {
             availableSlots.push({
-                startTime: `${startHour.toString().padStart(2, '0')}:00`,
-                maxDuration: slotMaxDuration,
+                startTime: currentTime.toFormat('HH:mm'),
+                maxDuration: maxSlotDuration,
             });
         }
+
+        currentTime = currentTime.plus({ hours: 1 });
     }
 
     return availableSlots;
 }
+
 
 /**
  * Get available slots, checking cache first.
@@ -152,26 +109,25 @@ async function getAvailableSlots(dateStr) {
     const cacheKey = `available_slots_${dateStr}`;
 
     try {
-        // Check Redis cache for available slots using getCache
+        // Check Redis cache for available slots
         const cachedSlots = await cacheService.getCache(cacheKey);
         if (cachedSlots) {
             logger.info(`Serving slots from Redis cache for ${dateStr}`);
-            return cachedSlots; // getCache already parses JSON
+            return cachedSlots;
         }
 
         // If not in cache, calculate available slots from Google Calendar
         const slots = await getAvailableStartTimes(dateStr);
 
-        // Store the available slots in Redis for 10 minutes (600 seconds) using setCache
+        // Store the available slots in Redis for 10 minutes (600 seconds)
         await cacheService.setCache(cacheKey, slots, 600);
 
         return slots;
     } catch (error) {
-        logger.error('Error accessing Redis:', error);
+        logger.error('Error fetching available slots:', error);
         throw error;
     }
 }
-
 /**
  * Assign a bay based on availability.
  * @param {string} dateStr - Date in 'YYYY-MM-DD' format.
@@ -181,19 +137,20 @@ async function getAvailableSlots(dateStr) {
  */
 async function assignBay(dateStr, startTime, duration) {
     const busyTimes = await fetchAllBaysBusyTimes(dateStr);
-    const bookingStart = DateTime.fromISO(`${dateStr}T${startTime}`, { zone: 'Asia/Bangkok' }).toUTC();
+    const bookingStart = DateTime.fromISO(`${dateStr}T${startTime}`, { zone: 'Asia/Bangkok' });
     const bookingEnd = bookingStart.plus({ hours: duration });
 
-    for (const bayName in CALENDARS) {
-        const isAvailable = busyTimes[bayName].every(event => {
-            const eventStart = event.start;
-            const eventEnd = event.end;
-            return bookingEnd <= eventStart || bookingStart >= eventEnd;
+    logger.info(`Trying to assign bay from ${bookingStart.toISO()} to ${bookingEnd.toISO()}`);
+
+    for (const bay in CALENDARS) {
+        const isAvailable = busyTimes[bay].every(event => {
+            return !(bookingStart < event.end && bookingEnd > event.start); // No overlap allowed
         });
 
         if (isAvailable) {
+            logger.info(`Assigned Bay: ${bay} from ${bookingStart.toISO()} to ${bookingEnd.toISO()}`);
             return {
-                bay: bayName,
+                bay: bay,
                 interval: {
                     start: bookingStart.toISO(),
                     end: bookingEnd.toISO(),
@@ -202,8 +159,8 @@ async function assignBay(dateStr, startTime, duration) {
         }
     }
 
-    // No available bay found
-    return null;
+    logger.warn(`No available bays for ${dateStr} at ${startTime} for ${duration} hours.`);
+    return null; // No available bay found
 }
 
 /**
@@ -212,7 +169,7 @@ async function assignBay(dateStr, startTime, duration) {
  * @returns {Object|null} - Booking details or null if failed.
  */
 async function createBooking(bookingData) {
-    const { date, startTime, duration, userId, userName, phoneNumber, numberOfPeople, email, loginMethod } = bookingData;
+    const { date, startTime, duration, userId, userName, phoneNumber, numberOfPeople, email } = bookingData;
 
     const assignedBay = await assignBay(date, startTime, duration);
 
@@ -246,11 +203,10 @@ async function createBooking(bookingData) {
         bookingData.bay = assignedBay.bay;
         bookingData.createdAt = admin.firestore.FieldValue.serverTimestamp(); // Timestamp
 
-        logger.info(`Saving booking to Firestore with bookingId: ${bookingData.bookingId}`);
         await bookingRef.set(bookingData);
 
         // Send LINE notification
-        const bookingDetailsForLine = {
+        await lineNotifyService.sendBookingNotification({
             customerName: userName,
             email: email,
             phoneNumber: phoneNumber,
@@ -260,29 +216,20 @@ async function createBooking(bookingData) {
             bayNumber: assignedBay.bay,
             duration: duration,
             numberOfPeople: numberOfPeople,
-        };
-
-        await lineNotifyService.sendBookingNotification(bookingDetailsForLine);
-
-        // Prepare booking details for email
-        const bookingStartBangkok = bookingStart.setZone('Asia/Bangkok');
-        const bookingEndBangkok = bookingEnd.setZone('Asia/Bangkok');
-
-        const bookingDetailsForEmail = {
-            userName: userName,
-            email: email,
-            date: bookingStartBangkok.toFormat('dd/MM/yyyy'),
-            startTime: bookingStartBangkok.toFormat('HH:mm'),
-            endTime: bookingEndBangkok.toFormat('HH:mm'),
-            duration: duration,
-            numberOfPeople: numberOfPeople,
-        };
+        });
 
         // Send confirmation email
-        await sendConfirmationEmail(bookingDetailsForEmail);
+        await sendConfirmationEmail({
+            userName: userName,
+            email: email,
+            date: bookingStart.setZone('Asia/Bangkok').toFormat('dd/MM/yyyy'),
+            startTime: bookingStart.setZone('Asia/Bangkok').toFormat('HH:mm'),
+            endTime: bookingEnd.setZone('Asia/Bangkok').toFormat('HH:mm'),
+            duration: duration,
+            numberOfPeople: numberOfPeople,
+        });
 
         logger.info(`Booking created successfully for userId: ${userId} at bay: ${assignedBay.bay}`);
-
         return bookingData;
     } catch (error) {
         logger.error('Error creating booking:', error);
@@ -309,8 +256,6 @@ async function sendConfirmationEmail(bookingDetails) {
         logger.info(`Confirmation email sent to ${email}`);
     } catch (error) {
         logger.error('Error sending confirmation email:', error);
-        // Decide whether to throw the error or not
-        // throw error;
     }
 }
 

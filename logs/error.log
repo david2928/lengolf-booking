@@ -2091,3 +2091,74 @@
     at Socket._onTimeout (node:net:591:8)
     at listOnTimeout (node:internal/timers:581:17)
     at process.processTimers (node:internal/timers:519:7)
+2024-11-18 10:48:37 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-18 12:18:08 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-18 16:33:20 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-18 18:09:14 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-18 20:02:21 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-21 18:16:18 [error]: Redis Client Error Connection timeout - Error: Connection timeout
+    at Socket.<anonymous> (C:\vs_code\lengolf_booking\node_modules\@redis\client\dist\lib\client\socket.js:177:124)
+    at Object.onceWrapper (node:events:633:28)
+    at Socket.emit (node:events:519:28)
+    at Socket._onTimeout (node:net:591:8)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+2024-11-21 18:16:23 [error]: Redis Client Error Connection timeout - Error: Connection timeout
+    at Socket.<anonymous> (C:\vs_code\lengolf_booking\node_modules\@redis\client\dist\lib\client\socket.js:177:124)
+    at Object.onceWrapper (node:events:633:28)
+    at Socket.emit (node:events:519:28)
+    at Socket._onTimeout (node:net:591:8)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+2024-11-21 20:45:52 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 00:01:48 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 00:30:20 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 00:46:52 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 01:47:55 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 02:02:26 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 03:00:31 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 03:02:33 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 04:02:36 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 04:31:07 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 05:02:36 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 06:02:36 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 06:48:50 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 08:02:36 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 09:02:36 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 10:02:36 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-22 10:59:36 [error]: Redis Client Error read ECONNRESET - Error: read ECONNRESET
+    at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2024-11-23 11:12:39 [error]: Redis Client Error Connection timeout - Error: Connection timeout
+    at Socket.<anonymous> (C:\vs_code\lengolf_booking\node_modules\@redis\client\dist\lib\client\socket.js:177:124)
+    at Object.onceWrapper (node:events:633:28)
+    at Socket.emit (node:events:519:28)
+    at Socket._onTimeout (node:net:591:8)
+    at listOnTimeout (node:internal/timers:581:17)
+    at process.processTimers (node:internal/timers:519:7)
+2024-11-23 11:18:07 [error]: Error fetching available slots: bayName is not defined - ReferenceError: bayName is not defined
+    at Object.getAvailableSlots (C:\vs_code\lengolf_booking\services\bookingService.js:154:35)
+    at exports.getAvailableSlots (C:\vs_code\lengolf_booking\controllers\bookingController.js:19:53)
+    at Layer.handle [as handle_request] (C:\vs_code\lengolf_booking\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\vs_code\lengolf_booking\node_modules\express\lib\router\route.js:149:13)
+    at authenticateJWT (C:\vs_code\lengolf_booking\middlewares\authMiddleware.js:66:9)
