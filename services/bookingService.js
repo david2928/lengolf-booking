@@ -40,6 +40,8 @@ async function fetchAllBaysBusyTimes(dateStr) {
             end: DateTime.fromISO(event.end, { zone: 'Asia/Bangkok' }),
         }));
     }
+
+    logger.info(`Fetched busy times for ${dateStr}: ${JSON.stringify(busyTimes, null, 2)}`);
     return busyTimes;
 }
 
@@ -96,6 +98,7 @@ async function getAvailableStartTimes(dateStr) {
         currentTime = currentTime.plus({ hours: 1 });
     }
 
+    logger.info(`Available slots for ${dateStr}: ${JSON.stringify(availableSlots, null, 2)}`);
     return availableSlots;
 }
 

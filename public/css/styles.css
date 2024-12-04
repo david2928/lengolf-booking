@@ -183,7 +183,6 @@ h5.card-title {
     position: relative;
 }
 
-
 .date-option:hover {
     transform: var(--hover-animation);
 }
@@ -367,7 +366,6 @@ select:valid {
     background-color: transparent; /* Remove the background color */
 }
 
-
 /* Footer Styling */
 .footer {
     background-color: var(--footer-bg-color);
@@ -532,7 +530,6 @@ select:valid {
     }
 }
 
-
 /* Sticky Header */
 .sticky-top {
     background-color: var(--background-color); /* Use the app's background color */
@@ -545,7 +542,6 @@ select:valid {
     margin: 10px 0 0 0; /* Adjust margins as needed */
 }
 
-
 /* Adjust spacing and alignment */
 .sticky-top .d-flex.align-items-center {
     margin-top: 0;
@@ -556,7 +552,6 @@ select:valid {
 .sticky-top .progress {
     margin-bottom: 0; /* Remove margin below the progress bar */
 }
-
 
 /* Reduce spacing */
 .booking-step {
@@ -595,7 +590,7 @@ select:valid {
     color: var(--accent-color);
 }
 
-
+/* Container Styles */
 .container {
     margin-top: 10px; /* Adjust the value as needed */
     padding-top: 0; /* Remove padding if not needed */
@@ -609,6 +604,7 @@ h2 {
 h3 {
     margin-top: 0.5rem; /* Adjust as needed */
 }
+
 /* Adjust margins for elements within booking steps */
 .booking-step p.text-center {
     margin-bottom: 1rem;
@@ -619,7 +615,6 @@ h3 {
     height: 30px; /* Match the progress bar height */
     padding: 0 12px; /* Adjust padding as needed */
 }
-
 
 /* Available Slots Header within Sticky Header */
 #available-slots-header {
@@ -667,8 +662,6 @@ h3 {
     z-index: 10; /* Adjust as needed */
 }
 
-
-
 /* Center the image using margin on larger screens */
 @media (min-width: 768px) {
     #step-1 .d-none.d-md-block img {
@@ -700,4 +693,48 @@ h3 {
 #confirmation-section .card {
     padding: 20px;
     background-color: #fff;
+}
+
+.promotion-banner {
+    background-color: #ffd700; /* bright gold */
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    padding: 4px 15px;
+    text-align: center;
+}
+
+.promotion-banner span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.promotion-banner strong {
+    color: #d32f2f; /* accent red for emphasis */
+}
+
+.promotion-banner {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.promotion-banner:hover {
+    transform: scale(1.01);
+}
+
+
+.modal-dialog {
+    max-width: 600px;
+    margin: 1rem auto;
+}
+
+.modal-content {
+    border-radius: 12px;
+    overflow: hidden;
 }
