@@ -1,7 +1,7 @@
 const { admin, db } = require('./firebaseService'); // Import both admin and db
 const { CALENDARS } = require('../config/googleApiConfig');
 const calendarService = require('./google/calendarService');
-const cacheService = require('./cache/redisService');
+const cacheService = require('./cache/memoryCache.js');
 const lineNotifyService = require('./notifications/lineNotifyService');
 const logger = require('../utils/logger');
 const { DateTime } = require('luxon');

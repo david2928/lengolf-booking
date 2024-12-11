@@ -1,7 +1,7 @@
 // utils/scheduler.js
 
 const cron = require('node-cron');
-const cacheService = require('../services/cache/redisService');
+const cacheService = require('../services/cache/memoryCache.js');
 const { DateTime } = require('luxon');
 const logger = require('./logger');
 

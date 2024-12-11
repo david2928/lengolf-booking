@@ -1,12 +1,11 @@
 // config/index.js
-
 const googleApiConfig = require('./googleApiConfig');
-const redisConfig = require('./redisConfig');
+const cacheConfig = require('./cacheConfig');
 const logger = require('../utils/logger');
 
 require('dotenv').config();
 
-// Validate other required environment variables
+// Validate required environment variables
 const requiredVars = [
     'GOOGLE_CLIENT_ID',
     'JWT_SECRET',
@@ -26,7 +25,7 @@ if (missingVars.length > 0) {
 
 module.exports = {
     googleApiConfig,
-    redisConfig,
+    cacheConfig,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     JWT_SECRET: process.env.JWT_SECRET,
     LINE_CLIENT_ID: process.env.LINE_CLIENT_ID,
