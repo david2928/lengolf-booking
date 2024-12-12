@@ -56188,3 +56188,1466 @@
 2024-12-11 21:51:44 [info]: Serving slots from Redis cache for 2024-12-12
 2024-12-11 21:51:46 [info]: Serving slots from Redis cache for 2024-12-13
 2024-12-11 21:51:48 [info]: Serving slots from Redis cache for 2024-12-11
+2024-12-12 08:54:30 [info]: Service Account Credentials Loaded Successfully.
+2024-12-12 08:54:30 [info]: Service Account Email: calendar-access@lengolf-booking-system-436804.iam.gserviceaccount.com
+2024-12-12 08:54:30 [info]: Memory cache initialized
+2024-12-12 08:54:30 [info]: Memory cache service initialized
+2024-12-12 08:54:30 [info]: Server is running on port 3000
+2024-12-12 08:54:30 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:30 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:30 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:30 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:30 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:31 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:31 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:31 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:31 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:31 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:31 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:32 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:32 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:32 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:32 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:54:32 [info]: Fetched busy times for 2024-12-13: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-13T11:00:00.000+07:00",
+      "end": "2024-12-13T12:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2024-12-13T10:00:00.000+07:00",
+      "end": "2024-12-13T11:00:00.000+07:00"
+    }
+  ]
+}
+2024-12-12 08:54:32 [info]: Available slots for 2024-12-13: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:54:32 [info]: Refreshed available slots cache for 2024-12-13
+2024-12-12 08:54:32 [info]: Fetched busy times for 2024-12-14: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-14T10:00:00.000+07:00",
+      "end": "2024-12-14T12:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2024-12-14T11:00:00.000+07:00",
+      "end": "2024-12-14T13:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:54:32 [info]: Available slots for 2024-12-14: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:54:32 [info]: Refreshed available slots cache for 2024-12-14
+2024-12-12 08:54:32 [info]: Fetched busy times for 2024-12-15: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:54:32 [info]: Available slots for 2024-12-15: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:54:32 [info]: Refreshed available slots cache for 2024-12-15
+2024-12-12 08:54:32 [info]: Fetched busy times for 2024-12-12: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-12T09:00:00.000+07:00",
+      "end": "2024-12-12T13:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T17:00:00.000+07:00",
+      "end": "2024-12-12T19:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2024-12-12T10:00:00.000+07:00",
+      "end": "2024-12-12T12:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T13:00:00.000+07:00",
+      "end": "2024-12-12T14:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T18:00:00.000+07:00",
+      "end": "2024-12-12T20:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2024-12-12T10:00:00.000+07:00",
+      "end": "2024-12-12T11:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T11:30:00.000+07:00",
+      "end": "2024-12-12T12:30:00.000+07:00"
+    }
+  ]
+}
+2024-12-12 08:54:32 [info]: Available slots for 2024-12-12: [
+  {
+    "startTime": "09:00",
+    "maxDuration": 1
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 1
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:54:32 [info]: Refreshed available slots cache for 2024-12-12
+2024-12-12 08:54:32 [info]: Fetched busy times for 2024-12-16: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:54:32 [info]: Available slots for 2024-12-16: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:54:32 [info]: Refreshed available slots cache for 2024-12-16
+2024-12-12 08:54:32 [info]: Availability data refreshed and cached successfully for the next 5 days.
+2024-12-12 08:54:51 [info]: Authenticated Sheets client created successfully.
+2024-12-12 08:54:52 [info]: Authenticated Sheets client created successfully.
+2024-12-12 08:54:52 [info]: Appended new customer row successfully.
+2024-12-12 08:54:52 [info]: Added new customer data for userId: guest_1733968491660
+2024-12-12 08:54:53 [info]: Serving slots from Redis cache for 2024-12-12
+2024-12-12 08:56:00 [info]: Running scheduled task: fetchAndCacheAvailability
+2024-12-12 08:56:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:56:02 [info]: Fetched busy times for 2024-12-12: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-12T09:00:00.000+07:00",
+      "end": "2024-12-12T13:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T17:00:00.000+07:00",
+      "end": "2024-12-12T19:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2024-12-12T10:00:00.000+07:00",
+      "end": "2024-12-12T12:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T13:00:00.000+07:00",
+      "end": "2024-12-12T14:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T18:00:00.000+07:00",
+      "end": "2024-12-12T20:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2024-12-12T10:00:00.000+07:00",
+      "end": "2024-12-12T11:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T11:30:00.000+07:00",
+      "end": "2024-12-12T12:30:00.000+07:00"
+    }
+  ]
+}
+2024-12-12 08:56:02 [info]: Available slots for 2024-12-12: [
+  {
+    "startTime": "09:00",
+    "maxDuration": 1
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 1
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:56:02 [info]: Refreshed available slots cache for 2024-12-12
+2024-12-12 08:56:02 [info]: Fetched busy times for 2024-12-13: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-13T11:00:00.000+07:00",
+      "end": "2024-12-13T12:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2024-12-13T10:00:00.000+07:00",
+      "end": "2024-12-13T11:00:00.000+07:00"
+    }
+  ]
+}
+2024-12-12 08:56:02 [info]: Available slots for 2024-12-13: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:56:02 [info]: Refreshed available slots cache for 2024-12-13
+2024-12-12 08:56:02 [info]: Fetched busy times for 2024-12-14: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-14T10:00:00.000+07:00",
+      "end": "2024-12-14T12:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2024-12-14T11:00:00.000+07:00",
+      "end": "2024-12-14T13:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:56:02 [info]: Available slots for 2024-12-14: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:56:02 [info]: Refreshed available slots cache for 2024-12-14
+2024-12-12 08:56:02 [info]: Fetched busy times for 2024-12-16: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:56:02 [info]: Available slots for 2024-12-16: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:56:02 [info]: Refreshed available slots cache for 2024-12-16
+2024-12-12 08:56:02 [info]: Fetched busy times for 2024-12-15: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:56:02 [info]: Available slots for 2024-12-15: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:56:02 [info]: Refreshed available slots cache for 2024-12-15
+2024-12-12 08:56:02 [info]: Availability data refreshed and cached successfully for the next 5 days.
+2024-12-12 08:57:46 [info]: Service Account Credentials Loaded Successfully.
+2024-12-12 08:57:46 [info]: Service Account Email: calendar-access@lengolf-booking-system-436804.iam.gserviceaccount.com
+2024-12-12 08:57:46 [info]: Memory cache initialized
+2024-12-12 08:57:47 [info]: Memory cache service initialized
+2024-12-12 08:57:47 [info]: Server is running on port 3000
+2024-12-12 08:57:47 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:47 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:47 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:47 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:47 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:47 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:48 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:48 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:48 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:48 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:48 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:48 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:48 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:48 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:48 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:57:49 [info]: Fetched busy times for 2024-12-13: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-13T11:00:00.000+07:00",
+      "end": "2024-12-13T12:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2024-12-13T10:00:00.000+07:00",
+      "end": "2024-12-13T11:00:00.000+07:00"
+    }
+  ]
+}
+2024-12-12 08:57:49 [info]: Available slots for 2024-12-13: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:57:49 [info]: Refreshed available slots cache for 2024-12-13
+2024-12-12 08:57:49 [info]: Fetched busy times for 2024-12-16: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:57:49 [info]: Available slots for 2024-12-16: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:57:49 [info]: Refreshed available slots cache for 2024-12-16
+2024-12-12 08:57:49 [info]: Fetched busy times for 2024-12-14: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-14T10:00:00.000+07:00",
+      "end": "2024-12-14T12:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2024-12-14T11:00:00.000+07:00",
+      "end": "2024-12-14T13:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:57:49 [info]: Available slots for 2024-12-14: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:57:49 [info]: Refreshed available slots cache for 2024-12-14
+2024-12-12 08:57:49 [info]: Fetched busy times for 2024-12-12: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-12T09:00:00.000+07:00",
+      "end": "2024-12-12T13:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T17:00:00.000+07:00",
+      "end": "2024-12-12T19:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2024-12-12T10:00:00.000+07:00",
+      "end": "2024-12-12T12:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T13:00:00.000+07:00",
+      "end": "2024-12-12T14:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T18:00:00.000+07:00",
+      "end": "2024-12-12T20:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2024-12-12T10:00:00.000+07:00",
+      "end": "2024-12-12T11:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T11:30:00.000+07:00",
+      "end": "2024-12-12T12:30:00.000+07:00"
+    }
+  ]
+}
+2024-12-12 08:57:49 [info]: Available slots for 2024-12-12: [
+  {
+    "startTime": "12:00",
+    "maxDuration": 1
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:57:49 [info]: Refreshed available slots cache for 2024-12-12
+2024-12-12 08:57:49 [info]: Fetched busy times for 2024-12-15: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:57:49 [info]: Available slots for 2024-12-15: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:57:49 [info]: Refreshed available slots cache for 2024-12-15
+2024-12-12 08:57:49 [info]: Availability data refreshed and cached successfully for the next 5 days.
+2024-12-12 08:57:57 [info]: Serving slots from Redis cache for 2024-12-12
+2024-12-12 08:58:00 [info]: Running scheduled task: fetchAndCacheAvailability
+2024-12-12 08:58:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:00 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:01 [info]: Authenticated Calendar client created successfully.
+2024-12-12 08:58:02 [info]: Fetched busy times for 2024-12-14: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-14T10:00:00.000+07:00",
+      "end": "2024-12-14T12:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2024-12-14T11:00:00.000+07:00",
+      "end": "2024-12-14T13:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:58:02 [info]: Available slots for 2024-12-14: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:58:02 [info]: Refreshed available slots cache for 2024-12-14
+2024-12-12 08:58:02 [info]: Fetched busy times for 2024-12-13: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-13T11:00:00.000+07:00",
+      "end": "2024-12-13T12:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2024-12-13T10:00:00.000+07:00",
+      "end": "2024-12-13T11:00:00.000+07:00"
+    }
+  ]
+}
+2024-12-12 08:58:02 [info]: Available slots for 2024-12-13: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:58:02 [info]: Refreshed available slots cache for 2024-12-13
+2024-12-12 08:58:02 [info]: Fetched busy times for 2024-12-15: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:58:02 [info]: Available slots for 2024-12-15: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:58:02 [info]: Refreshed available slots cache for 2024-12-15
+2024-12-12 08:58:02 [info]: Fetched busy times for 2024-12-16: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2024-12-12 08:58:02 [info]: Available slots for 2024-12-16: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:58:02 [info]: Refreshed available slots cache for 2024-12-16
+2024-12-12 08:58:02 [info]: Fetched busy times for 2024-12-12: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2024-12-12T09:00:00.000+07:00",
+      "end": "2024-12-12T13:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T17:00:00.000+07:00",
+      "end": "2024-12-12T19:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2024-12-12T10:00:00.000+07:00",
+      "end": "2024-12-12T12:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T13:00:00.000+07:00",
+      "end": "2024-12-12T14:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T18:00:00.000+07:00",
+      "end": "2024-12-12T20:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2024-12-12T10:00:00.000+07:00",
+      "end": "2024-12-12T11:00:00.000+07:00"
+    },
+    {
+      "start": "2024-12-12T11:30:00.000+07:00",
+      "end": "2024-12-12T12:30:00.000+07:00"
+    }
+  ]
+}
+2024-12-12 08:58:02 [info]: Available slots for 2024-12-12: [
+  {
+    "startTime": "12:00",
+    "maxDuration": 1
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2024-12-12 08:58:02 [info]: Refreshed available slots cache for 2024-12-12
+2024-12-12 08:58:02 [info]: Availability data refreshed and cached successfully for the next 5 days.
+2024-12-12 08:58:04 [info]: Serving slots from Redis cache for 2024-12-13

@@ -64,7 +64,13 @@ async function getAvailableStartTimes(dateStr) {
 
     const availableSlots = [];
 
-    let currentTime = isToday ? now.plus({ minutes: 30 }).startOf('hour') : openingTime;
+    // Use the later time between opening time and current time + 30 minutes
+    let currentTime = isToday 
+        ? DateTime.max(
+            openingTime,
+            now.plus({ minutes: 30 }).startOf('hour')
+          )
+        : openingTime;
 
     while (currentTime < closingTime) {
         let maxSlotDuration = 0;
