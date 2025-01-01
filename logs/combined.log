@@ -57651,3 +57651,1009 @@
 2024-12-12 08:58:02 [info]: Refreshed available slots cache for 2024-12-12
 2024-12-12 08:58:02 [info]: Availability data refreshed and cached successfully for the next 5 days.
 2024-12-12 08:58:04 [info]: Serving slots from Redis cache for 2024-12-13
+2025-01-01 16:51:16 [info]: Service Account Credentials Loaded Successfully.
+2025-01-01 16:51:16 [info]: Service Account Email: calendar-access@lengolf-booking-system-436804.iam.gserviceaccount.com
+2025-01-01 16:51:16 [info]: Memory cache initialized
+2025-01-01 16:51:17 [info]: Memory cache service initialized
+2025-01-01 16:51:17 [info]: Server is running on port 3000
+2025-01-01 16:51:17 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:17 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:17 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:17 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:17 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:18 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:18 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:18 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:18 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:18 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:19 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:19 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:19 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:19 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:19 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:51:19 [info]: Fetched busy times for 2025-01-02: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2025-01-02T15:30:00.000+07:00",
+      "end": "2025-01-02T17:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:51:19 [info]: Available slots for 2025-01-02: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:51:19 [info]: Refreshed available slots cache for 2025-01-02
+2025-01-01 16:51:19 [info]: Fetched busy times for 2025-01-01: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2025-01-01T11:00:00.000+07:00",
+      "end": "2025-01-01T14:00:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T16:00:00.000+07:00",
+      "end": "2025-01-01T18:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2025-01-01T10:30:00.000+07:00",
+      "end": "2025-01-01T12:00:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T13:20:00.000+07:00",
+      "end": "2025-01-01T13:50:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T14:00:00.000+07:00",
+      "end": "2025-01-01T14:30:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T15:00:00.000+07:00",
+      "end": "2025-01-01T18:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2025-01-01T10:30:00.000+07:00",
+      "end": "2025-01-01T11:30:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T15:30:00.000+07:00",
+      "end": "2025-01-01T16:30:00.000+07:00"
+    }
+  ]
+}
+2025-01-01 16:51:19 [info]: Available slots for 2025-01-01: [
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:51:19 [info]: Refreshed available slots cache for 2025-01-01
+2025-01-01 16:51:19 [info]: Fetched busy times for 2025-01-04: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:51:19 [info]: Available slots for 2025-01-04: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:51:19 [info]: Refreshed available slots cache for 2025-01-04
+2025-01-01 16:51:20 [info]: Fetched busy times for 2025-01-03: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2025-01-03T13:00:00.000+07:00",
+      "end": "2025-01-03T15:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:51:20 [info]: Available slots for 2025-01-03: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:51:20 [info]: Refreshed available slots cache for 2025-01-03
+2025-01-01 16:51:20 [info]: Fetched busy times for 2025-01-05: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:51:20 [info]: Available slots for 2025-01-05: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:51:20 [info]: Refreshed available slots cache for 2025-01-05
+2025-01-01 16:51:20 [info]: Availability data refreshed and cached successfully for the next 5 days.
+2025-01-01 16:52:00 [info]: Running scheduled task: fetchAndCacheAvailability
+2025-01-01 16:52:00 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:00 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:00 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:00 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:00 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:02 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:02 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:52:02 [info]: Fetched busy times for 2025-01-03: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2025-01-03T13:00:00.000+07:00",
+      "end": "2025-01-03T15:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:52:02 [info]: Available slots for 2025-01-03: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:52:02 [info]: Refreshed available slots cache for 2025-01-03
+2025-01-01 16:52:02 [info]: Fetched busy times for 2025-01-04: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:52:02 [info]: Available slots for 2025-01-04: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:52:02 [info]: Refreshed available slots cache for 2025-01-04
+2025-01-01 16:52:02 [info]: Fetched busy times for 2025-01-02: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2025-01-02T15:30:00.000+07:00",
+      "end": "2025-01-02T17:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:52:02 [info]: Available slots for 2025-01-02: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:52:02 [info]: Refreshed available slots cache for 2025-01-02
+2025-01-01 16:52:02 [info]: Fetched busy times for 2025-01-05: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:52:02 [info]: Available slots for 2025-01-05: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:52:02 [info]: Refreshed available slots cache for 2025-01-05
+2025-01-01 16:52:02 [info]: Fetched busy times for 2025-01-01: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2025-01-01T11:00:00.000+07:00",
+      "end": "2025-01-01T14:00:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T16:00:00.000+07:00",
+      "end": "2025-01-01T18:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2025-01-01T10:30:00.000+07:00",
+      "end": "2025-01-01T12:00:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T13:20:00.000+07:00",
+      "end": "2025-01-01T13:50:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T14:00:00.000+07:00",
+      "end": "2025-01-01T14:30:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T15:00:00.000+07:00",
+      "end": "2025-01-01T18:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2025-01-01T10:30:00.000+07:00",
+      "end": "2025-01-01T11:30:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T15:30:00.000+07:00",
+      "end": "2025-01-01T16:30:00.000+07:00"
+    }
+  ]
+}
+2025-01-01 16:52:02 [info]: Available slots for 2025-01-01: [
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:52:02 [info]: Refreshed available slots cache for 2025-01-01
+2025-01-01 16:52:02 [info]: Availability data refreshed and cached successfully for the next 5 days.
+2025-01-01 16:54:00 [info]: Running scheduled task: fetchAndCacheAvailability
+2025-01-01 16:54:00 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:00 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:00 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:00 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:00 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:01 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:02 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:02 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:02 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:02 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:02 [info]: Authenticated Calendar client created successfully.
+2025-01-01 16:54:02 [info]: Fetched busy times for 2025-01-02: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2025-01-02T15:30:00.000+07:00",
+      "end": "2025-01-02T17:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:54:02 [info]: Available slots for 2025-01-02: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:54:02 [info]: Refreshed available slots cache for 2025-01-02
+2025-01-01 16:54:02 [info]: Fetched busy times for 2025-01-01: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2025-01-01T11:00:00.000+07:00",
+      "end": "2025-01-01T14:00:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T16:00:00.000+07:00",
+      "end": "2025-01-01T18:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [
+    {
+      "start": "2025-01-01T10:30:00.000+07:00",
+      "end": "2025-01-01T12:00:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T13:20:00.000+07:00",
+      "end": "2025-01-01T13:50:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T14:00:00.000+07:00",
+      "end": "2025-01-01T14:30:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T15:00:00.000+07:00",
+      "end": "2025-01-01T18:00:00.000+07:00"
+    }
+  ],
+  "Bay 3 (Entrance)": [
+    {
+      "start": "2025-01-01T10:30:00.000+07:00",
+      "end": "2025-01-01T11:30:00.000+07:00"
+    },
+    {
+      "start": "2025-01-01T15:30:00.000+07:00",
+      "end": "2025-01-01T16:30:00.000+07:00"
+    }
+  ]
+}
+2025-01-01 16:54:02 [info]: Available slots for 2025-01-01: [
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:54:02 [info]: Refreshed available slots cache for 2025-01-01
+2025-01-01 16:54:02 [info]: Fetched busy times for 2025-01-05: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:54:02 [info]: Available slots for 2025-01-05: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:54:02 [info]: Refreshed available slots cache for 2025-01-05
+2025-01-01 16:54:02 [info]: Fetched busy times for 2025-01-03: {
+  "Bay 1 (Bar)": [
+    {
+      "start": "2025-01-03T13:00:00.000+07:00",
+      "end": "2025-01-03T15:00:00.000+07:00"
+    }
+  ],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:54:02 [info]: Available slots for 2025-01-03: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:54:02 [info]: Refreshed available slots cache for 2025-01-03
+2025-01-01 16:54:02 [info]: Fetched busy times for 2025-01-04: {
+  "Bay 1 (Bar)": [],
+  "Bay 2": [],
+  "Bay 3 (Entrance)": []
+}
+2025-01-01 16:54:02 [info]: Available slots for 2025-01-04: [
+  {
+    "startTime": "10:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "11:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "12:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "13:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "14:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "15:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "16:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "17:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "18:00",
+    "maxDuration": 5
+  },
+  {
+    "startTime": "19:00",
+    "maxDuration": 4
+  },
+  {
+    "startTime": "20:00",
+    "maxDuration": 3
+  },
+  {
+    "startTime": "21:00",
+    "maxDuration": 2
+  },
+  {
+    "startTime": "22:00",
+    "maxDuration": 1
+  }
+]
+2025-01-01 16:54:02 [info]: Refreshed available slots cache for 2025-01-04
+2025-01-01 16:54:02 [info]: Availability data refreshed and cached successfully for the next 5 days.
