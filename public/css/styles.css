@@ -696,12 +696,11 @@ h3 {
 }
 
 .promotion-banner {
-    background-color: #ffd700; /* bright gold */
+    background-color: #ffd700;
     color: var(--primary-color);
     font-size: 1.1rem;
     font-weight: 600;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: flex;
     align-items: center;
     justify-content: center;
     min-height: 32px;
